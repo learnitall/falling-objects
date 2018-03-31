@@ -1,0 +1,63 @@
+# Build and deploy to github pages
+
+language: node_js
+node_js:
+  - "node"
+branches:
+  only:
+    - master
+
+# Install dependencies
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y git
+  - cd $TRAVIS_BUILD_DIR/..
+  - git clone https://github.com/phetsims/assert.git
+  - git clone https://github.com/phetsims/axon.git
+  - git clone https://github.com/phetsims/brand.git
+  - git clone https://github.com/phetsims/chipper.git
+  - git clone https://github.com/phetsims/dot.git
+  - git clone https://github.com/phetsims/joist.git
+  - git clone https://github.com/phetsims/kite.git
+  - git clone https://github.com/phetsims/perennial.git
+  - git clone https://github.com/phetsims/phet-core.git
+  - git clone https://github.com/phetsims/phetcommon.git
+  - git clone https://github.com/phetsims/query-string-machine.git
+  - git clone https://github.com/phetsims/scenery.git
+  - git clone https://github.com/phetsims/scenery-phet.git
+  - git clone https://github.com/phetsims/sherpa.git
+  - git clone https://github.com/phetsims/sun.git
+  - git clone https://github.com/phetsims/tandem.git
+  - git clone https://github.com/phetsims/assert.git
+  - sudo npm install -g grunt-cli
+  - cd chipper
+  - npm install
+  - npm update
+
+# Install simulation specific dependencies
+install:
+  - cd $TRAVIS_BUILD_DIR
+  - npm install
+  - npm prune
+  - npm update
+
+# Build the simulation
+script:
+  - grunt
+
+# Move appropriate files into a deployment directory
+before_deploy:
+  - mkdir ../deploy-gh-pages
+  - cp ./build/adapted-from-phet/falling-objects_en_adapated-from-phet.html ../deploy-gh-pages/index.html
+  - cp ./LICENSE ../deploy-gh-pages
+  - cp ./README.md ../deploy-gh-pages
+  - cp ./.gitignore ../deploy-gh-pages
+
+# Deploy to gh-pages branch
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  keep-history: false
+  local-dir: $TRAVIS_BUILD_DIR/../deploy-gh-pages
+  target-branch: gh-pages
