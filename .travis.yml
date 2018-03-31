@@ -61,3 +61,5 @@ deploy:
   keep-history: false
   local-dir: $TRAVIS_BUILD_DIR/../deploy-gh-pages
   target-branch: gh-pages
+  on:
+    branch: develop
