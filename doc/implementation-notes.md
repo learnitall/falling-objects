@@ -6,5 +6,5 @@ into "big picutre" implementatoin issues. The audience for this document is soft
 developers who are familiar with JavaScript and PhET simulation development (as described
 in [PhET Development Overview](http://bit.ly/phet-html5-development-overview)).
 
-First, read [model.md](https://github.com/learnitall/faling-objects/blob/master/doc/model.md),
+First, read [model.md](https://github.com/learnitall/falling-objects/blob/master/doc/model.md),
 which provides a high-level description of the simulation model.

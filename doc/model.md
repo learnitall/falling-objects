@@ -46,7 +46,7 @@ total net force acting on the object (vertically):
 
 ![Net force equals force of gravity minus force of drag.](https://github.com/learnitall/falling-objects/blob/master/assets/fnet-forces.jpg)
 
-![Net force equals mass times acceleration due to gravity minus one half times the drag coefficient times air density times velocity squared times area.](https://github.com/learnitall/falling-objects/blog/master/assets/fnet.jpg)
+![Net force equals mass times acceleration due to gravity minus one half times the drag coefficient times air density times velocity squared times area.](https://github.com/learnitall/falling-objects/blob/master/assets/fnet.jpg)
 
 For an explanation of the above symbols:
 
