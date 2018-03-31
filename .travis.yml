@@ -48,7 +48,7 @@ script:
 # Move appropriate files into a deployment directory
 before_deploy:
   - mkdir ../deploy-gh-pages
-  - cp ./build/adapted-from-phet/falling-objects_en_adapated-from-phet.html ../deploy-gh-pages/index.html
+  - cp ./build/adapted-from-phet/falling-objects_en_adapted-from-phet.html ../deploy-gh-pages/index.html
   - cp ./LICENSE ../deploy-gh-pages
   - cp ./README.md ../deploy-gh-pages
   - cp ./.gitignore ../deploy-gh-pages
