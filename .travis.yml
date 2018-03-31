@@ -48,7 +48,7 @@ script:
 # Move appropriate files into a deployment directory
 before_deploy:
   - mkdir ../deploy-gh-pages
-  - cp ./build/adapted-from-phet/falling-objects_en_adapated-from-phet.html ../deploy-gh-pages/index.html
+  - cp ./build/adapted-from-phet/falling-objects_en_adapted-from-phet.html ../deploy-gh-pages/index.html
   - cp ./LICENSE ../deploy-gh-pages
   - cp ./README.md ../deploy-gh-pages
   - cp ./.gitignore ../deploy-gh-pages
@@ -59,5 +59,7 @@ deploy:
   skip-cleanup: true
   github-token: $GITHUB_TOKEN
   keep-history: false
-  local-dir: $TRAVIS_BUILD_DIR/../deploy-gh-pages
+  local-dir: ../deploy-gh-pages
   target-branch: gh-pages
+  on:
+    branch: master
