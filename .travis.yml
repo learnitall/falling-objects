@@ -28,7 +28,6 @@ before_install:
   - git clone https://github.com/phetsims/sherpa.git
   - git clone https://github.com/phetsims/sun.git
   - git clone https://github.com/phetsims/tandem.git
-  - git clone https://github.com/phetsims/assert.git
   - sudo npm install -g grunt-cli
   - cd chipper
   - npm install
