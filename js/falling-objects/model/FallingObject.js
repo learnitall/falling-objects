@@ -25,14 +25,34 @@ define( function( require ) {
    * @param {number} mass - mass of the item (kg)
    * @param {number} referenceArea - reference area of the object used to calculate drag, i.e. the frontal area (m^2)
    * @param {number} dragCoefficient - drag coefficient of the item used to calculate drag
+   * @param {number} initialAltitude - initial altitude of the object (give -1 for infinite falling)
    */
-  function FallingObject( fallingObjectsModel, name, mass, referenceArea, dragCoefficient ) {
+  function FallingObject( fallingObjectsModel, name, mass, referenceArea, dragCoefficient, initialAltitude ) {
 
     // @public (read-only)
     this.name = name;
     this.mass = mass;
     this.referenceArea = referenceArea;
     this.dragCoefficient = dragCoefficient;
+    this.initialAltitude = initialAltitude;
+
+    // @public {Property.<number>} altitude (i.e. position) of the projectile
+    this.altitudeProperty = new NumberProperty( initialAltitude );  // m
+
+    // @public {Property.<number>} velocity of the projectile
+    this.velocityProperty = new NumberProperty( 0 );  // m/s
+
+    // @public {Property.<number>} acceleration of the projectile
+    this.accelerationProperty = new NumberProperty( 0 );  // m/s^2
+
+    // @public {Property.<number>} weight of the projectile (changes in correspondence to changes in altitude)
+    this.weightForceProperty = new NumberProperty( 0 );  // newtons
+
+    // @public {Property.<number>} total drag force acting on the projectile
+    this.dragForceProperty = new NumberProperty( 0 );  // newtons
+
+    // @public {Property.<number>} total net force acting on the projectile
+    this.netForceProperty = new NumberProperty( 0 );  // newtons
 
   }
 
@@ -40,7 +60,19 @@ define( function( require ) {
 
   return inherit( Object, FallingObject, {
 
-
+    /**
+     * Reset properties
+     * @public
+     * @override
+     */
+    reset: function() {
+      this.altitudeProperty.reset();
+      this.velocityProperty.reset();
+      this.accelerationProperty.reset();
+      this.weightForceProperty.reset();
+      this.dragForceProperty.reset();
+      this.netForceProperty.reset();
+   }
   } );
 
 } );
