@@ -8,3 +8,10 @@ in [PhET Development Overview](http://bit.ly/phet-html5-development-overview)).
 
 First, read [model.md](https://github.com/learnitall/falling-objects/blob/master/doc/model.md),
 which provides a high-level description of the simulation model.
+
+
+## Objects
+
+The various falling objects are implemented using the [Item.js](https://github.com/learnitall/falling-objects/blob/master/js/falling-objects/model/Item.js)
+model. The term 'Item' was used to represent objects, as the term 'Object' is a reserved
+keyword.
