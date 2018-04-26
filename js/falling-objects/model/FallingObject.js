@@ -14,8 +14,6 @@ define( function( require ) {
   var fallingObjects = require( 'FALLING_OBJECTS/FallingObjects' );
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
-  var Property = require( 'AXON/Property' );
-  var Vector2 = require( 'DOT/Vector2' )
 
   /**
    * Constructor for FallingObject
@@ -30,11 +28,14 @@ define( function( require ) {
   function FallingObject( fallingObjectsModel, name, mass, referenceArea, dragCoefficient, initialAltitude ) {
 
     // @public (read-only)
+    this.fallingObjectsModel = fallingObjectsModel;
     this.name = name;
     this.mass = mass;
-    this.referenceArea = referenceArea;
     this.dragCoefficient = dragCoefficient;
     this.initialAltitude = initialAltitude;
+
+    // @public {Property.<number>} reference area of the projectile
+    this.referenceArea = new NumberProperty( referenceArea );
 
     // @public {Property.<number>} altitude (i.e. position) of the projectile
     this.altitudeProperty = new NumberProperty( initialAltitude );  // m
@@ -73,6 +74,48 @@ define( function( require ) {
       this.dragForceProperty.reset();
       this.netForceProperty.reset();
    }
+
+   /**
+    * Calculate weight of the object in Newtons and set the weightForceProperty to the calculated value.
+    * @public
+    */
+    updateWeightForce: function() {
+      this.weightForceProperty.set( this.fallingObjectsModel.getAccelerationGravity() * this.mass );
+    },
+
+    /**
+     * Calculate drag force acting on the object in Newtons and set the dragForceProperty to the calculated value.
+     * @public
+     */
+    updateDragForce: function() {
+      this.dragForceProperty.set(
+        0.5 * ( this.dragCoefficient * this.fallingObjectsModel.getAirDensity() * ( this.velocityProperty.get() ** 2 ) * this.referenceAreaProperty.get() )
+      );
+    }
+
+    /**
+     * Calculate net force acting on the object in Newtons and set the netForceProperty to the calculated value.
+     * This method will call updateDragForce() and updateWeightForce() prior to calculating anything, therefore updating
+     * dragForceProperty, weightForceProperty and netForceProperty all in one.
+     */
+    updateNetForce: function() {
+      // Update values that will be used to calculate net force
+      this.updateWeightForce();
+      this.updateDragForce();
+
+      this.netForceProperty.set( this.weightForceProperty.get() - this.dragForceProperty.get() );
+    }
+
+    /**
+     * Calculate acceleration acting on the object in m/s^2 and set the accelerationProperty to the calculated value.
+     * This method will call updateNetForce() prior to calculating anything, therefore updating all force properties.
+     */
+    updateAcceleration: function() {
+      // Update value that will be use to calculate acceleration
+      this.updateNetForce();
+
+      this.accelerationProperty.set( this.netForceProperty.get() / this.mass );
+    }
   } );
 
 } );
