@@ -75,7 +75,7 @@ define( function( require ) {
      */
     updateDragForce: function() {
       this.dragForceProperty.set(
-        0.5 * ( this.dragCoefficient * this.fallingObjectsModel.airDensityProperty.get() * ( this.velocityProperty.get() ** 2 ) * this.referenceAreaProperty.get() )
+        0.5 * ( this.dragCoefficient * this.fallingObjectsModel.airDensityProperty.get() * Math.pow( this.velocityProperty.get(), 2 ) * this.referenceAreaProperty.get() )
       );
     }
 
