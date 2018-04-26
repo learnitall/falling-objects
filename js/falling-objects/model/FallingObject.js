@@ -38,6 +38,9 @@ define( function( require ) {
 
   fallingObjects.register( 'FallingObject', FallingObject );
 
-  return inherit( Object, FallingObject );
+  return inherit( Object, FallingObject, {
+
+
+  } );
 
 } );
