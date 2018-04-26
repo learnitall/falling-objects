@@ -80,7 +80,7 @@ define( function( require ) {
     * @public
     */
     updateWeightForce: function() {
-      this.weightForceProperty.set( this.fallingObjectsModel.getAccelerationGravity() * this.mass );
+      this.weightForceProperty.set( this.fallingObjectsModel.accelerationGravityProperty.get() * this.mass );
     },
 
     /**
@@ -89,21 +89,29 @@ define( function( require ) {
      */
     updateDragForce: function() {
       this.dragForceProperty.set(
-        0.5 * ( this.dragCoefficient * this.fallingObjectsModel.getAirDensity() * ( this.velocityProperty.get() ** 2 ) * this.referenceAreaProperty.get() )
+        0.5 * ( this.dragCoefficient * this.fallingObjectsModel.airDensityProperty.get() * ( this.velocityProperty.get() ** 2 ) * this.referenceAreaProperty.get() )
       );
     }
 
     /**
      * Calculate net force acting on the object in Newtons and set the netForceProperty to the calculated value.
-     * This method will call updateDragForce() and updateWeightForce() prior to calculating anything, therefore updating
-     * dragForceProperty, weightForceProperty and netForceProperty all in one.
+     * weightForceProperty and dragForceProperty (if drag has been toggled) will be updated prior to calculation.
      */
     updateNetForce: function() {
-      // Update values that will be used to calculate net force
+      // Update weight, as Ag could change
       this.updateWeightForce();
-      this.updateDragForce();
 
-      this.netForceProperty.set( this.weightForceProperty.get() - this.dragForceProperty.get() );
+      // Set net force using drag if toggled
+      if ( this.fallingObjectsModel.dragEnabledProperty.get() ) {
+        this.updateDragForce();
+        var newNetForce = this.weightForceProperty.get() - this.dragForceProperty.get();
+      }
+      // or without if drag is not toggled
+      else {
+        var newNetForce = this.weightForceProperty.get();
+      }
+
+      this.netForceProperty.set( newNetForce );
     }
 
     /**
