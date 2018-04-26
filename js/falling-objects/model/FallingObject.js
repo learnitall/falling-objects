@@ -61,20 +61,6 @@ define( function( require ) {
 
   return inherit( Object, FallingObject, {
 
-    /**
-     * Reset properties
-     * @public
-     * @override
-     */
-    reset: function() {
-      this.altitudeProperty.reset();
-      this.velocityProperty.reset();
-      this.accelerationProperty.reset();
-      this.weightForceProperty.reset();
-      this.dragForceProperty.reset();
-      this.netForceProperty.reset();
-   }
-
    /**
     * Calculate weight of the object in Newtons and set the weightForceProperty to the calculated value.
     * @public
@@ -96,6 +82,7 @@ define( function( require ) {
     /**
      * Calculate net force acting on the object in Newtons and set the netForceProperty to the calculated value.
      * weightForceProperty and dragForceProperty (if drag has been toggled) will be updated prior to calculation.
+     * @public
      */
     updateNetForce: function() {
       // Update weight, as Ag could change
@@ -117,12 +104,53 @@ define( function( require ) {
     /**
      * Calculate acceleration acting on the object in m/s^2 and set the accelerationProperty to the calculated value.
      * This method will call updateNetForce() prior to calculating anything, therefore updating all force properties.
+     * @public
      */
     updateAcceleration: function() {
       // Update value that will be use to calculate acceleration
       this.updateNetForce();
 
       this.accelerationProperty.set( this.netForceProperty.get() / this.mass );
+    }
+
+    /**
+     * Calculate velocity in m/s when given a change in time and set the velocityProperty to the calculated value.
+     * This method will call updateAcceleration() prior to calculation, therefore updating all force and
+     * acceleration properties.
+     * @public
+     *
+     * @param {number} dt - delta time
+     */
+    updateVelocity: function() {
+      // Update value that will be used to calculate velocity
+      this.updateAcceleration();
+
+      this.velocityProperty.set( this.velocityProperty.get() + ( this.accelerationProperty.get() * dt ) );
+    }
+
+    /**
+     * Reset properties
+     * @public
+     * @override
+     */
+    reset: function() {
+      this.altitudeProperty.reset();
+      this.velocityProperty.reset();
+      this.accelerationProperty.reset();
+      this.weightForceProperty.reset();
+      this.dragForceProperty.reset();
+      this.netForceProperty.reset();
+    }
+
+    /**
+    * Step the object in time by re-calculating properties given a change in time.
+    * @public
+    *
+    * @param {number} dt - delta time
+    */
+    step: function( dt ) {
+      // Updating the velocity will update all other calculated properties
+      this.updateVelocity( dt );
     }
   } );
 
