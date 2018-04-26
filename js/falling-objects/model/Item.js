@@ -18,7 +18,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' )
 
   /**
-   * Constructor for Item
+   * Constructor for FallingObject
    *
    * @param {FallingObjectsModel} fallingObjectsModel - used to pull environmental constants
    * @param {string} name - string describing this type of item
@@ -26,7 +26,7 @@ define( function( require ) {
    * @param {number} referenceArea - reference area of the object used to calculate drag, i.e. the frontal area (m^2)
    * @param {number} dragCoefficient - drag coefficient of the item used to calculate drag
    */
-  function Item( fallingObjectsModel, name, mass, referenceArea, dragCoefficient ) {
+  function FallingObject( fallingObjectsModel, name, mass, referenceArea, dragCoefficient ) {
 
     // @public (read-only)
     this.name = name;
@@ -36,8 +36,8 @@ define( function( require ) {
 
   }
 
-  fallingObjects.register( 'Item', Item );
+  fallingObjects.register( 'FallingObject', FallingObject );
 
-  return inherit( Object, Item );
+  return inherit( Object, FallingObject );
 
 } );
