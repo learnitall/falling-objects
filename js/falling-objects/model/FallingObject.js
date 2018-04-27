@@ -11,24 +11,24 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var fallingObjects = require( 'FALLING_OBJECTS/FallingObjects' );
+  var FallingObjects = require( 'FALLING_OBJECTS/FallingObjects' );
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
 
   /**
    * Constructor for FallingObject
    *
-   * @param {FallingObjectsModel} fallingObjectsModel - used to pull environmental constants
+   * @param {FallingObjectsModel} FallingObjectsModel - used to pull environmental values
    * @param {string} name - string describing this type of item
    * @param {number} mass - mass of the item (kg)
    * @param {number} referenceArea - reference area of the object used to calculate drag, i.e. the frontal area (m^2)
    * @param {number} dragCoefficient - drag coefficient of the item used to calculate drag
    * @param {number} initialAltitude - initial altitude of the object (give -1 for infinite falling)
    */
-  function FallingObject( fallingObjectsModel, name, mass, referenceArea, dragCoefficient, initialAltitude ) {
+  function FallingObject( FallingObjectsModel, name, mass, referenceArea, dragCoefficient, initialAltitude ) {
 
     // @public (read-only)
-    this.fallingObjectsModel = fallingObjectsModel;
+    this.FallingObjectsModel = FallingObjectsModel;
     this.name = name;
     this.mass = mass;
     this.dragCoefficient = dragCoefficient;
@@ -57,7 +57,7 @@ define( function( require ) {
 
   }
 
-  fallingObjects.register( 'FallingObject', FallingObject );
+  FallingObjects.register( 'FallingObject', FallingObject );
 
   return inherit( Object, FallingObject, {
 
@@ -66,7 +66,7 @@ define( function( require ) {
     * @public
     */
     updateWeightForce: function() {
-      this.weightForceProperty.set( this.fallingObjectsModel.accelerationGravityProperty.get() * this.mass );
+      this.weightForceProperty.set( this.FallingObjectsModel.accelerationGravityProperty.get() * this.mass );
     },
 
     /**
@@ -75,9 +75,9 @@ define( function( require ) {
      */
     updateDragForce: function() {
       this.dragForceProperty.set(
-        0.5 * ( this.dragCoefficient * this.fallingObjectsModel.airDensityProperty.get() * Math.pow( this.velocityProperty.get(), 2 ) * this.referenceAreaProperty.get() )
+        0.5 * ( this.dragCoefficient * this.FallingObjectsModel.airDensityProperty.get() * Math.pow( this.velocityProperty.get(), 2 ) * this.referenceAreaProperty.get() )
       );
-    }
+    },
 
     /**
      * Calculate net force acting on the object in Newtons and set the netForceProperty to the calculated value.
@@ -89,17 +89,18 @@ define( function( require ) {
       this.updateWeightForce();
 
       // Set net force using drag if toggled
-      if ( this.fallingObjectsModel.dragEnabledProperty.get() ) {
+      var newNetForce;
+      if ( this.FallingObjectsModel.dragEnabledProperty.get() ) {
         this.updateDragForce();
-        var newNetForce = this.weightForceProperty.get() - this.dragForceProperty.get();
+        newNetForce = this.weightForceProperty.get() - this.dragForceProperty.get();
       }
       // or without if drag is not toggled
       else {
-        var newNetForce = this.weightForceProperty.get();
+        newNetForce = this.weightForceProperty.get();
       }
 
       this.netForceProperty.set( newNetForce );
-    }
+    },
 
     /**
      * Calculate acceleration acting on the object in m/s^2 and set the accelerationProperty to the calculated value.
@@ -111,7 +112,7 @@ define( function( require ) {
       this.updateNetForce();
 
       this.accelerationProperty.set( this.netForceProperty.get() / this.mass );
-    }
+    },
 
     /**
      * Calculate velocity in m/s when given a change in time and set the velocityProperty to the calculated value.
@@ -121,12 +122,12 @@ define( function( require ) {
      *
      * @param {number} dt - delta time
      */
-    updateVelocity: function() {
+    updateVelocity: function( dt ) {
       // Update value that will be used to calculate velocity
       this.updateAcceleration();
 
       this.velocityProperty.set( this.velocityProperty.get() + ( this.accelerationProperty.get() * dt ) );
-    }
+    },
 
     /**
      * Reset properties
@@ -140,7 +141,7 @@ define( function( require ) {
       this.weightForceProperty.reset();
       this.dragForceProperty.reset();
       this.netForceProperty.reset();
-    }
+    },
 
     /**
     * Step the object in time by re-calculating properties given a change in time.
