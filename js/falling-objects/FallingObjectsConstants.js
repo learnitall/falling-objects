@@ -8,6 +8,9 @@
 define( function( require ) {
   'use strict';
 
+  // modules
+  var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
+
   var FallingObjectsConstants = {
 
     // Define FallingObject parameters
@@ -59,5 +62,10 @@ define( function( require ) {
       'dragCoefficient': 0.24
     },
 
-  }
-} )
+  };
+
+  fallingObjects.register( 'FallingObjectsConstants', FallingObjectsConstants );
+
+  return FallingObjectsConstants;
+
+} );
