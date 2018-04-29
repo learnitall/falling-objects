@@ -1,5 +1,29 @@
 {
   "falling-objects.title": {
     "value": "Falling Objects"
+  },
+  "bowling_ball": {
+    "value": "Bowling Ball"
+  },
+  "badminton_shuttlecock": {
+    "value": "Badminton Shuttlecock"
+  },
+  "golf_ball": {
+    "value": "Golf Ball"
+  },
+  "ping_pong_ball": {
+    "value": "Ping Pong Ball"
+  },
+  "baseball": {
+    "value": "Baseball"
+  },
+  "football": {
+    "value": "Football"
+  },
+  "model_rocket": {
+    "value": "Model Rocket"
+  },
+  "tesla_model_s": {
+    "value": "Tesla Model S"
   }
 }
