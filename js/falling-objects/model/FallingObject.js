@@ -11,9 +11,10 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var FallingObjects = require( 'FALLING_OBJECTS/FallingObjects' );
+  var FallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
+  var Property = require( 'AXON/Property' );
 
   /**
    * Constructor for FallingObject
@@ -24,8 +25,11 @@ define( function( require ) {
    * @param {number} referenceArea - reference area of the object used to calculate drag, i.e. the frontal area (m^2)
    * @param {number} dragCoefficient - drag coefficient of the item used to calculate drag
    * @param {number} initialAltitude - initial altitude of the object (give -1 for infinite falling)
+   * @param {image} image - image from the 'image!' plugin, which will be shown on screen for the FallingObject
+   * @param {number} imageScale - value used to scale the image to the appropriate size
+   * @param {Vector2} initialPosition - the starting position of the FallingObject in model coordinates
    */
-  function FallingObject( FallingObjectsModel, name, mass, referenceArea, dragCoefficient, initialAltitude ) {
+  function FallingObject( FallingObjectsModel, name, mass, referenceArea, dragCoefficient, initialAltitude, image, imageScale, initialPosition ) {
 
     // @public (read-only)
     this.FallingObjectsModel = FallingObjectsModel;
@@ -33,6 +37,11 @@ define( function( require ) {
     this.mass = mass;
     this.dragCoefficient = dragCoefficient;
     this.initialAltitude = initialAltitude;
+    this.image = image;
+    this.imageScale = imageScale;
+
+    // @public {Property.<Vector2>} - the position of the FallingObject
+    this.positionProperty = new Property( initialPosition );
 
     // @public {Property.<number>} reference area of the projectile
     this.referenceArea = new NumberProperty( referenceArea );
