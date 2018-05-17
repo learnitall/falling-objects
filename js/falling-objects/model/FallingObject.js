@@ -11,7 +11,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var FallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
+  var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Property = require( 'AXON/Property' );
@@ -62,7 +62,7 @@ define( function( require ) {
 
   }
 
-  FallingObjects.register( 'FallingObject', FallingObject );
+  fallingObjects.register( 'FallingObject', FallingObject );
 
   return inherit( Object, FallingObject, {
 
