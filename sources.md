@@ -124,7 +124,7 @@ Sources for data used to create real-world objects in the sim
     added onto the body of the rocket was estimated to be 1.5 times the diameter of the rocket
     without fins: (0.025m * 1.5) + 0.307m = 0.3445m
 
-### Tesla Model S
+### Electric Car (Tesla Model S)
 
 * [Drag Queens (Don Sherman)](https://www.tesla.com/sites/default/files/blog_attachments/the-slipperiest-car-on-the-road.pdf)
 * States that for a Tesla Model S:

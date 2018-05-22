@@ -63,7 +63,7 @@ define( function( require ) {
       'diameter': [ 0.113, 0.345 ]  // width with fins on in m, height with fins on in m
     },
 
-    TESLA_MODEL_S: {
+    ELECTRIC_CAR: {
       'mass': 2170,  // in kg
       'referenceArea': 2.34,  // in m^2
       'dragCoefficient': 0.24,
