@@ -13,6 +13,18 @@ define( function( require ) {
 
   var FallingObjectsConstants = {
 
+    /**
+     * Convert the name of a falling object (retrieved with the string! plugin) to the falling object's keyname in this constants dictionary
+     * @public
+     *
+     * @param {String} fallingObjectString - Name of the falling object from the string! plugin
+     * @returns {String}
+     */
+    stringToConstantsName: function( fallingObjectString ) {
+      // Need to convert to all caps, replace spaces with underscores, and remove leading and trailing whitespace characters
+      return fallingObjectString.toUpperCase().replace( / /g, '_' ).replace( String.fromCharCode( 8234 ), '' ).replace( String.fromCharCode( 8236 ), '' );
+    },
+
     // Define FallingObject parameters
     BOWLING_BALL: {
       'mass': 7.25,  // in kg, equal to 16 lbs
@@ -69,6 +81,11 @@ define( function( require ) {
       'dragCoefficient': 0.24,
       'diameter': [ 2.189, 4.978 ]  // width of car in m, length of car in m (view height)
     },
+
+    // TODO: Define initial values for a ball that has its attributes change with a slider
+    DYNAMIC_BALL: {
+
+    }
 
   };
 
