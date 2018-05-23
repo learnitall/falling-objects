@@ -124,12 +124,18 @@ Sources for data used to create real-world objects in the sim
     added onto the body of the rocket was estimated to be 1.5 times the diameter of the rocket
     without fins: (0.025m * 1.5) + 0.307m = 0.3445m
 
-### Electric Car (Tesla Model S)
+### Sports Car (1995 McLaren F1 LM)
 
-* [Drag Queens (Don Sherman)](https://www.tesla.com/sites/default/files/blog_attachments/the-slipperiest-car-on-the-road.pdf)
-* States that for a Tesla Model S:
-  * Weight: 4785 lb = 2170 kg
-  * Frontal Area: 25.2 ft^2 = 2.34 m^2
-  * Drag Coefficient: 0.24
-* The link here [Model S Specifications](https://www.tesla.com/support/model-s-specifications) gives width to
-  be 86.2 inches = 2.189 m and length to be 196.0 inches = 4.978 m
+* Drag Coefficient
+  * [1995 McLaren F1 LM (topspeed.com)](https://www.topspeed.com/cars/mclaren/1995-mclaren-f1-lm-ar11027.html)
+    * States that the drag coefficient for the McLaren is 0.32
+* Mass and Reference Area
+  * [1995 McLaren F1 LM (supercars.net)](https://www.supercars.net/blog/1995-mclaren-f1-lm/)
+    * States that the McLaren has a curb weight (total weight with all equipment and operating consumables) of
+      2341 lbs = (2341 lbs / 9.81 m/s^2) kg = 238.63 kg
+    * Also shows that it has a width of 71.7 in (1.82 m), a height of 44.1 in (1.12 m) and a length
+      of 171.9 in (4.37 m).
+    * An approximated frontal reference area can be calculated from
+      width * height = 1.82 m * 1.12 m = 2.04 m^2
+    * Approximated top-view dimensions (which will be used in the simulation) can be derived from
+      width by length = 1.82 m by 4.37 m

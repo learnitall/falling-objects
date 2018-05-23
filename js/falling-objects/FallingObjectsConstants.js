@@ -75,11 +75,11 @@ define( function( require ) {
       'diameter': [ 0.113, 0.345 ]  // width with fins on in m, height with fins on in m
     },
 
-    ELECTRIC_CAR: {
-      'mass': 2170,  // in kg
-      'referenceArea': 2.34,  // in m^2
-      'dragCoefficient': 0.24,
-      'diameter': [ 2.189, 4.978 ]  // width of car in m, length of car in m (view height)
+    SPORTS_CAR: {
+      'mass': 283.63,  // in kg
+      'referenceArea': 2.04,  // in m^2
+      'dragCoefficient': 0.32,
+      'diameter': [ 1.82, 4.37 ]  // width of car in m, length of car in m (view height)
     },
 
     // TODO: Define initial values for a ball that has its attributes change with a slider
