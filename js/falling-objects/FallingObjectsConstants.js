@@ -25,6 +25,8 @@ define( function( require ) {
       return fallingObjectString.toUpperCase().replace( / /g, '_' ).replace( String.fromCharCode( 8234 ), '' ).replace( String.fromCharCode( 8236 ), '' );
     },
 
+    MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates
+
     // Define FallingObject parameters
     BOWLING_BALL: {
       'mass': 7.25,  // in kg, equal to 16 lbs
