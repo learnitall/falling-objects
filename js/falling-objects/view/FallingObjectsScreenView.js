@@ -9,7 +9,6 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
@@ -31,7 +30,6 @@ define( function( require ) {
     ScreenView.call( this );
 
     // Variables for this constructor, for convenience
-    var self = this;
     var screenWidth = this.layoutBounds.width;
     var screenHeight = this.layoutBounds.height;
 
