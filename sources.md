@@ -46,6 +46,8 @@ Sources for data used to create real-world objects in the sim
     ((0.065m / 2) ^ 2) * pi = 0.0033 m^2
   * Average drag coefficient: 0.61 over 100km/h and 0.51 at 60km/h
     (we chose 0.61 though to support higher velocities)
+  * Average total length: (84mm + 82mm + 83mm + 78mm + 85mm + 86mm + 80mm + 85mm +
+    85mm + 85mm) / 10 = 833mm / 10 = 83.3mm = 0.0833 m ~ 0.083m
 
 ### Golf Ball
 
@@ -94,12 +96,15 @@ Sources for data used to create real-world objects in the sim
     * States that the ball will weigh between 14 to 15 ounces (0.397 kg to 0.425 kg). We're going to cut it
       even and say 14.5 ounces or 0.411 kg
     * States that the ball will be a prolate spheroid with a long circumference of 28 to 28.5 inches and
-      a short circumference of 21 to 21.25 inches. The reference area of the ball would be
-      the center cross-sectional circle that is orthogonal to the laces (i.e. what you see when the
-      ball is held in front of one's face by the laces). This circle would have the
-      specified circumference of 21 to 21.25 inches. Cutting it even once again, this would mean
-      the circle would have an area of ((21.125 inches / (2 * pi)) ^ 2) * pi =
-      ((0.537 m / (2 * pi)) ^ 2) * pi = 0.0229 m^2
+      a short circumference of 21 to 21.25 inches. Using 28.25 inches for the long circumference and
+      21.125 inches for the short circumference, the diameter of the ball along the long circumference
+      (i.e. the overall height) would be (28.25 inches / pi) = (0.71755 m / pi) = 0.2284 m, and the diamter
+      of the ball along the short circumference (i.e. the overall width) would be (21.125 inches / pi) =
+      (0.537m / pi) = 0.171 m.
+    * The reference area of the ball would be the center cross-sectional circle that is orthogonal to
+      the laces (i.e. what you see when the ball is held in front of one's face by the laces). This
+      circle would have the specified short diamter of 0.171m and therefore a total area of
+      ((0.171m / 2) ^ 2) * pi = 0.0230 m^2
 
 ### Model Rocket
 
@@ -112,11 +117,25 @@ Sources for data used to create real-world objects in the sim
       * [Estes Engine Chart](http://www2.estesrockets.com/pdf/Estes_Engine_Chart.pdf)
   * Diameter is 25 mm, making the reference area of the rocket ((25mm / 2) ^ 2) * pi =
     ((0.025m / 2) ^ 2) * pi = 0.00049 m^2
+  * Diameter of the rocket with the fins on was estimated to be about 4.5 times the diameter of the
+    rocket without fins: 0.025m * 4.5 = 0.1125m. Each fin was estimated to be 1.75 times in diameter
+    of the rocket body.
+  * Height of the rocket without fins is 12.1 inches (0.307 m). The extra height the fins
+    added onto the body of the rocket was estimated to be 1.5 times the diameter of the rocket
+    without fins: (0.025m * 1.5) + 0.307m = 0.3445m
 
-### Tesla Model S
+### Sports Car (1995 McLaren F1 LM)
 
-* [Drag Queens (Don Sherman)](https://www.tesla.com/sites/default/files/blog_attachments/the-slipperiest-car-on-the-road.pdf)
-* States that for a Tesla Model S:
-  * Weight: 4785 lb = 2170 kg
-  * Frontal Area: 25.2 ft^2 = 2.34 m^2
-  * Drag Coefficient: 0.24
+* Drag Coefficient
+  * [1995 McLaren F1 LM (topspeed.com)](https://www.topspeed.com/cars/mclaren/1995-mclaren-f1-lm-ar11027.html)
+    * States that the drag coefficient for the McLaren is 0.32
+* Mass and Reference Area
+  * [1995 McLaren F1 LM (supercars.net)](https://www.supercars.net/blog/1995-mclaren-f1-lm/)
+    * States that the McLaren has a curb weight (total weight with all equipment and operating consumables) of
+      2341 lbs = (2341 lbs / 9.81 m/s^2) kg = 238.63 kg
+    * Also shows that it has a width of 71.7 in (1.82 m), a height of 44.1 in (1.12 m) and a length
+      of 171.9 in (4.37 m).
+    * An approximated frontal reference area can be calculated from
+      width * height = 1.82 m * 1.12 m = 2.04 m^2
+    * Approximated top-view dimensions (which will be used in the simulation) can be derived from
+      width by length = 1.82 m by 4.37 m

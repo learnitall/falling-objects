@@ -11,34 +11,40 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var FallingObjects = require( 'FALLING_OBJECTS/FallingObjects' );
+  var FallingObjectsConstants = require( 'FALLING_OBJECTS/falling-objects/FallingObjectsConstants' );
+  var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
+  var Property = require( 'AXON/Property' );
 
   /**
    * Constructor for FallingObject
    *
    * @param {FallingObjectsModel} FallingObjectsModel - used to pull environmental values
-   * @param {string} name - string describing this type of item
-   * @param {number} mass - mass of the item (kg)
-   * @param {number} referenceArea - reference area of the object used to calculate drag, i.e. the frontal area (m^2)
-   * @param {number} dragCoefficient - drag coefficient of the item used to calculate drag
+   * @param {string} name - the name of the FallingObject to create (should be from string! plugin, see FallingObjectsConstants
    * @param {number} initialAltitude - initial altitude of the object (give -1 for infinite falling)
+   * @param {Object} options - used to pass in non-default values for the falling object's attributes (i.e. overrides)
    */
-  function FallingObject( FallingObjectsModel, name, mass, referenceArea, dragCoefficient, initialAltitude ) {
+  function FallingObject( FallingObjectsModel, name, initialAltitude, options ) {
 
-    // @public (read-only)
+    // Construct options dictionary from the named entry in FallingObjectsConstants, overriding values using the given options param
+    options = _.extend(
+      FallingObjectsConstants[ FallingObjectsConstants.stringToConstantsName( name ) ],
+      options
+    );
+
+    // @public
     this.FallingObjectsModel = FallingObjectsModel;
     this.name = name;
-    this.mass = mass;
-    this.dragCoefficient = dragCoefficient;
+    this.mass = options.mass;
+    this.dragCoefficient = options.dragCoefficient;
     this.initialAltitude = initialAltitude;
 
-    // @public {Property.<number>} reference area of the projectile
-    this.referenceArea = new NumberProperty( referenceArea );
+    // @public {Property.<Vector2>} - the position of the FallingObject
+    this.positionProperty = new Property( this.initialAltitude );
 
-    // @public {Property.<number>} altitude (i.e. position) of the projectile
-    this.altitudeProperty = new NumberProperty( initialAltitude );  // m
+    // @public {Property.<number>} reference area of the projectile
+    this.referenceArea = new NumberProperty( options.referenceArea );
 
     // @public {Property.<number>} velocity of the projectile
     this.velocityProperty = new NumberProperty( 0 );  // m/s
@@ -57,7 +63,7 @@ define( function( require ) {
 
   }
 
-  FallingObjects.register( 'FallingObject', FallingObject );
+  fallingObjects.register( 'FallingObject', FallingObject );
 
   return inherit( Object, FallingObject, {
 
@@ -135,7 +141,7 @@ define( function( require ) {
      * @override
      */
     reset: function() {
-      this.altitudeProperty.reset();
+      this.positionProperty.reset();
       this.velocityProperty.reset();
       this.accelerationProperty.reset();
       this.weightForceProperty.reset();

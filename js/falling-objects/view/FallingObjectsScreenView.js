@@ -8,9 +8,14 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
+  var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
+  var FallingObjectsConstants = require( 'FALLING_OBJECTS/falling-objects/FallingObjectsConstants' );
+  var FallingObjectNode = require( 'FALLING_OBJECTS/falling-objects/view/FallingObjectNode' );
+  var FallingObjectViewFactory = require( 'FALLING_OBJECTS/falling-objects/view/FallingObjectViewFactory' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   /**
    * @param {FallingObjectsModel} fallingObjectsModel
@@ -18,7 +23,27 @@ define( function( require ) {
    */
   function FallingObjectsScreenView( fallingObjectsModel ) {
 
+    // Hold onto a reference of the model
+    this.fallingObjectsModel = fallingObjectsModel;
+
+    // Call super constructor
     ScreenView.call( this );
+
+    // Variables for this constructor, for convenience
+    var screenWidth = this.layoutBounds.width;
+    var screenHeight = this.layoutBounds.height;
+
+    // Create model-view transform
+    var center = new Vector2( screenWidth / 2, screenHeight / 2 );
+    var scale = FallingObjectsConstants.MODEL_VIEW_TRANSFORM_SCALE;
+    this.modelViewTransform = ModelViewTransform2.createOffsetScaleMapping( center, scale );
+
+    // Create a view factory
+    this.fallingObjectViewFactory = new FallingObjectViewFactory( );
+
+    // Create the FallingObjectNode to display the currently falling object
+    this.fallingObjectNode = new FallingObjectNode( this.fallingObjectsModel.selectedObject, this.fallingObjectViewFactory, this.modelViewTransform );
+    this.addChild( this.fallingObjectNode );
 
     // Reset All button
     var resetAllButton = new ResetAllButton( {
