@@ -27,6 +27,10 @@ define( function( require ) {
 
     MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates
 
+    EARTH_MEAN_RADIUS: 6371009,  // mean radius of the Earth in m
+
+    ACCELERATION_GRAVITY_SEA_LEVEL: 9.80665,  // acceleration due to gravity at sea level in m/s^2
+
     // Define FallingObject parameters
     BOWLING_BALL: {
       'mass': 7.25,  // in kg, equal to 16 lbs

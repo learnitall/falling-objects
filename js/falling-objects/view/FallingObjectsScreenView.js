@@ -42,7 +42,7 @@ define( function( require ) {
     this.fallingObjectViewFactory = new FallingObjectViewFactory( );
 
     // Create the FallingObjectNode to display the currently falling object
-    this.fallingObjectNode = new FallingObjectNode( this.fallingObjectsModel.selectedObject, this.fallingObjectViewFactory, this.modelViewTransform );
+    this.fallingObjectNode = new FallingObjectNode( this.fallingObjectsModel.selectedFallingObject, this.fallingObjectViewFactory, this.modelViewTransform );
     this.addChild( this.fallingObjectNode );
 
     // Reset All button

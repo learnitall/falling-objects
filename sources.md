@@ -139,3 +139,32 @@ Sources for data used to create real-world objects in the sim
       width * height = 1.82 m * 1.12 m = 2.04 m^2
     * Approximated top-view dimensions (which will be used in the simulation) can be derived from
       width by length = 1.82 m by 4.37 m
+
+
+## Environmental Factors
+
+Sources for how different environmental factors are calculated/modeled
+
+### Air Density
+
+* [Earth Atmosphere Model (NASA)](https://www.grc.nasa.gov/www/k-12/airplane/atmosmet.html)
+* Outlines a model that was created in the 60s based off of atmospheric data. The data was averaged
+  and then fit to various equations.
+* There are four variables:
+  1. p: density (kg/m^3)
+  2. P: pressure (k-Pa or kilo-Pascals)
+  3. T: temperature (degrees celcius)
+  4. h: altitude (meters)
+* Air density is calculated using the standard Equation of State: p = P / (0.2869 * (T + 273.1))
+  * Reference: [Equation of State (NASA)](https://www.grc.nasa.gov/www/k-12/airplane/eqstat.html)
+* Temperature and Pressure are calculated using three different sets of equations, depending on the
+  altitude:
+  * Troposphere (h <= 11000):
+    * T = 15.04 - 0.00649 * h
+    * P = 101.29 * ((T + 273.1) / 288.08) ^ 5.256
+  * Lower Stratosphere (11000 < h <= 25000)
+    * T = -56.46
+    * P = 22.65 * e ^ (1.73 - (0.000157 * h))
+  * Upper Stratosphere (h > 25000)
+    * T = -131.21 + 0.00299 * h
+    * P = 2.488 * ((T + 273.1) / 216.6) ^ -11.388
