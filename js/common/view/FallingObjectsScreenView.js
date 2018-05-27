@@ -7,14 +7,15 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
-  var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
-  var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
-  var ScreenView = require( 'JOIST/ScreenView' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
   var FallingObjectNode = require( 'FALLING_OBJECTS/common/view/FallingObjectNode' );
   var FallingObjectViewFactory = require( 'FALLING_OBJECTS/common/view/FallingObjectViewFactory' );
+  var HBox = require( 'SCENERY/nodes/HBox' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
+  var ControlButtonsNode = require( 'FALLING_OBJECTS/common/view/ControlButtonsNode' );
+  var ScreenView = require( 'JOIST/ScreenView' );
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
@@ -30,6 +31,7 @@ define( function( require ) {
     ScreenView.call( this );
 
     // Variables for this constructor, for convenience
+    var self = this;
     var screenWidth = this.layoutBounds.width;
     var screenHeight = this.layoutBounds.height;
 
@@ -45,15 +47,10 @@ define( function( require ) {
     this.fallingObjectNode = new FallingObjectNode( this.fallingObjectsModel.selectedFallingObject, this.fallingObjectViewFactory, this.modelViewTransform );
     this.addChild( this.fallingObjectNode );
 
-    // Reset All button
-    var resetAllButton = new ResetAllButton( {
-      listener: function() {
-        fallingObjectsModel.reset();
-      },
-      right:  this.layoutBounds.maxX - 10,
-      bottom: this.layoutBounds.maxY - 10
-    } );
-    this.addChild( resetAllButton );
+    // Add control buttons
+    var controlButtonsNode = new ControlButtonsNode( this.fallingObjectsModel );
+    this.addChild( controlButtonsNode );
+
   }
 
   fallingObjects.register( 'FallingObjectsScreenView', FallingObjectsScreenView );

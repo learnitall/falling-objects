@@ -42,6 +42,9 @@ define( function( require ) {
     this.accelerationGravitySeaLevel = FallingObjectsConstants.ACCELERATION_GRAVITY_SEA_LEVEL;
     this.earthMeanRadius = FallingObjectsConstants.EARTH_MEAN_RADIUS;
 
+    // @public {Property.<boolean} whether or not the simulation is paused
+    this.playEnabledProperty = new Property( false );
+
     // TODO: Determine the appropriate initial values for these properties
 
     // @public {Property.<number>} simulation's acceleration due to gravity
@@ -139,10 +142,11 @@ define( function( require ) {
     },
 
     /**
-     * Step the model to perform the simulation's animation
+     * Step the model to perform the simulation's animation and physics calculations.
+     * Called to perform a manual step or called within the overwritten step function found below.
      * @public
      */
-    step: function( dt ) {
+    stepModel: function( dt ) {
       // If altitude is not to remain constant (i.e. the fall is not infinite) then first update gravity and air density
       if ( !this.constantAltitude ) {
         this.updateAirDensity();
@@ -151,6 +155,16 @@ define( function( require ) {
 
       // Now just step the selectedFallingObject
       this.selectedFallingObject.step( dt );
+    },
+
+    /**
+     * If the simulation is not paused, step the simulation.
+     * @public
+     */
+    step: function( dt ) {
+      if ( this.playEnabledProperty.get() ) {
+        this.stepModel( dt );
+      }
     }
 
   } );
