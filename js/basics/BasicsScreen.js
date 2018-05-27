@@ -1,6 +1,9 @@
 // Copyright 2018, University of Colorado Boulder
 
 /**
+ * The 'Basics' screen, that allows basic simulation of various FallingObject types
+ * without being able to control specific variables involved in drag calculation.
+ *
  * @author Ryan Drew
  */
 define( function( require ) {
@@ -14,13 +17,18 @@ define( function( require ) {
   var FallingObjectsModel = require( 'FALLING_OBJECTS/common/model/FallingObjectsModel' );
   var FallingObjectsScreenView = require( 'FALLING_OBJECTS/common/view/FallingObjectsScreenView' );
 
+  // strings
+  var screenBasicsString = require( 'string!FALLING_OBJECTS/screen.basics' );
+
   /**
    * @constructor
    */
   function FallingObjectsScreen() {
 
     var options = {
+      name: screenBasicsString,
       backgroundColorProperty: new Property( 'white' )
+      // TODO: Add a homeScreenIcon
     };
 
     Screen.call( this,
