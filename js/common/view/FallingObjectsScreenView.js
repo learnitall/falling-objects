@@ -9,6 +9,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
+  var PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
@@ -54,6 +55,10 @@ define( function( require ) {
       bottom: this.layoutBounds.maxY - 10
     } );
     this.addChild( resetAllButton );
+
+    // Play Pause Button
+    var playPauseButton = new PlayPauseButton( this.fallingObjectsModel.playEnabledProperty );
+    this.addChild( playPauseButton );
   }
 
   fallingObjects.register( 'FallingObjectsScreenView', FallingObjectsScreenView );
