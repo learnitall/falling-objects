@@ -12,6 +12,7 @@ define( function( require ) {
   var PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
+  var StepForwardButton = require( 'SCENERY_PHET/buttons/StepForwardButton' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
   var FallingObjectNode = require( 'FALLING_OBJECTS/common/view/FallingObjectNode' );
@@ -31,6 +32,7 @@ define( function( require ) {
     ScreenView.call( this );
 
     // Variables for this constructor, for convenience
+    var self = this;
     var screenWidth = this.layoutBounds.width;
     var screenHeight = this.layoutBounds.height;
 
@@ -56,9 +58,16 @@ define( function( require ) {
     } );
     this.addChild( resetAllButton );
 
-    // Play Pause Button
+    // Play Pause button
     var playPauseButton = new PlayPauseButton( this.fallingObjectsModel.playEnabledProperty );
     this.addChild( playPauseButton );
+
+    // Manual Step Forward button
+    var stepForwardButton = new StepForwardButton( {
+      playingProperty: this.fallingObjectsModel.playEnabledProperty,
+      listener: function() { self.fallingObjectsModel.stepModel(); }
+    } );
+    this.addChild( stepForwardButton );
   }
 
   fallingObjects.register( 'FallingObjectsScreenView', FallingObjectsScreenView );

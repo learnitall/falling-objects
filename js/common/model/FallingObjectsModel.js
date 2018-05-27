@@ -162,7 +162,6 @@ define( function( require ) {
      * @public
      */
     step: function( dt ) {
-
       if ( this.playEnabledProperty.get() ) {
         this.stepModel( dt );
       }
