@@ -136,6 +136,23 @@ define( function( require ) {
     },
 
     /**
+     * Calculate position in m when given a change in time and set the positionProperty to the calculated value.
+     * This method will call updateVelocity prior to calculation, therefore updating the velocity, acceleration and
+     * force properties.
+     * @public
+     *
+     * @param {number} dt - delta time
+     */
+    updatePosition: function( dt ) {
+      // Update value that will be used to calculate position
+      this.updateVelocity( dt );
+
+      // The property is set to a vector, can't just update the property's value with the calculation for y directly.
+      var newPositionVector = this.positionProperty.get().setY( this.positionProperty.get().y + ( this.velocityProperty.get() * dt ) );
+      this.positionProperty.set( newPositionVector );
+    },
+
+    /**
      * Reset properties
      * @public
      * @override
@@ -156,9 +173,10 @@ define( function( require ) {
     * @param {number} dt - delta time
     */
     step: function( dt ) {
-      // Updating the velocity will update all other calculated properties
-      this.updateVelocity( dt );
+      // Updating the position will update all other calculated properties
+      this.updatePosition( dt );
     }
+
   } );
 
 } );
