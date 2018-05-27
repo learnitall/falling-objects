@@ -42,7 +42,7 @@ define( function( require ) {
 
     // @public {Property.<number>} simulation's acceleration due to gravity
     // TODO: Add a slider to control this value
-    this.accelerationGravityProperty = new NumberProperty( accelerationGravitySeaLevel );
+    this.accelerationGravityProperty = new NumberProperty( this.accelerationGravitySeaLevel );
 
     // @public {Property.<boolean>} whether or not gravitational acceleration will vary based off of altitude
     // TODO: Add functionality for when this is enabled and disabled
