@@ -1,6 +1,9 @@
 // Copyright 2018, University of Colorado Boulder
 
 /**
+ * The 'Terminal' screen, that allows users to explore the concept of Terminal Velocity by
+ * seeing how and why a falling object interacts with the air around it.
+ *
  * @author Ryan Drew
  */
 define( function( require ) {
@@ -14,13 +17,18 @@ define( function( require ) {
   var FallingObjectsModel = require( 'FALLING_OBJECTS/common/model/FallingObjectsModel' );
   var FallingObjectsScreenView = require( 'FALLING_OBJECTS/common/view/FallingObjectsScreenView' );
 
+  // string
+  var screenTerminalString = require( 'string!FALLING_OBJECTS/screen.terminal' );
+
   /**
    * @constructor
    */
   function FallingObjectsScreen() {
 
     var options = {
+      name: screenTerminalString,
       backgroundColorProperty: new Property( 'white' )
+      // TODO: Add a homeScreenIcon
     };
 
     Screen.call( this,

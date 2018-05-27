@@ -5,6 +5,9 @@
   "screen.basics": {
     "value": "Basics"
   },
+  "screen.terminal": {
+    "value": "Terminal"
+  },
   "bowling_ball": {
     "value": "Bowling Ball"
   },
