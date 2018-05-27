@@ -12,9 +12,9 @@ define( function( require ) {
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
-  var FallingObjectsConstants = require( 'FALLING_OBJECTS/falling-objects/FallingObjectsConstants' );
-  var FallingObjectNode = require( 'FALLING_OBJECTS/falling-objects/view/FallingObjectNode' );
-  var FallingObjectViewFactory = require( 'FALLING_OBJECTS/falling-objects/view/FallingObjectViewFactory' );
+  var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
+  var FallingObjectNode = require( 'FALLING_OBJECTS/common/view/FallingObjectNode' );
+  var FallingObjectViewFactory = require( 'FALLING_OBJECTS/common/view/FallingObjectViewFactory' );
   var Vector2 = require( 'DOT/Vector2' );
 
   /**

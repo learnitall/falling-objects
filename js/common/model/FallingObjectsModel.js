@@ -9,8 +9,8 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var FallingObject = require( 'FALLING_OBJECTS/falling-objects/model/FallingObject' );
-  var FallingObjectsConstants = require( 'FALLING_OBJECTS/falling-objects/FallingObjectsConstants' );
+  var FallingObject = require( 'FALLING_OBJECTS/common/model/FallingObject' );
+  var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
