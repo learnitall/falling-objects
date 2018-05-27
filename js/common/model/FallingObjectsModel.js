@@ -30,9 +30,13 @@ define( function( require ) {
   /**
    * Construct the FallingObjectsModel
    *
+   * @param {boolean} constantAltitude - if false, air density and accel. gravity will be calculated based on the FallingObject's altitude
    * @constructor
    */
-  function FallingObjectsModel() {
+  function FallingObjectsModel( constantAltitude ) {
+
+    // @private (read-only)
+    this.constantAltitude = constantAltitude;
 
     // Variables defined here for convenience
     this.accelerationGravitySeaLevel = FallingObjectsConstants.ACCELERATION_GRAVITY_SEA_LEVEL;
@@ -43,10 +47,6 @@ define( function( require ) {
     // @public {Property.<number>} simulation's acceleration due to gravity
     // TODO: Add a slider to control this value
     this.accelerationGravityProperty = new NumberProperty( this.accelerationGravitySeaLevel );
-
-    // @public {Property.<boolean>} whether or not gravitational acceleration will vary based off of altitude
-    // TODO: Add functionality for when this is enabled and disabled
-    this.variableAccelerationGravityProperty = new Property( false );
 
     // @public {Property.<number>} air density at the selected FallingObject's position
     // TODO: Add control over whether or not this gets calculated as altitude changes
@@ -143,6 +143,14 @@ define( function( require ) {
      * @public
      */
     step: function( dt ) {
+      // If altitude is not to remain constant (i.e. the fall is not infinite) then first update gravity and air density
+      if ( !this.constantAltitude ) {
+        this.updateAirDensity();
+        this.updateAccelerationGravity();
+      }
+
+      // Now just step the selectedFallingObject
+      this.selectedFallingObject.step( dt );
     }
 
   } );
