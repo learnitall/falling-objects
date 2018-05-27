@@ -30,7 +30,7 @@ define( function( require ) {
 
     EARTH_MEAN_RADIUS: 6371009,  // mean radius of the Earth in m
 
-    ACCELERATION_GRAVITY_SEA_LEVEL: 9.80665,  // acceleration due to gravity at sea level in m/s^2
+    ACCELERATION_GRAVITY_SEA_LEVEL: -9.80665,  // acceleration due to gravity at sea level in m/s^2
 
     // Define FallingObject parameters
     BOWLING_BALL: {
