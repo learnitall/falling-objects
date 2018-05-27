@@ -96,7 +96,7 @@ define( function( require ) {
 
       // Set net force using drag if toggled
       var newNetForce;
-      if ( this.FallingObjectsModel.dragEnabledProperty.get() ) {
+      if ( this.FallingObjectsModel.dragForceEnabledProperty.get() ) {
         this.updateDragForce();
         newNetForce = this.weightForceProperty.get() - this.dragForceProperty.get();
       }
