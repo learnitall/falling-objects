@@ -11,7 +11,7 @@ define( function ( require ) {
 
   // modules
   var Circle = require( 'SCENERY/nodes/Circle' );
-  var FallingObjectsConstants = require( 'FALLING_OBJECTS/falling-objects/FallingObjectsConstants' );
+  var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
