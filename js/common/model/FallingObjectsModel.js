@@ -35,8 +35,8 @@ define( function( require ) {
   function FallingObjectsModel() {
 
     // Variables defined here for convenience
-    var accelerationGravitySeaLevel = FallingObjectsConstants.ACCELERATION_GRAVITY_SEA_LEVEL;
-    var earthMeanRadius = FallingObjectsConstants.EARTH_MEAN_RADIUS;
+    this.accelerationGravitySeaLevel = FallingObjectsConstants.ACCELERATION_GRAVITY_SEA_LEVEL;
+    this.earthMeanRadius = FallingObjectsConstants.EARTH_MEAN_RADIUS;
 
     // TODO: Determine the appropriate initial values for these properties
 
@@ -55,57 +55,6 @@ define( function( require ) {
     // @public {Property.<boolean>} whether or not drag force will affect the FallingObject's fall
     // TODO: Add control over this variable
     this.dragForceEnabledProperty = new Property( false );
-
-    /**
-     * Calculate the air density in kg/m^3 at the given altitude and return it. Uses a standard Earth
-     * Atmosphere Model from the 60s
-     * @public
-     *
-     * @param {number} altitude - altitude in meters to calculate the air density at
-     * @returns {number} - air density at the given altitude
-     */
-    this.calculateAirDensity = function( altitude ) {
-
-      // Three different methods for calculating temperature and pressure, depending on altitude
-      var temperature;
-      var pressure;
-
-      // Troposphere
-      if ( altitude <= 11000 ) {
-        temperature = 15.04 - ( 0.00649 * altitude );
-        pressure = 101.29 * Math.pow( ( ( temperature + 273.1 ) / 288.08 ), 5.256 );
-      }
-      // Lower Stratosphere ( 11000 < altitude <= 25000 )
-      else if ( altitude <= 25000 ) {
-        temperature = -56.46;
-        pressure = 22.65 * Math.pow( Math.E, ( 1.73 - ( 0.000157 * altitude ) ) );
-      }
-      // Upper Stratosphere ( altitude > 25000 )
-      else {
-        temperature = -131.21 + ( 0.00299 * altitude );
-        pressure = 2.488 * Math.pow( ( ( temperature + 273.1 ) / 216.6 ), -11.388 );
-      }
-
-      // Now calculate air density using the Equation of State
-      return pressure / ( 0.2869 * ( temperature + 273.1 ) );
-
-    };
-
-    /**
-     * Calculate the gravitational acceleration in m/s^2 at the given altitude and return it.
-     * @public
-     *
-     * @param {number} altitude - altitude in meters to calculate the gravitational acceleration at
-     * @returns {number} - gravitational acceleration at the given altitude
-     */
-    this.calculateAccelerationGravity = function( altitude ) {
-
-      // This calculation is done in the same fashion as calculating the Doppler Effect on a wave- scalar applied to a base value
-      var ratio = Math.pow( ( earthMeanRadius / ( earthMeanRadius + altitude ) ), 2 );
-
-      return accelerationGravitySeaLevel * ratio;
-
-    };
 
     // Construct a list of falling object names
     var selectedFallingObjectIndex = 3;  // Placeholder value, see the below TODO
@@ -130,17 +79,35 @@ define( function( require ) {
 
   return inherit( Object, FallingObjectsModel, {
 
-    // TODO: These two methods below have the same structure- anyway to condense?
-
     /**
      * Calculate the air density in kg/m^3 at the selectedFallingObject's position and set the airDensityProperty
-     * to the calculated value.
+     * to the calculated value. Uses a standard Earth Atmospheric Model from the '60s.
      * @public
      */
     updateAirDensity: function() {
-      // y value of positionProperty is altitude
-      var newAirDensity = this.calculateAirDensity( Math.abs( this.selectedFallingObject.positionProperty.get().y ) );
-      this.airDensityProperty.set( newAirDensity );
+      // Three different methods for calculating temperature and pressure, depending on altitude
+      var altitude = Math.abs( this.selectedFallingObject.positionProperty.get().y ); // absolute y value is altitude
+      var temperature;
+      var pressure;
+
+      // Troposphere
+      if ( altitude <= 11000 ) {
+        temperature = 15.04 - ( 0.00649 * altitude );
+        pressure = 101.29 * Math.pow( ( ( temperature + 273.1 ) / 288.08 ), 5.256 );
+      }
+      // Lower Stratosphere ( 11000 < altitude <= 25000 )
+      else if ( altitude <= 25000 ) {
+        temperature = -56.46;
+        pressure = 22.65 * Math.pow( Math.E, ( 1.73 - ( 0.000157 * altitude ) ) );
+      }
+      // Upper Stratosphere ( altitude > 25000 )
+      else {
+        temperature = -131.21 + ( 0.00299 * altitude );
+        pressure = 2.488 * Math.pow( ( ( temperature + 273.1 ) / 216.6 ), -11.388 );
+      }
+
+      // Now calculate air density using the Equation of State
+      this.airDensityProperty.set( pressure / ( 0.2869 * ( temperature + 273.1 ) ) );
     },
 
     /**
@@ -149,9 +116,11 @@ define( function( require ) {
      * @public
      */
     updateAccelerationGravity: function() {
-      // y value of positionProperty is altitude
-      var newAccelerationGravity = this.calculateAccelerationGravity( Math.abs( this.selectedFallingObject.positionProperty.get().y ) );
-      this.accelerationGravityProperty.set( newAccelerationGravity );
+      var altitude = Math.abs( this.selectedFallingObject.positionProperty.get().y );
+
+      // This calculation is done in the same fashion as calculating the Doppler Effect on a wave- scalar applied to a base value
+      var ratio = Math.pow( ( this.earthMeanRadius / ( this.earthMeanRadius + altitude ) ), 2 );
+      this.accelerationGravityProperty.set( this.accelerationGravitySeaLevel * ratio );
     },
 
     /**
