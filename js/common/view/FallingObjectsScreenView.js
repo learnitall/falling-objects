@@ -7,6 +7,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var HBox = require( 'SCENERY/nodes/HBox' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
@@ -35,6 +36,8 @@ define( function( require ) {
     var self = this;
     var screenWidth = this.layoutBounds.width;
     var screenHeight = this.layoutBounds.height;
+    var controlButtonSpacing = FallingObjectsConstants.CONTROL_BUTTON_SPACING;
+    var controlButtonRadius = FallingObjectsConstants.CONTROL_BUTTON_RADIUS;
 
     // Create model-view transform
     var center = new Vector2( screenWidth / 2, screenHeight / 2 );
@@ -53,21 +56,28 @@ define( function( require ) {
       listener: function() {
         fallingObjectsModel.reset();
       },
-      right:  this.layoutBounds.maxX - 10,
-      bottom: this.layoutBounds.maxY - 10
+      radius: controlButtonRadius
     } );
-    this.addChild( resetAllButton );
 
     // Play Pause button
-    var playPauseButton = new PlayPauseButton( this.fallingObjectsModel.playEnabledProperty );
-    this.addChild( playPauseButton );
+    var playPauseButton = new PlayPauseButton( this.fallingObjectsModel.playEnabledProperty, {
+      radius: controlButtonRadius
+    } );
 
     // Manual Step Forward button
     var stepForwardButton = new StepForwardButton( {
+      radius: controlButtonRadius,
       playingProperty: this.fallingObjectsModel.playEnabledProperty,
       listener: function() { self.fallingObjectsModel.stepModel(); }
     } );
-    this.addChild( stepForwardButton );
+
+    // Add the three buttons into their own HBox
+    var resetPlayPauseStepHBox = new HBox( {
+      children: [ resetAllButton, playPauseButton, stepForwardButton ],
+      spacing: controlButtonSpacing
+    } );
+    this.addChild( resetPlayPauseStepHBox );
+
   }
 
   fallingObjects.register( 'FallingObjectsScreenView', FallingObjectsScreenView );
