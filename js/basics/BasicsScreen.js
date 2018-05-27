@@ -32,7 +32,7 @@ define( function( require ) {
     };
 
     Screen.call( this,
-      function() { return new FallingObjectsModel(); },
+      function() { return new FallingObjectsModel( true ); },
       function( model ) { return new FallingObjectsScreenView( model ); },
       options
     );
