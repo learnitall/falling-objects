@@ -33,6 +33,7 @@ define( function( require ) {
     // Pull variables from constants
     var controlButtonSpacing = FallingObjectsConstants.CONTROL_BUTTON_SPACING;
     var controlButtonRadius = FallingObjectsConstants.CONTROL_BUTTON_RADIUS;
+    var controlButtonStepDT = FallingObjectsConstants.CONTROL_BUTTON_STEP_DT;
 
     // Reset All Button
     var resetAllButton = new ResetAllButton( {
@@ -51,7 +52,7 @@ define( function( require ) {
     var stepForwardButton = new StepForwardButton( {
       radius: controlButtonRadius,
       playingProperty: fallingObjectsModel.playEnabledProperty,
-      listener: function() { fallingObjectsModel.stepModel(); }
+      listener: function() { fallingObjectsModel.stepModel( controlButtonStepDT ); }
     } );
 
     // Add the three buttons into an HBox

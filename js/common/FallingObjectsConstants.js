@@ -28,6 +28,7 @@ define( function( require ) {
 
     CONTROL_BUTTON_RADIUS: 23,  // Radius of each of the Reset, Play/Pause and Step buttons
     CONTROL_BUTTON_SPACING: 18,  // Horizontal padding between the Reset, Play/Pause and Step buttons
+    CONTROL_BUTTON_STEP_DT: 1 / 60,  // Assume frame rate for manual steps (60th of a sec
 
     MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates
 
