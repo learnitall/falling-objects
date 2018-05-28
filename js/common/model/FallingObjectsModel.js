@@ -42,6 +42,7 @@ define( function( require ) {
     // Variables defined here for convenience
     this.accelerationGravitySeaLevel = FallingObjectsConstants.ACCELERATION_GRAVITY_SEA_LEVEL;
     this.earthMeanRadius = FallingObjectsConstants.EARTH_MEAN_RADIUS;
+    var defaultFallingObjectName = FallingObjectsConstants.DEFAULT_FALLING_OBJECT_NAME;
 
     // @public {Property.<boolean} whether or not the simulation is paused
     this.playEnabledProperty = new BooleanProperty( false );
@@ -60,6 +61,9 @@ define( function( require ) {
     // TODO: Add control over this variable
     this.dragForceEnabledProperty = new BooleanProperty( false );
 
+    // @public {Property.<string>} the name of the currently selected FallingObject (from string! plugin)
+    this.selectedFallingObjectNameProperty = new Property( defaultFallingObjectName );
+
     // Construct a list of falling object names
     var selectedFallingObjectIndex = 3;  // Placeholder value, see the below TODO
     var fallingObjectNames = [
@@ -73,10 +77,13 @@ define( function( require ) {
       sportsCarString
     ];
 
-    // TODO: Create a combo box to choose
     // Construct an object to fall
     this.selectedFallingObject = new FallingObject( this, fallingObjectNames[ selectedFallingObjectIndex ], new Vector2( 0, 0 ) );
 
+    // When the selected name is updated, then have the FallingObject instance update too
+    this.selectedFallingObjectNameProperty.lazyLink( function ( selectedFallingObjectName ) {
+     this.selectedFallingObject.setName( selectedFallingObjectName );
+    } );
   }
 
   fallingObjects.register( 'FallingObjectsModel', FallingObjectsModel );
