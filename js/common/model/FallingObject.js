@@ -29,11 +29,11 @@ define( function( require ) {
   function FallingObject( FallingObjectsModel, fallingObjectName, initialAltitude ) {
 
     // Construct options dictionary from the named entry in FallingObjectsConstants, overriding values using the given options param
-    var objectAttributes = FallingObjectsConstants[ FallingObjectsConstants.stringToConstantsName( name ) ];
+    var objectAttributes = FallingObjectsConstants[ FallingObjectsConstants.stringToConstantsName( fallingObjectName ) ];
 
     // @public
     this.FallingObjectsModel = FallingObjectsModel;
-    this.name = name;
+    this.name = fallingObjectName;
     this.mass = objectAttributes.mass;
     this.dragCoefficient = objectAttributes.dragCoefficient;
     this.initialAltitude = initialAltitude;
