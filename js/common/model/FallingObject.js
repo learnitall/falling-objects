@@ -23,30 +23,26 @@ define( function( require ) {
    * Constructor for FallingObject
    *
    * @param {FallingObjectsModel} FallingObjectsModel - used to pull environmental values
-   * @param {string} name - the name of the FallingObject to create (should be from string! plugin, see FallingObjectsConstants
+   * @param {string} fallingObjectName - the name of the FallingObject to create (should be from string! plugin, see FallingObjectsConstants)
    * @param {Vector2} initialAltitude - initial altitude of the object (give -1 for infinite falling)
-   * @param {Object} options - used to pass in non-default values for the falling object's attributes (i.e. overrides)
    */
-  function FallingObject( FallingObjectsModel, name, initialAltitude, options ) {
+  function FallingObject( FallingObjectsModel, fallingObjectName, initialAltitude ) {
 
     // Construct options dictionary from the named entry in FallingObjectsConstants, overriding values using the given options param
-    options = _.extend(
-      FallingObjectsConstants[ FallingObjectsConstants.stringToConstantsName( name ) ],
-      options
-    );
+    var objectAttributes = FallingObjectsConstants[ FallingObjectsConstants.stringToConstantsName( name ) ];
 
     // @public
     this.FallingObjectsModel = FallingObjectsModel;
     this.name = name;
-    this.mass = options.mass;
-    this.dragCoefficient = options.dragCoefficient;
+    this.mass = objectAttributes.mass;
+    this.dragCoefficient = objectAttributes.dragCoefficient;
     this.initialAltitude = initialAltitude;
 
     // @public {Property.<Vector2>} - the position of the FallingObject
     this.positionProperty = new Property( this.initialAltitude );
 
     // @public {Property.<number>} reference area of the projectile
-    this.referenceArea = new NumberProperty( options.referenceArea );
+    this.referenceArea = new NumberProperty( objectAttributes.referenceArea );
 
     // @public {Property.<number>} velocity of the projectile
     this.velocityProperty = new NumberProperty( 0 );  // m/s
@@ -69,10 +65,21 @@ define( function( require ) {
 
   return inherit( Object, FallingObject, {
 
-   /**
-    * Calculate weight of the object in Newtons and set the weightForceProperty to the calculated value.
-    * @public
-    */
+    /**
+     * Set the name of the FallingObject that should be simulated
+     * @public
+     *
+     * @param {string} fallingObjectName - From the string! plugin, see FallingObjectsConstants
+     */
+    resetName: function( fallingObjectName ) {
+      // Construct a new FallingObject instance with the given name and return it
+      return new FallingObject( this.FallingObjectsModel, fallingObjectName, this.initialAltitude );
+    },
+
+    /**
+     * Calculate weight of the object in Newtons and set the weightForceProperty to the calculated value.
+     * @public
+     */
     updateWeightForce: function() {
       this.weightForceProperty.set( this.FallingObjectsModel.accelerationGravityProperty.get() * this.mass );
     },
