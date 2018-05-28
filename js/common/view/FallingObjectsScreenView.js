@@ -7,6 +7,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var ControlPanelNode = require( 'FALLING_OBJECTS/common/view/ControlPanelNode' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
   var FallingObjectNode = require( 'FALLING_OBJECTS/common/view/FallingObjectNode' );
@@ -14,7 +15,6 @@ define( function( require ) {
   var HBox = require( 'SCENERY/nodes/HBox' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
-  var ControlButtonsNode = require( 'FALLING_OBJECTS/common/view/ControlButtonsNode' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -44,12 +44,12 @@ define( function( require ) {
     this.fallingObjectViewFactory = new FallingObjectViewFactory( );
 
     // Create the FallingObjectNode to display the currently falling object
-    this.fallingObjectNode = new FallingObjectNode( this.fallingObjectsModel.selectedFallingObject, this.fallingObjectViewFactory, this.modelViewTransform );
+    this.fallingObjectNode = new FallingObjectNode( this.fallingObjectsModel, this.fallingObjectViewFactory, this.modelViewTransform );
     this.addChild( this.fallingObjectNode );
 
-    // Add control buttons
-    var controlButtonsNode = new ControlButtonsNode( this.fallingObjectsModel );
-    this.addChild( controlButtonsNode );
+    // Add the Control Panel
+    var controlPanelNode = new ControlPanelNode( this.fallingObjectsModel, this.fallingObjectsModel.fallingObjectNames );
+    this.addChild( controlPanelNode );
 
   }
 
