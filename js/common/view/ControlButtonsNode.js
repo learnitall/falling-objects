@@ -23,17 +23,21 @@ define( function( require ) {
    * Construct the node
    *
    * @param {FallingObjectsModel} fallingObjectsModel - model to pull play property and step method from
+   * @param {number} controlButtonsMaxWidth - max width of the node
    * @constructor
    */
-  function PlayPauseStepNode( fallingObjectsModel ) {
+  function ControlButtonsNode( fallingObjectsModel, controlButtonsMaxWidth ) {
 
     // Call super constructor
     Node.call( this );
 
     // Pull variables from constants
-    var controlButtonSpacing = FallingObjectsConstants.CONTROL_BUTTON_SPACING;
     var controlButtonRadius = FallingObjectsConstants.CONTROL_BUTTON_RADIUS;
     var controlButtonStepDT = FallingObjectsConstants.CONTROL_BUTTON_STEP_DT;
+
+    // Calculate the spacing between each button based on maxWidth and the button radius
+    // total width - width from all three buttons (sum of diameters) / 2 (there are two spacing gaps)
+    var controlButtonSpacing = ( controlButtonsMaxWidth - ( ( controlButtonRadius * 2 ) * 3 ) ) / 2
 
     // Reset All Button
     var resetAllButton = new ResetAllButton( {
@@ -64,8 +68,8 @@ define( function( require ) {
 
   }
 
-  fallingObjects.register( 'PlayPauseStepNode', PlayPauseStepNode );
+  fallingObjects.register( 'ControlButtonsNode', ControlButtonsNode );
 
-  return inherit( Node, PlayPauseStepNode );
+  return inherit( Node, ControlButtonsNode );
 
 } );
