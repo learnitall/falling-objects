@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var FallingObject = require( 'FALLING_OBJECTS/common/model/FallingObject' );
   var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
@@ -43,7 +44,7 @@ define( function( require ) {
     this.earthMeanRadius = FallingObjectsConstants.EARTH_MEAN_RADIUS;
 
     // @public {Property.<boolean} whether or not the simulation is paused
-    this.playEnabledProperty = new Property( false );
+    this.playEnabledProperty = new BooleanProperty( false );
 
     // TODO: Determine the appropriate initial values for these properties
 
@@ -57,7 +58,7 @@ define( function( require ) {
 
     // @public {Property.<boolean>} whether or not drag force will affect the FallingObject's fall
     // TODO: Add control over this variable
-    this.dragForceEnabledProperty = new Property( false );
+    this.dragForceEnabledProperty = new BooleanProperty( false );
 
     // Construct a list of falling object names
     var selectedFallingObjectIndex = 3;  // Placeholder value, see the below TODO
