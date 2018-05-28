@@ -178,7 +178,6 @@ define( function( require ) {
     step: function( dt ) {
       // Updating the position will update all other calculated properties
       this.updatePosition( dt );
-      console.log( this.positionProperty.get() );
     }
 
   } );
