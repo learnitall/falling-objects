@@ -17,12 +17,14 @@ define( function( require ) {
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Property = require( 'AXON/Property' );
 
+  var Vector2 = require( 'DOT/Vector2' );
+
   /**
    * Constructor for FallingObject
    *
    * @param {FallingObjectsModel} FallingObjectsModel - used to pull environmental values
    * @param {string} name - the name of the FallingObject to create (should be from string! plugin, see FallingObjectsConstants
-   * @param {number} initialAltitude - initial altitude of the object (give -1 for infinite falling)
+   * @param {Vector2} initialAltitude - initial altitude of the object (give -1 for infinite falling)
    * @param {Object} options - used to pass in non-default values for the falling object's attributes (i.e. overrides)
    */
   function FallingObject( FallingObjectsModel, name, initialAltitude, options ) {
@@ -147,8 +149,9 @@ define( function( require ) {
       // Update value that will be used to calculate position
       this.updateVelocity( dt );
 
-      // The property is set to a vector, can't just update the property's value with the calculation for y directly.
-      var newPositionVector = this.positionProperty.get().setY( this.positionProperty.get().y + ( this.velocityProperty.get() * dt ) );
+      // The property is set to a new vector- modifying the positionProperty vector will also modify the internal
+      // _initialValue vector (they are a reference to one another)
+      var newPositionVector = new Vector2( 0, this.positionProperty.get().y + ( this.velocityProperty.get() * dt ) );
       this.positionProperty.set( newPositionVector );
     },
 
@@ -175,6 +178,7 @@ define( function( require ) {
     step: function( dt ) {
       // Updating the position will update all other calculated properties
       this.updatePosition( dt );
+      console.log( this.positionProperty.get() );
     }
 
   } );
