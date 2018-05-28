@@ -66,14 +66,24 @@ define( function( require ) {
   return inherit( Object, FallingObject, {
 
     /**
-     * Set the name of the FallingObject that should be simulated
+     * Set the name of the FallingObject that should be simulated, changing attributes as needed
      * @public
      *
      * @param {string} fallingObjectName - From the string! plugin, see FallingObjectsConstants
      */
     resetName: function( fallingObjectName ) {
       // Construct a new FallingObject instance with the given name and return it
-      return new FallingObject( this.FallingObjectsModel, fallingObjectName, this.initialAltitude );
+      if ( fallingObjectName !== this.name ) {
+
+        // Set the name of the object
+        this.name = fallingObjectName;
+
+        // Construct options dictionary from the named entry in FallingObjectsConstants, overriding values using the given options param
+        var objectAttributes = FallingObjectsConstants[ FallingObjectsConstants.stringToConstantsName( fallingObjectName ) ];
+        this.mass = objectAttributes.mass;
+        this.dragCoefficient = objectAttributes.dragCoefficient;
+        this.referenceArea = new NumberProperty( objectAttributes.referenceArea );
+      }  // otherwise don't do anything
     },
 
     /**
