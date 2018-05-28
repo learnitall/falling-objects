@@ -14,9 +14,11 @@ define( function ( require ) {
   var ComboBox = require( 'SUN/ComboBox' );
   var ControlButtonsNode = require( 'FALLING_OBJECTS/common/view/ControlButtonsNode' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
+  var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Panel = require( 'SUN/Panel' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Text = require( 'SCENERY/nodes/Text' );
 
   /**
@@ -30,10 +32,13 @@ define( function ( require ) {
     // Call the super
     Node.call( this );
 
+    // Defined for convenience
+    var controlPanelFont = new PhetFont( { size: FallingObjectsConstants.CONTROL_PANEL_FONT_SIZE } );
+
     // Combo Box
     var comboBoxItems = [];
     fallingObjectNames.forEach( function( fallingObjectName ) {
-      comboBoxItems.push( ComboBox.createItem( new Text( fallingObjectName ), fallingObjectName ) );
+      comboBoxItems.push( ComboBox.createItem( new Text( fallingObjectName, { font: controlPanelFont } ), fallingObjectName ) );
     } );
 
     var fallingObjectChoiceComboBox = new ComboBox(
