@@ -37,7 +37,7 @@ define( function( require ) {
 
     // Calculate the spacing between each button based on maxWidth and the button radius
     // total width - width from all three buttons (sum of diameters) / 2 (there are two spacing gaps)
-    var controlButtonSpacing = ( controlButtonsMaxWidth - ( ( controlButtonRadius * 2 ) * 3 ) ) / 2
+    var controlButtonSpacing = ( controlButtonsMaxWidth - ( ( controlButtonRadius * 2 ) * 3 ) ) / 2;
 
     // Reset All Button
     var resetAllButton = new ResetAllButton( {
