@@ -37,6 +37,9 @@ define( function( require ) {
 
     // Set image for the node
     this.fallingObjectModel.selectedFallingObjectNameProperty.link( function ( selectedFallingObjectName ) {
+      if ( typeof self.image !== 'undefined' ) {
+        self.image.dispose();
+      }
       self.image = self.fallingObjectViewFactory.constructView( selectedFallingObjectName, self.modelViewTransform );
       self.setChildren( [ self.image ] );
     } );
