@@ -7,14 +7,17 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var ControlButtonsNode = require( 'FALLING_OBJECTS/common/view/ControlButtonsNode' );
   var ControlPanelNode = require( 'FALLING_OBJECTS/common/view/ControlPanelNode' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
   var FallingObjectNode = require( 'FALLING_OBJECTS/common/view/FallingObjectNode' );
+  var FallingObjectSelectorNode = require( 'FALLING_OBJECTS/common/view/FallingObjectSelectorNode' );
   var FallingObjectViewFactory = require( 'FALLING_OBJECTS/common/view/FallingObjectViewFactory' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var ScreenView = require( 'JOIST/ScreenView' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
@@ -45,11 +48,31 @@ define( function( require ) {
     this.fallingObjectNode = new FallingObjectNode( this.fallingObjectsModel, this.fallingObjectViewFactory, this.modelViewTransform );
     this.addChild( this.fallingObjectNode );
 
-    // Add the Control Panel
-    var controlPanelMaxWidth = screenWidth / 5;
-    var controlPanelNode = new ControlPanelNode( this.fallingObjectsModel, this.fallingObjectsModel.fallingObjectNames, controlPanelMaxWidth );
-    this.addChild( controlPanelNode );
+    // Add the simulation controls
+    var controlsNodeMaxWidth = screenWidth / 5;
+    var controlsNodeSpacing = FallingObjectsConstants.CONTROLS_NODE_SPACING;
+    var controlsNodeAlignment = FallingObjectsConstants.CONTROLS_NODE_ALIGNMENT;
 
+    // Control Buttons (Play/Pause, Reset, Step)
+    var controlButtonsNode = new ControlButtonsNode( fallingObjectsModel, controlsNodeMaxWidth );
+
+    // ComboBox selector
+    var fallingObjectSelectorNode = new FallingObjectSelectorNode(
+      fallingObjectsModel,
+      this.fallingObjectsModel.fallingObjectNames,
+      controlsNodeMaxWidth
+    );
+
+    // Create a VBox to hold and place control nodes
+    var controlsNodeVBox = new VBox( {
+      align: controlsNodeAlignment,
+      spacing: controlsNodeSpacing,
+      children: [
+        controlButtonsNode,
+        fallingObjectSelectorNode
+      ]
+    } );
+    this.addChild( controlsNodeVBox );
   }
 
   fallingObjects.register( 'FallingObjectsScreenView', FallingObjectsScreenView );
