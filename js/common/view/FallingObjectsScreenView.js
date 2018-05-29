@@ -12,7 +12,6 @@ define( function( require ) {
   var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
   var FallingObjectNode = require( 'FALLING_OBJECTS/common/view/FallingObjectNode' );
   var FallingObjectViewFactory = require( 'FALLING_OBJECTS/common/view/FallingObjectViewFactory' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var ScreenView = require( 'JOIST/ScreenView' );
@@ -31,7 +30,6 @@ define( function( require ) {
     ScreenView.call( this );
 
     // Variables for this constructor, for convenience
-    var self = this;
     var screenWidth = this.layoutBounds.width;
     var screenHeight = this.layoutBounds.height;
 
@@ -48,7 +46,8 @@ define( function( require ) {
     this.addChild( this.fallingObjectNode );
 
     // Add the Control Panel
-    var controlPanelNode = new ControlPanelNode( this.fallingObjectsModel, this.fallingObjectsModel.fallingObjectNames );
+    var controlPanelMaxWidth = screenWidth / 5;
+    var controlPanelNode = new ControlPanelNode( this.fallingObjectsModel, this.fallingObjectsModel.fallingObjectNames, controlPanelMaxWidth );
     this.addChild( controlPanelNode );
 
   }
