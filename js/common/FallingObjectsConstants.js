@@ -30,7 +30,9 @@ define( function( require ) {
     },
 
     DEFAULT_FALLING_OBJECT_NAME: baseballString,  // Default FallingObject name that will be selected upon entering the sim
-    CONTROL_PANEL_FONT_SIZE: 20,  // Phont size of items in the ControlPanelNode
+    SELECTOR_FONT_SIZE: 18,
+    CONTROL_PANEL_SPACING: 18,  // Vertical padding between items in the control panel
+    CONTROL_PANEL_ALIGNMENT: 'center', // Alignment of items in the control panel (right, left or center)
     CONTROL_BUTTON_RADIUS: 23,  // Radius of each of the Reset, Play/Pause and Step buttons
     CONTROL_BUTTON_SPACING: 18,  // Horizontal padding between the Reset, Play/Pause and Step buttons
     CONTROL_BUTTON_STEP_DT: 1 / 60,  // Assume frame rate for manual steps (60th of a sec
