@@ -7,8 +7,8 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ControlButtonsNode = require( 'FALLING_OBJECTS/common/view/ControlButtonsNode' );
-  var ControlPanelNode = require( 'FALLING_OBJECTS/common/view/ControlPanelNode' );
+  var ControlButtons = require( 'FALLING_OBJECTS/common/view/ControlButtons' );
+  var TogglePanel = require( 'FALLING_OBJECTS/common/view/TogglePanel' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
   var FallingObjectNode = require( 'FALLING_OBJECTS/common/view/FallingObjectNode' );
@@ -49,30 +49,30 @@ define( function( require ) {
     this.addChild( this.fallingObjectNode );
 
     // Add the simulation controls
-    var controlsNodeMaxWidth = screenWidth / 5;
-    var controlsNodeSpacing = FallingObjectsConstants.CONTROLS_NODE_SPACING;
-    var controlsNodeAlignment = FallingObjectsConstants.CONTROLS_NODE_ALIGNMENT;
+    var controlPanelsMaxWidth = screenWidth / 5;
+    var controlPanelsVerticalSpacing = FallingObjectsConstants.CONTROL_PANELS_VERTICAL_SPACING;
+    var controlPanelsAlignment = FallingObjectsConstants.CONTROL_PANELS_ALIGNMENT;
 
     // Control Buttons (Play/Pause, Reset, Step)
-    var controlButtonsNode = new ControlButtonsNode( fallingObjectsModel, controlsNodeMaxWidth );
+    var controlButtons = new ControlButtons( fallingObjectsModel, controlPanelsMaxWidth );
 
-    // ComboBox selector
+    // Falling Object Selector Node
     var fallingObjectSelectorNode = new FallingObjectSelectorNode(
       fallingObjectsModel,
       this.fallingObjectsModel.fallingObjectNames,
-      controlsNodeMaxWidth
+      controlPanelsMaxWidth
     );
 
     // Create a VBox to hold and place control nodes
-    var controlsNodeVBox = new VBox( {
-      align: controlsNodeAlignment,
-      spacing: controlsNodeSpacing,
+    var controlPanelsVBox = new VBox( {
+      align: controlPanelsAlignment,
+      spacing: controlPanelsVerticalSpacing,
       children: [
-        controlButtonsNode,
-        fallingObjectSelectorNode
+        fallingObjectSelectorNode,
+        controlButtons
       ]
     } );
-    this.addChild( controlsNodeVBox );
+    this.addChild( controlPanelsVBox );
   }
 
   fallingObjects.register( 'FallingObjectsScreenView', FallingObjectsScreenView );

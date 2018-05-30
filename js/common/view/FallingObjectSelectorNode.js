@@ -34,7 +34,7 @@ define( function( require ) {
     Node.call( this );
 
     // Construct the phont and item node options object
-    var itemNodeFont = new PhetFont( { size: FallingObjectsConstants.SELECTOR_FONT_SIZE } );
+    var itemNodeFont = new PhetFont( { size: FallingObjectsConstants.CONTROL_PANELS_FONT_SIZE } );
     var itemNodeOptions = { font: itemNodeFont, maxWidth: undefined };  // don't know maxWidth for now, it is set later
 
     // These are the default values for the combo box, we just need a reference for readability

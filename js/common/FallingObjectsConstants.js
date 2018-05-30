@@ -30,11 +30,12 @@ define( function( require ) {
     },
 
     DEFAULT_FALLING_OBJECT_NAME: baseballString,  // Default FallingObject name that will be selected upon entering the sim
-    SELECTOR_FONT_SIZE: 18,
-    CONTROLS_NODE_SPACING: 18,  // Vertical padding between items in the control panel
-    CONTROLS_NODE_ALIGNMENT: 'center', // Alignment of items in the control panel (right, left or center)
+
+    CONTROL_PANELS_VERTICAL_SPACING: 18,  // Vertical spacing all of the control panels
+    CONTROL_PANELS_ALIGNMENT: 'center', // Alignment of items in the control panel (right, left or center)
+    CONTROL_PANELS_FONT_SIZE: 18,  // Font size of text used in the Control Panels
+
     CONTROL_BUTTON_RADIUS: 23,  // Radius of each of the Reset, Play/Pause and Step buttons
-    CONTROL_BUTTON_SPACING: 18,  // Horizontal padding between the Reset, Play/Pause and Step buttons
     CONTROL_BUTTON_STEP_DT: 1 / 60,  // Assume frame rate for manual steps (60th of a sec
 
     MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates

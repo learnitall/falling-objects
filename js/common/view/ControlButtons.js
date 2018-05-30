@@ -26,7 +26,7 @@ define( function( require ) {
    * @param {number} controlButtonsMaxWidth - max width of the node
    * @constructor
    */
-  function ControlButtonsNode( fallingObjectsModel, controlButtonsMaxWidth ) {
+  function ControlButtons( fallingObjectsModel, controlButtonsMaxWidth ) {
 
     // Call super constructor
     Node.call( this );
@@ -68,8 +68,8 @@ define( function( require ) {
 
   }
 
-  fallingObjects.register( 'ControlButtonsNode', ControlButtonsNode );
+  fallingObjects.register( 'ControlButtons', ControlButtons );
 
-  return inherit( Node, ControlButtonsNode );
+  return inherit( Node, ControlButtons );
 
 } );
