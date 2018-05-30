@@ -76,7 +76,7 @@ define( function( require ) {
       'mass': 0.14,  // in kg
       'referenceArea': 0.042,  // in m^2
       'dragCoefficient': 0.3,
-      'diameter': 0.23  // in m
+      'diameter': 0.0369  // in m
     },
 
     FOOTBALL: {

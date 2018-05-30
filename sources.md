@@ -78,8 +78,9 @@ Sources for data used to create real-world objects in the sim
   * [Drag on a Baseball (NASA)](https://www.grc.nasa.gov/www/k-12/airplane/balldrag.html)
 * Mass and Reference Area
   * [2018 Official Baseball Rules (MLB)](http://mlb.mlb.com/documents/0/8/0/268272080/2018_Official_Baseball_Rules.pdf)
-  * States that a ball must weigh beteween 5 and 5.25 ounces (0.147 and 0.148 kg) and that a ball
-    must be 9 to 9.25 inches in diameter (0.228 to 0.234 m)
+  * States that a ball must weigh between 5 and 5.25 ounces (0.147 and 0.148 kg) and that a ball
+    must be 9 to 9.25 inches in circumference (which is 9 in / (2 * pi) to 9.25 in / (2 * pi) =  1.432 to
+    1.472 in = 0.0364 m to 0.0374 m. We will use the average of the two, which is 0.0369 m
   * Use 0.14 kg for mass and ((0.23 m / 2) ^ 2) * pi = 0.0415 m^2 ~ 0.0042 m^2 for reference area
 
 ### Football
