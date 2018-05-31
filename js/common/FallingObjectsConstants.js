@@ -50,7 +50,8 @@ define( function( require ) {
     CONTROL_PANELS_FONT_SIZE: 18,  // Font size of text used in the Control Panels
 
     CONTROL_BUTTON_RADIUS: 23,  // Radius of each of the Reset, Play/Pause and Step buttons
-    CONTROL_BUTTON_STEP_DT: 1 / 60,  // Assume frame rate for manual steps (60th of a sec
+    CONTROL_BUTTON_STEP_DT: 1 / 60,  // Assume frame rate for manual steps (60th of a sec)
+    CONTROL_BUTTON_MARGIN_X: 10,  // Padding on each side of the row of control buttons (larger the number, more condensed they will be)
 
     MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates
 

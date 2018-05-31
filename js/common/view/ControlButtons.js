@@ -34,10 +34,11 @@ define( function( require ) {
     // Pull variables from constants
     var controlButtonRadius = FallingObjectsConstants.CONTROL_BUTTON_RADIUS;
     var controlButtonStepDT = FallingObjectsConstants.CONTROL_BUTTON_STEP_DT;
+    var controlButtonMarginX = FallingObjectsConstants.CONTROL_BUTTON_MARGIN_X;
 
     // Calculate the spacing between each button based on maxWidth and the button radius
-    // total width - width from all three buttons (sum of diameters) / 2 (there are two spacing gaps)
-    var controlButtonSpacing = ( controlButtonsMaxWidth - ( ( controlButtonRadius * 2 ) * 3 ) ) / 2;
+    // total width - width from all three buttons (sum of diameters) - padding / 2 (there are two spacing gaps)
+    var controlButtonSpacing = ( controlButtonsMaxWidth - ( ( controlButtonRadius * 2 ) * 3 ) - ( 2 * controlButtonMarginX ) ) / 2;
 
     // Reset All Button
     var resetAllButton = new ResetAllButton( {
