@@ -7,6 +7,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Bounds2 = require( 'DOT/Bounds2' );
   var ControlButtons = require( 'FALLING_OBJECTS/common/view/ControlButtons' );
   var TogglePanel = require( 'FALLING_OBJECTS/common/view/TogglePanel' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
@@ -94,7 +95,37 @@ define( function( require ) {
      * @param {number} height
      */
     layout: function( width, height ) {
-      // Move nodes into place
+
+      // First we need to scale and center the screen view to match the actual browser screen as best as possible
+      // This code is from the default layout method which we are overwriting
+
+      // Start with a clean transformation on the screen view
+      this.resetTransform();
+
+      // Determine the scale used for laying out components, and set our screen view's scale to match
+      // If the difference between the screen view's width and the actual screen's width is smaller than the
+      // respective difference in height, then that scale is used (and vice versa)
+      var scale = this.getLayoutScale( width, height );
+      this.setScaleMagnitude( scale );
+
+      // After scaling, translate the screen view on the screen so that it is centered
+      var offsetX = 0;
+      var offsetY = 0;
+
+      // If we are scaling the screen view based off of width, then center it on the screen vertically
+      if ( scale === width / this.layoutBounds.width ) {
+        offsetY = (height / scale - this.layoutBounds.height) / 2;
+      }
+
+      // If we are scaling the screen view based off of height, then center it on the screen horizontally
+      else if ( scale === height / this.layoutBounds.height ) {
+        offsetX = (width / scale - this.layoutBounds.width) / 2;
+      }
+
+      // Move the screen view
+      this.translate( offsetX, offsetY );
+
+      // Now position nodes into place
       // Note that the fallingObjectNode will place itself based on the modelViewTransform
       var screenMarginX = FallingObjectsConstants.SCREEN_MARGIN_X;
       var screenMarginTop = FallingObjectsConstants.SCREEN_MARGIN_Y;
@@ -107,6 +138,9 @@ define( function( require ) {
       // Use the relative position of the selector to place the control buttons
       this.controlButtons.top = this.fallingObjectSelectorNode.bottom + this.controlPanelsVerticalSpacing;
       this.controlButtons.centerX = this.fallingObjectSelectorNode.centerX;
+
+      // Update the visible bounds of the screen view based on our previous calculations
+      this.visibleBoundsProperty.set( new Bounds2( -offsetX, -offsetY, width / scale - offsetX, height / scale - offsetY ) );
     }
   } );
 } );
