@@ -16,18 +16,31 @@ define( function( require ) {
   var HStrut = require( 'SCENERY/nodes/HStrut' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
+  var VStrut = require( 'SCENERY/nodes/VStrut' );
+
+  // strings
+  var pattern0Label1Value2UnitsString = require( 'string!FALLING_OBJECTS/pattern.0Label.1Value.2Units' );
+  var pattern0Label1ValueString = require( 'string!FALLING_OBJECTS/pattern.0Label.1Value' );
+  var massString = require( 'string!FALLING_OBJECTS/mass' );
+  var referenceAreaString = require( 'string!FALLING_OBJECTS/referenceArea' );
+  var dragCoefficientString = require( 'string!FALLING_OBJECTS/dragCoefficient' );
+  var kgString = require( 'string!FALLING_OBJECTS/kg' );
+  var m2String = require( 'string!FALLING_OBJECTS/m2' );
 
   /**
    * Construct the ComboBox
    *
    * @param {FallingObjectModel} fallingObjectModel - will be used to pull the selectedFallingObjectNameProperty
    * @param {array} fallingObjectNames - array of FallingObject string! names that users will be able to choose from (populates combo box)
-   * @param {number} comboBoxMaxWidth - max width of the combo box
+   * @param {number} maxWidth - max width of the selector
+   * @param {Node} comboBoxParentNode - parent node for the combo box
    */
-  function FallingObjectSelectorNode( fallingObjectModel, fallingObjectNames, comboBoxMaxWidth ) {
+  function FallingObjectSelectorNode( fallingObjectModel, fallingObjectNames, maxWidth, comboBoxParentNode ) {
     // Method of construction based off of projectile-motion's combo box on the Intro screen)
 
     // Call the super
@@ -57,7 +70,7 @@ define( function( require ) {
     // Determine the desired width of the item list, which is everything to the left of the combo box button
     // Algorithm used determined by looking at source code for ComboBox
     var itemNodeWidth = (
-      comboBoxMaxWidth -  // Start with the total width of the box
+      maxWidth -  // Start with the total width of the box
       comboBoxOptions.buttonXMargin * 2 - comboBoxOptions.itemXMargin * 2 -  // Subtract padding used in the item list width
       comboBoxOptions.buttonXMargin * 4 -  // Subtract padding used in the drop-down button width
       firstItemNode.height * 0.5 -  // Subtract width of the drop-down button's arrow (this is why firstItemNode must be defined first)
@@ -78,9 +91,86 @@ define( function( require ) {
       comboBoxItems.push( ComboBox.createItem( new Text( fallingObjectNames[ i ], itemNodeOptions ), fallingObjectNames[ i ] ) );
     }
 
-    // Now construct the ComboBox and add it as a child
-    var comboBox = new ComboBox( comboBoxItems, fallingObjectModel.selectedFallingObjectNameProperty, this, comboBoxOptions );
-    this.addChild( comboBox );
+    // Now construct the ComboBox
+    var comboBox = new ComboBox( comboBoxItems, fallingObjectModel.selectedFallingObjectNameProperty, comboBoxParentNode, comboBoxOptions );
+    comboBoxParentNode.addChild( comboBox );
+
+    // Create object property labels that update when the object changes
+    var objectLabelOptions = {
+      font: itemNodeFont,
+      maxWidth: maxWidth - 2 * FallingObjectsConstants.CONTROL_PANEL_OPTIONS.xMargin
+    };
+
+    /**
+     * Function to automate the process of creating a label
+     *
+     * @param {string} attributeName - key name of the attribute for the FallingObject to set the label to (i.e. 'mass', 'referenceArea')
+     * @param {string} patternString - pattern string that will be used with StringUtils to construct the label's text
+     * @param {string} labelString - will be subbed into the 'label' key in the patternString
+     * @param {string} unitsString - will be subbed into the 'units' key in the patternString
+     */
+    var createNewLabel = function( attributeName, patternString, labelString, unitsString ) {
+      var labelText = new Text( '', objectLabelOptions );
+
+      fallingObjectModel.selectedFallingObjectNameProperty.link( function ( selectedFallingObjectName ) {
+        // Grab a reference to the newly selected falling object
+        var selectedFallingObject = fallingObjectModel.selectedFallingObject;
+
+        // Get the value for the label
+        var value = selectedFallingObject[ attributeName ];
+        if ( typeof value === 'object' ) {
+          value = value.get();
+        }
+
+        // Set the text for the label
+        labelText.setText(
+          StringUtils.fillIn( patternString, {
+            label: labelString,
+            value: value,
+            units: unitsString
+          } )
+        );
+      } );
+
+      var labelNode = new VBox( {
+        align: 'left',
+        children: [
+          labelText,
+          new HStrut( objectLabelOptions.maxWidth )
+        ]
+      } );
+
+      return labelNode;
+    };
+
+    var massLabel = createNewLabel( 'mass', pattern0Label1Value2UnitsString, massString, kgString );
+    var referenceAreaLabel = createNewLabel( 'referenceArea', pattern0Label1Value2UnitsString, referenceAreaString, m2String );
+    var dragCoefficientLabel = createNewLabel( 'dragCoefficient', pattern0Label1ValueString, dragCoefficientString );
+
+    // Create a VBox to add all the elements
+    var selectorControlVBox = new VBox( {
+      resize: true,
+      alignment: 'left',
+      spacing: FallingObjectsConstants.CONTROL_PANEL_VERTICAL_SPACING,
+      children: [
+        new VStrut( comboBox.height ),  // Gives some space for the comboBox
+        massLabel,
+        referenceAreaLabel,
+        dragCoefficientLabel
+      ]
+    } );
+
+    // Create a panel for the background color and placement of all the controls
+    var panelOptions = FallingObjectsConstants.CONTROL_PANEL_OPTIONS;
+    panelOptions.minWidth = maxWidth;
+    var selectorPanel = new Panel( selectorControlVBox, panelOptions );
+
+    // Add these to the object attributes so they can be used later on during layout
+    this.comboBoxParentNode = comboBoxParentNode;
+    this.panelOptions = panelOptions;
+    this.selectorPanel = selectorPanel;
+
+    this.addChild( selectorPanel );
   }
 
   fallingObjects.register( 'FallingObjectSelectorNode', FallingObjectSelectorNode );
