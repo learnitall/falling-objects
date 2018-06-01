@@ -62,4 +62,4 @@ deploy:
   local-dir: ../deploy-gh-pages
   target-branch: gh-pages
   on:
-    branch: master
+    branch: develop
