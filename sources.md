@@ -21,7 +21,7 @@ Sources for data used to create real-world objects in the sim
 * Mass and Reference Area:
   * The United States Bowling Congress 2016 [Equipment Specifications and Certifications Manual](http://usbcongress.http.internapcdn.net/usbcongress/bowl/equipandspecs/pdfs/ESManual.pdf)
     (used max allowed values).
-  * 8.595" diameter used, which is equal to a reference area of 1.47 m^2
+  * 8.595" diameter used, which is a radius of 4.298" = 0.1092 meters and a reference area of 1.47 m^2
   * Used 16 lb or 7.25 kg ball
 * Drag coefficient:
   * [Drag of a Sphere (NASA)](https://www.grc.nasa.gov/www/k-12/airplane/dragsphere.html)

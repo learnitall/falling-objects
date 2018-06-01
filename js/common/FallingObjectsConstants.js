@@ -64,7 +64,7 @@ define( function( require ) {
       'mass': 7.25,  // in kg, equal to 16 lbs
       'referenceArea':  1.47,  // in m^2, equal to a bowling ball with 8.595" diameter
       'dragCoefficient': 0.5,
-      'diameter': 0.218 // in m
+      'diameter': 0.1092 // in m
     },
 
     BADMINTON_SHUTTLECOCK: {
