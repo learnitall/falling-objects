@@ -42,13 +42,13 @@ define( function( require ) {
       stroke: 'black',
     },
     CONTROL_PANEL_VERTICAL_SPACING: 10,  // Vertical spacing of labels inside control panels
-    CONTROL_PANEL_ALIGNMENT: 'left',  // Alignment of Nodes inside control panels
 
     SCREEN_MARGIN_X: 10,  // Distance between any visible component and the right or left edge of the screen
     SCREEN_MARGIN_Y: 10,  // Distance between any visible component and the top or bottom edge of the screen
 
     CONTROL_PANELS_VERTICAL_SPACING: 18,  // Vertical spacing all of the control panels
     CONTROL_PANELS_FONT_SIZE: 18,  // Font size of text used in the Control Panels
+    CONTROL_PANELS_ALIGNMENT: 'left',  // Alignment of Nodes inside control panels
 
     CONTROL_BUTTON_RADIUS: 23,  // Radius of each of the Reset, Play/Pause and Step buttons
     CONTROL_BUTTON_STEP_DT: 1 / 60,  // Assume frame rate for manual steps (60th of a sec)
