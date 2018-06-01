@@ -54,7 +54,7 @@ define( function ( require ) {
     };
 
     // Construct the CheckBoxes from the given toggleList
-    var toggleNodes = []
+    var toggleNodes = [];
     toggleList.forEach( function( toggleItem ) {
 
       // Create a Text node to act as the check box label
