@@ -40,12 +40,16 @@ define( function( require ) {
     this.constantAltitude = constantAltitude;
 
     // Variables defined here for convenience
+    var self = this;
     this.accelerationGravitySeaLevel = FallingObjectsConstants.ACCELERATION_GRAVITY_SEA_LEVEL;
     this.earthMeanRadius = FallingObjectsConstants.EARTH_MEAN_RADIUS;
     var defaultFallingObjectName = FallingObjectsConstants.DEFAULT_FALLING_OBJECT_NAME;
 
-    // @public {Property.<boolean} whether or not the simulation is paused
+    // @public {Property.<boolean>} whether or not the simulation is paused
     this.playEnabledProperty = new BooleanProperty( false );
+
+    // @public {Property.<boolean>} whether or not to display data values on the screen (object properties, force values, etc.)
+    this.showValuesProperty = new BooleanProperty( false );
 
     // TODO: Determine the appropriate initial values for these properties
 
@@ -65,8 +69,7 @@ define( function( require ) {
     this.selectedFallingObjectNameProperty = new Property( defaultFallingObjectName );
 
     // Construct a list of falling object names
-    var selectedFallingObjectIndex = 3;  // Placeholder value, see the below TODO
-    var fallingObjectNames = [
+    this.fallingObjectNames = [
       badmintonShuttlecockString,
       baseballString,
       bowlingBallString,
@@ -78,11 +81,11 @@ define( function( require ) {
     ];
 
     // Construct an object to fall
-    this.selectedFallingObject = new FallingObject( this, fallingObjectNames[ selectedFallingObjectIndex ], new Vector2( 0, 0 ) );
+    this.selectedFallingObject = new FallingObject( this, this.selectedFallingObjectNameProperty.get(), new Vector2( 0, 0 ) );
 
     // When the selected name is updated, then have the FallingObject instance update too
     this.selectedFallingObjectNameProperty.lazyLink( function ( selectedFallingObjectName ) {
-     this.selectedFallingObject.setName( selectedFallingObjectName );
+      self.selectedFallingObject.resetName( selectedFallingObjectName );
     } );
   }
 

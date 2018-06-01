@@ -8,6 +8,30 @@
   "screen.terminal": {
     "value": "Terminal"
   },
+  "pattern.0Label.1Value.2Units": {
+    "value": "{{label}}: {{value}} {{units}}"
+  },
+  "pattern.0Label.1Value": {
+    "value": "{{label}}: {{value}}"
+  },
+  "showValues": {
+    "value": "Show Values"
+  },
+  "mass": {
+    "value": "Mass"
+  },
+  "referenceArea": {
+    "value": "Reference Area"
+  },
+  "dragCoefficient": {
+    "value": "Drag Coefficient"
+  },
+  "kg": {
+    "value": "kg"
+  },
+  "m2": {
+    "value": "m²"
+  },
   "bowling_ball": {
     "value": "Bowling Ball"
   },

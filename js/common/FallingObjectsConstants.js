@@ -30,9 +30,29 @@ define( function( require ) {
     },
 
     DEFAULT_FALLING_OBJECT_NAME: baseballString,  // Default FallingObject name that will be selected upon entering the sim
+
+    // This is modified from projectile motion
+    CONTROL_PANEL_OPTIONS: {  // Options for each of the control panels (i.e. the FallingObjectSelector and TogglePanel)
+      align: 'left',
+      minWidth: undefined,  // Should be defined when used
+      xMargin: 10,
+      yMargin: 10,
+      fill: 'rgb( 219, 255, 219 )',  // This was modified to be more green in color
+      lineWidth: 1,
+      stroke: 'black',
+    },
+    CONTROL_PANEL_VERTICAL_SPACING: 10,  // Vertical spacing of labels inside control panels
+
+    SCREEN_MARGIN_X: 10,  // Distance between any visible component and the right or left edge of the screen
+    SCREEN_MARGIN_Y: 10,  // Distance between any visible component and the top or bottom edge of the screen
+
+    CONTROL_PANELS_VERTICAL_SPACING: 18,  // Vertical spacing all of the control panels
+    CONTROL_PANELS_FONT_SIZE: 18,  // Font size of text used in the Control Panels
+    CONTROL_PANELS_ALIGNMENT: 'left',  // Alignment of Nodes inside control panels
+
     CONTROL_BUTTON_RADIUS: 23,  // Radius of each of the Reset, Play/Pause and Step buttons
-    CONTROL_BUTTON_SPACING: 18,  // Horizontal padding between the Reset, Play/Pause and Step buttons
-    CONTROL_BUTTON_STEP_DT: 1 / 60,  // Assume frame rate for manual steps (60th of a sec
+    CONTROL_BUTTON_STEP_DT: 1 / 60,  // Assume frame rate for manual steps (60th of a sec)
+    CONTROL_BUTTON_MARGIN_X: 10,  // Padding on each side of the row of control buttons (larger the number, more condensed they will be)
 
     MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates
 
@@ -72,7 +92,7 @@ define( function( require ) {
       'mass': 0.14,  // in kg
       'referenceArea': 0.042,  // in m^2
       'dragCoefficient': 0.3,
-      'diameter': 0.23  // in m
+      'diameter': 0.0369  // in m
     },
 
     FOOTBALL: {
