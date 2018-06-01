@@ -133,7 +133,7 @@ define( function( require ) {
       } );
 
       var labelNode = new VBox( {
-        align: 'left',
+        align: FallingObjectsConstants.CONTROL_PANELS_ALIGNMENT,
         children: [
           labelText,
           new HStrut( objectLabelOptions.maxWidth )
