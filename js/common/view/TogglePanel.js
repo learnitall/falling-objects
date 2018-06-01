@@ -11,7 +11,7 @@ define( function ( require ) {
   'use strict';
 
   // modules
-  var CheckBox = require( 'SUN/CheckBox' );
+  var Checkbox = require( 'SUN/Checkbox' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
   var HStrut = require( 'SCENERY/nodes/HStrut' );
@@ -38,9 +38,9 @@ define( function ( require ) {
     var controlPanelsAlignment = FallingObjectsConstants.CONTROL_PANELS_ALIGNMENT;
     var controlPanelsVerticalSpacing = FallingObjectsConstants.CONTROL_PANELS_VERTICAL_SPACING;
 
-    // Create options for the CheckBoxes
+    // Create options for the Checkboxes
     // Defined below are the defaults, we just need a reference for readability
-    var checkBoxOptions = {
+    var checkboxOptions = {
       spacing: 5,  // spacing between the check box and the label node
       boxWidth: 21  // Width of the check box
     };
@@ -50,10 +50,10 @@ define( function ( require ) {
       font: new PhetFont( { size: FallingObjectsConstants.CONTROL_PANELS_FONT_SIZE } ),
       maxWidth: maxWidth -  // Start with max width
                 2 * controlPanelOptions.xMargin -  // Subtract margin on each side of the panel
-                checkBoxOptions.spacing - checkBoxOptions.boxWidth  // Remove width of check box and spacing between the box and label
+                checkboxOptions.spacing - checkboxOptions.boxWidth  // Remove width of check box and spacing between the box and label
     };
 
-    // Construct the CheckBoxes from the given toggleList
+    // Construct the Checkboxes from the given toggleList
     var toggleNodes = [];
     toggleList.forEach( function( toggleItem ) {
 
@@ -61,13 +61,13 @@ define( function ( require ) {
       var labelText = new Text( toggleItem.label, labelNodeOptions );
 
       // Construct the check box
-      var checkBox = new CheckBox( labelText, toggleItem.property, checkBoxOptions );
+      var checkbox = new Checkbox( labelText, toggleItem.property, checkboxOptions );
 
       // Place the check box alongside an HStrut that sets the width
       var toggleNode = new VBox( {
         align: controlPanelsAlignment,
         children: [
-          checkBox,
+          checkbox,
           new HStrut( maxWidth - 2 * controlPanelOptions.xMargin )
         ]
       } );
