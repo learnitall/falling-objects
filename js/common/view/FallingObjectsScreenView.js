@@ -21,6 +21,9 @@ define( function( require ) {
   var ScreenView = require( 'JOIST/ScreenView' );
   var Vector2 = require( 'DOT/Vector2' );
 
+  // strings
+  var showValuesString = require( 'string!FALLING_OBJECTS/showValues' );
+
   /**
    * @param {FallingObjectsModel} fallingObjectsModel
    * @constructor
@@ -71,8 +74,15 @@ define( function( require ) {
       this.fallingObjectSelectorParent
     );
 
+    // Toggle Panel
+    this.togglePanel = new TogglePanel(
+      [ { label: showValuesString, property: this.fallingObjectsModel.showValuesProperty } ],
+      this.controlPanelsMaxWidth
+    );
+
     // Add all the controls as children
     this.addChild( this.fallingObjectSelectorNode );
+    this.addChild( this.togglePanel );
     this.addChild( this.controlButtons );
     this.addChild( this.fallingObjectSelectorParent );
   }
@@ -130,8 +140,12 @@ define( function( require ) {
       var screenMarginX = FallingObjectsConstants.SCREEN_MARGIN_X;
       var screenMarginTop = FallingObjectsConstants.SCREEN_MARGIN_Y;
 
-      // Move the selector to the top right (it's the control panel highest on screen)
-      this.fallingObjectSelectorNode.setRightTop( new Vector2( width - screenMarginX, screenMarginTop ) );
+      // Move the toggle panel to the top right (it's the control panel highest on screen)
+      this.togglePanel.setRightTop( new Vector2( width - screenMarginX, screenMarginTop ) );
+
+      // Use relative position of the toggle panel to place the selector
+      this.fallingObjectSelectorNode.top = this.togglePanel.bottom + this.controlPanelsVerticalSpacing;
+      this.fallingObjectSelectorNode.centerX = this.togglePanel.centerX;
       this.fallingObjectSelectorParent.centerX = this.fallingObjectSelectorNode.centerX;
       this.fallingObjectSelectorParent.top = this.fallingObjectSelectorNode.top + this.fallingObjectSelectorNode.panelOptions.yMargin;
 

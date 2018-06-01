@@ -45,8 +45,11 @@ define( function( require ) {
     this.earthMeanRadius = FallingObjectsConstants.EARTH_MEAN_RADIUS;
     var defaultFallingObjectName = FallingObjectsConstants.DEFAULT_FALLING_OBJECT_NAME;
 
-    // @public {Property.<boolean} whether or not the simulation is paused
+    // @public {Property.<boolean>} whether or not the simulation is paused
     this.playEnabledProperty = new BooleanProperty( false );
+
+    // @public {Property.<boolean>} whether or not to display data values on the screen (object properties, force values, etc.)
+    this.showValuesProperty = new BooleanProperty( false );
 
     // TODO: Determine the appropriate initial values for these properties
 
