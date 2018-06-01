@@ -141,7 +141,7 @@ define( function( require ) {
       var screenMarginTop = FallingObjectsConstants.SCREEN_MARGIN_Y;
 
       // Move the toggle panel to the top right (it's the control panel highest on screen)
-      this.togglePanel.setRightTop( new Vector2( width - screenMarginX, screenMarginTop ) );
+      this.togglePanel.setRightTop( new Vector2( width / scale - offsetX - screenMarginX, screenMarginTop - offsetY ) );
 
       // Use relative position of the toggle panel to place the selector
       this.fallingObjectSelectorNode.top = this.togglePanel.bottom + this.controlPanelsVerticalSpacing;
