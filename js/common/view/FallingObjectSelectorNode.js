@@ -150,7 +150,7 @@ define( function( require ) {
     // Create a VBox to add all the elements
     var selectorControlVBox = new VBox( {
       resize: true,
-      alignment: 'left',
+      alignment: FallingObjectsConstants.CONTROL_PANEL_ALIGNMENT,
       spacing: FallingObjectsConstants.CONTROL_PANEL_VERTICAL_SPACING,
       children: [
         new VStrut( comboBox.height ),  // Gives some space for the comboBox

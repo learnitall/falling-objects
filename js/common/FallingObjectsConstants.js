@@ -42,6 +42,7 @@ define( function( require ) {
       stroke: 'black',
     },
     CONTROL_PANEL_VERTICAL_SPACING: 10,  // Vertical spacing of labels inside control panels
+    CONTROL_PANEL_ALIGNMENT: 'left',  // Alignment of Nodes inside control panels
 
     SCREEN_MARGIN_X: 10,  // Distance between any visible component and the right or left edge of the screen
     SCREEN_MARGIN_Y: 10,  // Distance between any visible component and the top or bottom edge of the screen
