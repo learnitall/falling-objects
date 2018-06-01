@@ -19,14 +19,14 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // strings
-  var badmintonShuttlecockString = require( 'string!FALLING_OBJECTS/badminton_shuttlecock' );
+  var badmintonShuttlecockString = require( 'string!FALLING_OBJECTS/badmintonShuttlecock' );
   var baseballString = require( 'string!FALLING_OBJECTS/baseball' );
-  var bowlingBallString = require( 'string!FALLING_OBJECTS/bowling_ball' );
+  var bowlingBallString = require( 'string!FALLING_OBJECTS/bowlingBall' );
   var footballString = require( 'string!FALLING_OBJECTS/football' );
-  var golfBallString = require( 'string!FALLING_OBJECTS/golf_ball' );
-  var modelRocketString = require( 'string!FALLING_OBJECTS/model_rocket' );
-  var pingPongBallString = require( 'string!FALLING_OBJECTS/ping_pong_ball' );
-  var sportsCarString = require( 'string!FALLING_OBJECTS/sports_car' );
+  var golfBallString = require( 'string!FALLING_OBJECTS/golfBall' );
+  var modelRocketString = require( 'string!FALLING_OBJECTS/modelRocket' );
+  var pingPongBallString = require( 'string!FALLING_OBJECTS/pingPongBall' );
+  var sportsCarString = require( 'string!FALLING_OBJECTS/sportsCar' );
 
   /**
    * Construct the FallingObjectsModel
