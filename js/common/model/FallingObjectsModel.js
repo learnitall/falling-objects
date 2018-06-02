@@ -56,16 +56,13 @@ define( function( require ) {
 
     // TODO: Determine the appropriate initial values for these properties
 
-    // @public {Property.<number>} simulation's acceleration due to gravity
-    // TODO: Add a slider to control this value
-    this.accelerationGravityProperty = new NumberProperty( this.accelerationGravitySeaLevel );
+    // @public {Property.<number>} simulation's acceleration due to gravity (initially set to density at sea level)
+    this.accelerationGravityProperty = new NumberProperty( this.getAccelerationGravity( 0 ) );
 
-    // @public {Property.<number>} air density at the selected FallingObject's position
-    // TODO: Add control over whether or not this gets calculated as altitude changes
-    this.airDensityProperty = new NumberProperty( 0 );
+    // @public {Property.<number>} air density at the selected FallingObject's position (initially set to density at sea level)
+    this.airDensityProperty = new NumberProperty( this.getAirDensity( 0 ) );
 
     // @public {Property.<boolean>} whether or not drag force will affect the FallingObject's fall
-    // TODO: Add control over this variable
     this.dragForceEnabledProperty = new BooleanProperty( false );
 
     // @public {Property.<string>} the name of the currently selected FallingObject (from string! plugin)
@@ -97,13 +94,14 @@ define( function( require ) {
   return inherit( Object, FallingObjectsModel, {
 
     /**
-     * Calculate the air density in kg/m^3 at the selectedFallingObject's position and set the airDensityProperty
-     * to the calculated value. Uses a standard Earth Atmospheric Model from the '60s.
+     * Calculate the air density in kg/m^3 at the given altitude and return it.
+     * Uses a standard Earth Atmospheric Model from the '60s.
      * @public
-     */
-    updateAirDensity: function() {
+     *
+     * @param {number} altitude - altitude to calculate air density at (i.e. selectedFallingObject's position property)
+     **/
+    getAirDensity: function( altitude ) {
       // Three different methods for calculating temperature and pressure, depending on altitude
-      var altitude = Math.abs( this.selectedFallingObject.positionProperty.get().y ); // absolute y value is altitude
       var temperature;
       var pressure;
 
@@ -124,20 +122,19 @@ define( function( require ) {
       }
 
       // Now calculate air density using the Equation of State
-      this.airDensityProperty.set( pressure / ( 0.2869 * ( temperature + 273.1 ) ) );
+      return pressure / ( 0.2869 * ( temperature + 273.1 ) );
     },
 
     /**
-     * Calculate the acceleration due to gravity in m/s^2 at the selectedFallingObject's position and set the
-     * accelerationGravityProperty to the calculated value.
+     * Calculate the acceleration due to gravity in m/s^2 at the given altitude and return it
      * @public
+     *
+     * @param {number} altitude - altitude to calculate the acceleration due to gravity at (i.e. selectedFallingObject's position property)
      */
-    updateAccelerationGravity: function() {
-      var altitude = Math.abs( this.selectedFallingObject.positionProperty.get().y );
-
+    getAccelerationGravity: function( altitude ) {
       // This calculation is done in the same fashion as calculating the Doppler Effect on a wave- scalar applied to a base value
       var ratio = Math.pow( ( this.earthMeanRadius / ( this.earthMeanRadius + altitude ) ), 2 );
-      this.accelerationGravityProperty.set( this.accelerationGravitySeaLevel * ratio );
+      return this.accelerationGravitySeaLevel * ratio;
     },
 
     /**
@@ -163,8 +160,9 @@ define( function( require ) {
     stepModel: function( dt ) {
       // If altitude is not to remain constant (i.e. the fall is not infinite) then first update gravity and air density
       if ( !this.constantAltitude ) {
-        this.updateAirDensity();
-        this.updateAccelerationGravity();
+        var altitude = Math.abs( this.selectedFallingObject.positionProperty.get().y ); // absolute y value is altitude
+        this.airDensityProperty.set( this.getAirDensity( altitude ) );
+        this.accelerationGravityProperty.set( this.getAccelerationGravity( altitude ) );
       }
 
       // Now just step the selectedFallingObject
