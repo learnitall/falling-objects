@@ -19,7 +19,6 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Util = require( 'DOT/Util' );
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
@@ -38,7 +37,6 @@ define( function( require ) {
     var self = this;
     var centerCircleRadius = FallingObjectsConstants.FBD_CENTER_CIRCLE_RADIUS;
     var arrowCenterSpacing = FallingObjectsConstants.FBD_ARROW_CENTER_SPACING;
-    var showFreeBodyDiagramProperty = fallingObjectsModel.showFreeBodyDiagramProperty;
     var horizontalMargin = FallingObjectsConstants.FBD_HORIZONTAL_MARGIN;
     // Individual forces are plotted to the left of the center
     var centerForcesPos = new Vector2( ( maxWidth - horizontalMargin * 2 ) * ( 1 / 4 ) + horizontalMargin, maxHeight / 2 );
@@ -95,7 +93,7 @@ define( function( require ) {
       }
 
       // If the mass doesn't fit in a segment, then it is just scaled to match the second half
-      var lastArrowLengthSegment = arrowLengths[ arrowLengths.length - 1 ]
+      var lastArrowLengthSegment = arrowLengths[ arrowLengths.length - 1 ];
       // Again, just scale the piece of the arrow that is in the second half
       return ( ( maxArrowLength - ( lastArrowLengthSegment ) ) * ( mass / maxMass ) ) + lastArrowLengthSegment;
 
@@ -140,7 +138,7 @@ define( function( require ) {
       // If the selected falling object changes, then dispose of the arrow's shape and set the max arrow length and max force
       fallingObjectsModel.selectedFallingObjectNameProperty.link( function( selectedFallingObjectName ) {
         arrowNode.shape = null;
-        var selectedMass =  FallingObjectsConstants[ FallingObjectsConstants.stringToConstantsName( selectedFallingObjectName ) ].mass
+        var selectedMass =  FallingObjectsConstants[ FallingObjectsConstants.stringToConstantsName( selectedFallingObjectName ) ].mass;
         self.scaledMaxArrowLength = self.getScaledMaxArrowLength( selectedMass );
         self.maxForce = selectedMass * FallingObjectsConstants.ACCELERATION_GRAVITY_SEA_LEVEL;
       } );
