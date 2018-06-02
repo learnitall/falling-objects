@@ -17,6 +17,9 @@
   "showValues": {
     "value": "Show Values"
   },
+  "enableDrag": {
+    "value": "Enable Drag"
+  },
   "mass": {
     "value": "Mass"
   },
@@ -32,16 +35,16 @@
   "m2": {
     "value": "m²"
   },
-  "bowling_ball": {
+  "bowlingBall": {
     "value": "Bowling Ball"
   },
-  "badminton_shuttlecock": {
+  "badmintonShuttlecock": {
     "value": "Badminton Shuttlecock"
   },
-  "golf_ball": {
+  "golfBall": {
     "value": "Golf Ball"
   },
-  "ping_pong_ball": {
+  "pingPongBall": {
     "value": "Ping Pong Ball"
   },
   "baseball": {
@@ -50,10 +53,10 @@
   "football": {
     "value": "Football"
   },
-  "model_rocket": {
+  "modelRocket": {
     "value": "Model Rocket"
   },
-  "sports_car": {
+  "sportsCar": {
     "value": "Sports Car"
   }
 }

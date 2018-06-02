@@ -42,7 +42,7 @@ define( function( require ) {
     this.positionProperty = new Property( this.initialAltitude );
 
     // @public {Property.<number>} reference area of the projectile
-    this.referenceArea = new NumberProperty( objectAttributes.referenceArea );
+    this.referenceAreaProperty = new NumberProperty( objectAttributes.referenceArea );
 
     // @public {Property.<number>} velocity of the projectile
     this.velocityProperty = new NumberProperty( 0 );  // m/s
@@ -74,6 +74,9 @@ define( function( require ) {
     resetName: function( fallingObjectName ) {
       // Construct a new FallingObject instance with the given name and return it
       if ( fallingObjectName !== this.name ) {
+
+        // First call a reset
+        this.reset();
 
         // Set the name of the object
         this.name = fallingObjectName;
@@ -117,7 +120,7 @@ define( function( require ) {
       var newNetForce;
       if ( this.FallingObjectsModel.dragForceEnabledProperty.get() ) {
         this.updateDragForce();
-        newNetForce = this.weightForceProperty.get() - this.dragForceProperty.get();
+        newNetForce = this.weightForceProperty.get() + this.dragForceProperty.get();
       }
       // or without if drag is not toggled
       else {
