@@ -43,6 +43,21 @@ define( function( require ) {
     },
     CONTROL_PANEL_VERTICAL_SPACING: 10,  // Vertical spacing of labels inside control panels
 
+    FBD_BACKGROUND_OPTIONS: {  // Options for the background of the FreeBodyDiagram
+      fill: 'rgb( 255, 255, 255 )',
+      lineWidth: 1,
+      stroke: 'black',
+      cornerRadius: 10
+    },
+    FBD_HORIZONTAL_MARGIN: 5,  // Extra padding to be given to vertical edges of the FBD (greater the value, closer the centers will be)
+    FBD_VERTICAL_MARGIN: 20,  // Margin between the edges of the FDB background and the arrows
+    FBD_ARROW_CENTER_SPACING: 2,  // Smaller arrows can get swallowed up in the center circles- this pads the arrows' centers to reduce this
+    FBD_CENTER_CIRCLE_RADIUS: 5,  // Radius of the center points plotted in the FBD
+    // Define colors of the arrows
+    FBD_DRAG_FORCE_ARROW_COLOR: 'blue',
+    FBD_WEIGHT_FORCE_ARROW_COLOR: 'orange',
+    FBD_NET_FORCE_ARROW_COLOR: 'green',
+
     SCREEN_MARGIN_X: 10,  // Distance between any visible component and the right or left edge of the screen
     SCREEN_MARGIN_Y: 10,  // Distance between any visible component and the top or bottom edge of the screen
 

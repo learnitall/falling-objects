@@ -15,6 +15,7 @@ define( function( require ) {
   var FallingObjectNode = require( 'FALLING_OBJECTS/common/view/FallingObjectNode' );
   var FallingObjectSelectorNode = require( 'FALLING_OBJECTS/common/view/FallingObjectSelectorNode' );
   var FallingObjectViewFactory = require( 'FALLING_OBJECTS/common/view/FallingObjectViewFactory' );
+  var FreeBodyDiagram = require( 'FALLING_OBJECTS/common/view/FreeBodyDiagram' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -42,8 +43,12 @@ define( function( require ) {
     var screenHeight = this.layoutBounds.height;
     var center = new Vector2( screenWidth / 2, screenHeight / 2 );
     var scale = FallingObjectsConstants.MODEL_VIEW_TRANSFORM_SCALE;
-    this.controlPanelsMaxWidth = screenWidth / 4;
+    this.screenMarginX = FallingObjectsConstants.SCREEN_MARGIN_X;
+    this.screenMarginY = FallingObjectsConstants.SCREEN_MARGIN_Y;
+    var controlPanelsMaxWidth = screenWidth / 4;
     this.controlPanelsVerticalSpacing = FallingObjectsConstants.CONTROL_PANELS_VERTICAL_SPACING;
+    var freeBodyDiagramHeight = screenHeight - ( 2 * this.screenMarginY );
+    var freeBodyDiagramWidth = controlPanelsMaxWidth / 4;
 
     // Create model-view transform
     this.modelViewTransform = ModelViewTransform2.createOffsetScaleMapping( center, scale );
@@ -59,10 +64,8 @@ define( function( require ) {
     );
     this.addChild( this.fallingObjectNode );
 
-    // Add the simulation controls
-
     // Control Buttons (Play/Pause, Reset, Step)
-    this.controlButtons = new ControlButtons( fallingObjectsModel, this.controlPanelsMaxWidth );
+    this.controlButtons = new ControlButtons( fallingObjectsModel, controlPanelsMaxWidth );
 
     // Falling Object Selector Node
     // The parent holds the comboBox
@@ -70,20 +73,24 @@ define( function( require ) {
     this.fallingObjectSelectorNode = new FallingObjectSelectorNode(
       this.fallingObjectsModel,
       this.fallingObjectsModel.fallingObjectNames,
-      this.controlPanelsMaxWidth,
+      controlPanelsMaxWidth,
       this.fallingObjectSelectorParent
     );
 
     // Toggle Panel
     this.togglePanel = new TogglePanel(
       [ { label: showValuesString, property: this.fallingObjectsModel.showValuesProperty } ],
-      this.controlPanelsMaxWidth
+      controlPanelsMaxWidth
     );
+
+    // Create the Free Body Diagram
+    this.freeBodyDiagram = new FreeBodyDiagram( this.fallingObjectsModel, freeBodyDiagramWidth, freeBodyDiagramHeight );
 
     // Add all the controls as children
     this.addChild( this.fallingObjectSelectorNode );
     this.addChild( this.togglePanel );
     this.addChild( this.controlButtons );
+    this.addChild( this.freeBodyDiagram );
     this.addChild( this.fallingObjectSelectorParent );
   }
 
@@ -137,11 +144,9 @@ define( function( require ) {
 
       // Now position nodes into place
       // Note that the fallingObjectNode will place itself based on the modelViewTransform
-      var screenMarginX = FallingObjectsConstants.SCREEN_MARGIN_X;
-      var screenMarginTop = FallingObjectsConstants.SCREEN_MARGIN_Y;
 
       // Move the toggle panel to the top right (it's the control panel highest on screen)
-      this.togglePanel.setRightTop( new Vector2( width / scale - offsetX - screenMarginX, screenMarginTop - offsetY ) );
+      this.togglePanel.setRightTop( new Vector2( width / scale - offsetX - this.screenMarginX, this.screenMarginY - offsetY ) );
 
       // Use relative position of the toggle panel to place the selector
       this.fallingObjectSelectorNode.top = this.togglePanel.bottom + this.controlPanelsVerticalSpacing;
@@ -152,6 +157,10 @@ define( function( require ) {
       // Use the relative position of the selector to place the control buttons
       this.controlButtons.top = this.fallingObjectSelectorNode.bottom + this.controlPanelsVerticalSpacing;
       this.controlButtons.centerX = this.fallingObjectSelectorNode.centerX;
+
+      // Place free body diagram in center-left of the screen
+      this.freeBodyDiagram.left =  -offsetX + this.screenMarginX;
+      this.freeBodyDiagram.centerY = ( height / scale - offsetY ) / 2;
 
       // Update the visible bounds of the screen view based on our previous calculations
       this.visibleBoundsProperty.set( new Bounds2( -offsetX, -offsetY, width / scale - offsetX, height / scale - offsetY ) );

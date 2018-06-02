@@ -51,6 +51,9 @@ define( function( require ) {
     // @public {Property.<boolean>} whether or not to display data values on the screen (object properties, force values, etc.)
     this.showValuesProperty = new BooleanProperty( false );
 
+    // @public {Property.<boolean>} whether or not to display the free body diagram
+    this.showFreeBodyDiagramProperty = new BooleanProperty( true );
+
     // TODO: Determine the appropriate initial values for these properties
 
     // @public {Property.<number>} simulation's acceleration due to gravity
