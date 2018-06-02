@@ -53,6 +53,18 @@ define( function( require ) {
     } );
     var maxMass = Math.max( ...objectMasses );
 
+    // Construct a background rectangle to hold our arrows
+    var backgroundRectangle = new Rectangle( 0, 0, maxWidth, maxHeight, FallingObjectsConstants.FBD_BACKGROUND_OPTIONS );
+
+    // Plot the diagram's centers
+    var centerForcesNode = new Circle( centerCircleRadius, { fill: 'black' } );
+    centerForcesNode.center = centerForcesPos;
+    var centerNetForceNode = new Circle( centerCircleRadius, { fill: 'black' } );
+    centerNetForceNode.center = centerNetForcePos;
+
+    // Arrows are scaled based off of the max force they will display and their max allocated length
+    // The function below deals with max allocated length
+
     /**
      * To scale the arrows on the screen, the area in which we can plot arrows is split in half
      *
@@ -70,11 +82,7 @@ define( function( require ) {
      */
     var arrowLengths = [ 0, maxArrowLength / 8, maxArrowLength / 6, maxArrowLength / 4, maxArrowLength / 2 ];
     var massSegmentCutoffs = [ 0, 0.01, 0.1, 1, 10 ];
-    this.arrowScale = function ( forceValue ) {
-
-      // Determine the modeled mass value
-      // This is weird for drag forces, but this way we don't have to deal with the extra gravity parameter
-      var mass = forceValue / FallingObjectsConstants.ACCELERATION_GRAVITY_SEA_LEVEL;
+    this.getScaledMaxArrowLength = function ( mass ) {
 
       for ( var i = 1; i < massSegmentCutoffs.length; i++ ) {
         var massSegmentCutoff = massSegmentCutoffs[ i ];
@@ -113,15 +121,6 @@ define( function( require ) {
 
     };
 
-    // Construct a background rectangle to hold our arrows
-    var backgroundRectangle = new Rectangle( 0, 0, maxWidth, maxHeight, FallingObjectsConstants.FBD_BACKGROUND_OPTIONS );
-
-    // Plot the diagram's centers
-    var centerForcesNode = new Circle( centerCircleRadius, { fill: 'black' } );
-    centerForcesNode.center = centerForcesPos;
-    var centerNetForceNode = new Circle( centerCircleRadius, { fill: 'black' } );
-    centerNetForceNode.center = centerNetForcePos;
-
     /**
      * Auxiliary function to create force arrows
      *
@@ -137,13 +136,22 @@ define( function( require ) {
         lineWidth: centerCircleRadius
       } );
 
+      // The link below deals with max force (which is set to the selected falling object's weight)
+      // If the selected falling object changes, then dispose of the arrow's shape and set the max arrow length and max force
+      fallingObjectsModel.selectedFallingObjectNameProperty.link( function( selectedFallingObjectName ) {
+        arrowNode.shape = null;
+        var selectedMass =  FallingObjectsConstants[ FallingObjectsConstants.stringToConstantsName( selectedFallingObjectName ) ].mass
+        self.scaledMaxArrowLength = self.getScaledMaxArrowLength( selectedMass );
+        self.maxForce = selectedMass * FallingObjectsConstants.ACCELERATION_GRAVITY_SEA_LEVEL;
+      } );
+
       // Update the arrow's length as the force value changes
       forceProperty.link( function( forceValue ) {
         // If the free body diagram is shown, then do calculations
         if ( fallingObjectsModel.showFreeBodyDiagramProperty.get() ) {
 
           // The length of the arrow is set to the property's value times the arrow scale
-          var arrowLength = self.arrowScale( forceValue );
+          var arrowLength = self.scaledMaxArrowLength * ( forceValue / self.maxForce );
           // Create the arrow shape
           arrowNode.shape = new ArrowShape(
             center.x,
@@ -156,10 +164,7 @@ define( function( require ) {
         }
       } );
 
-      // If the selected falling object changes, then dispose of the arrow's shape
-      fallingObjectsModel.selectedFallingObjectNameProperty.lazyLink( function( selectedFallingObjectName ) {
-        arrowNode.shape = null;
-      } );
+
 
       return arrowNode;
     };
