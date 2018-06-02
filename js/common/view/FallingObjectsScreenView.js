@@ -24,6 +24,7 @@ define( function( require ) {
 
   // strings
   var showValuesString = require( 'string!FALLING_OBJECTS/showValues' );
+  var enableDragString = require( 'string!FALLING_OBJECTS/enableDrag' );
 
   /**
    * @param {FallingObjectsModel} fallingObjectsModel
@@ -79,7 +80,10 @@ define( function( require ) {
 
     // Toggle Panel
     this.togglePanel = new TogglePanel(
-      [ { label: showValuesString, property: this.fallingObjectsModel.showValuesProperty } ],
+      [
+        { label: showValuesString, property: this.fallingObjectsModel.showValuesProperty },
+        { label: enableDragString, property: this.fallingObjectsModel.dragForceEnabledProperty }
+      ],
       controlPanelsMaxWidth
     );
 

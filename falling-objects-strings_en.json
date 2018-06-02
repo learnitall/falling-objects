@@ -17,6 +17,9 @@
   "showValues": {
     "value": "Show Values"
   },
+  "enableDrag": {
+    "value": "Enable Drag"
+  },
   "mass": {
     "value": "Mass"
   },
