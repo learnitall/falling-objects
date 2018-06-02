@@ -164,8 +164,6 @@ define( function( require ) {
         }
       } );
 
-
-
       return arrowNode;
     };
 
