@@ -75,6 +75,9 @@ define( function( require ) {
       // Construct a new FallingObject instance with the given name and return it
       if ( fallingObjectName !== this.name ) {
 
+        // First call a reset
+        this.reset();
+
         // Set the name of the object
         this.name = fallingObjectName;
 
