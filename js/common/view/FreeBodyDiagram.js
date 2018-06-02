@@ -51,7 +51,7 @@ define( function( require ) {
     fallingObjectsModel.fallingObjectNames.forEach( function ( fallingObjectName ) {
       objectMasses.push( FallingObjectsConstants[ FallingObjectsConstants.stringToConstantsName( fallingObjectName ) ].mass );
     } );
-    var maxMass = Math.max( ...objectMasses );
+    var maxMass = Math.max.apply( null, objectMasses );
 
     // Construct a background rectangle to hold our arrows
     var backgroundRectangle = new Rectangle( 0, 0, maxWidth, maxHeight, FallingObjectsConstants.FBD_BACKGROUND_OPTIONS );

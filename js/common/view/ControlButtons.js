@@ -56,7 +56,7 @@ define( function( require ) {
     // When the selected falling object name changes, hit pause
     fallingObjectsModel.selectedFallingObjectNameProperty.lazyLink( function ( selectedFallingObjectName ) {
       fallingObjectsModel.playEnabledProperty.set( false );
-    } )
+    } );
 
     // Manual Step Forward Button
     var stepForwardButton = new StepForwardButton( {
