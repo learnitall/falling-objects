@@ -144,7 +144,7 @@ define( function( require ) {
     };
 
     var massLabel = createNewLabel( 'mass', pattern0Label1Value2UnitsString, massString, kgString );
-    var referenceAreaLabel = createNewLabel( 'referenceArea', pattern0Label1Value2UnitsString, referenceAreaString, m2String );
+    var referenceAreaLabel = createNewLabel( 'referenceAreaProperty', pattern0Label1Value2UnitsString, referenceAreaString, m2String );
     var dragCoefficientLabel = createNewLabel( 'dragCoefficient', pattern0Label1ValueString, dragCoefficientString );
 
     // Create a VBox to add all the elements
