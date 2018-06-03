@@ -126,7 +126,7 @@ define( function( require ) {
      * @param {NumberProperty} forceProperty - force property that the arrow will model
      * @param {string} color - color/fill of the arrow
      */
-    var createForceArrow = function( center, forceProperty, color ) {
+    var createForceArrow = function( center, forceProperty, color, i_am_drag ) {
       // Create a node to hold the arrow's shape
       var arrowNode = new Path( null, {
         fill: color,
@@ -149,7 +149,14 @@ define( function( require ) {
         if ( fallingObjectsModel.showFreeBodyDiagramProperty.get() ) {
 
           // The length of the arrow is set to the property's value times the arrow scale
-          var arrowLength = self.scaledMaxArrowLength * ( forceValue / self.maxForce );
+          var forceRatio;
+          if ( Math.abs( forceValue ) > Math.abs( self.maxForce ) )  {  // this happens when one enables drag after dropping an object for too long
+            forceRatio = 1 * ( ( forceValue / self.maxForce ) < 1 ? -1 : 1 );
+          }
+          else {
+            forceRatio = forceValue / self.maxForce;
+          }
+          var arrowLength = self.scaledMaxArrowLength * forceRatio;
           // Create the arrow shape
           arrowNode.shape = new ArrowShape(
             center.x,
@@ -170,7 +177,8 @@ define( function( require ) {
     var dragForceArrow = createForceArrow(
       centerForcesPos,
       fallingObjectsModel.selectedFallingObject.dragForceProperty,
-      FallingObjectsConstants.FBD_DRAG_FORCE_ARROW_COLOR
+      FallingObjectsConstants.FBD_DRAG_FORCE_ARROW_COLOR,
+      true
     );
     // Weight Force
     var weightForceArrow = createForceArrow(
@@ -196,6 +204,13 @@ define( function( require ) {
     // Now link the showFreeBodyDiagramProperty in the model with the visibility of this node
     fallingObjectsModel.showFreeBodyDiagramProperty.link( function( showFreeBodyDiagramValue ) {
       self.setVisible( showFreeBodyDiagramValue );
+    } );
+
+    // Also create a link where the dragForceArrow is only shown if the dragForceEnabledProperty is true
+    fallingObjectsModel.dragForceEnabledProperty.link( function ( dragForceEnabledValue ) {
+      if ( !dragForceEnabledValue ) {
+        dragForceArrow.shape = null;
+      }
     } );
   }
 
