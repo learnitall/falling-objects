@@ -164,7 +164,7 @@ define( function( require ) {
 
       // Place free body diagram in center-left of the screen
       this.freeBodyDiagram.left =  -offsetX + this.screenMarginX;
-      this.freeBodyDiagram.centerY = ( height / scale - offsetY ) / 2;
+      this.freeBodyDiagram.centerY = ( -offsetY + ( height / scale - offsetY ) ) / 2;
 
       // Update the visible bounds of the screen view based on our previous calculations
       this.visibleBoundsProperty.set( new Bounds2( -offsetX, -offsetY, width / scale - offsetX, height / scale - offsetY ) );
