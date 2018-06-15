@@ -10,6 +10,7 @@ define( function( require ) {
 
   // modules
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
+  var Range = require( 'DOT/Range' );
 
   // strings
   var baseballString = require( 'string!FALLING_OBJECTS/baseball' );
@@ -57,6 +58,12 @@ define( function( require ) {
     FBD_DRAG_FORCE_ARROW_COLOR: 'blue',
     FBD_WEIGHT_FORCE_ARROW_COLOR: 'orange',
     FBD_NET_FORCE_ARROW_COLOR: 'green',
+
+    MB_CLOUD_MARGIN_X: 80,  // Minimum horizontal space between the falling object and clouds in the background
+    MB_CLOUD_MARGIN_X_VARIANCE: 60,  // Maximum amount of extra horizontal space between the falling object and clouds in the background
+    MB_CLOUD_MARGIN_Y: 60,  // Minimum vertical space added between each of the clouds in the moving background
+    MB_CLOUD_MARGIN_Y_VARIANCE: 100,  // Maximum amount of extra space added between each of the clouds in the moving background
+    MB_CLOUD_SCALE_RANGE: new Range( 0.4, 1.2 ),  // Minimum to maximum values of scales for the clouds in the moving background
 
     SCREEN_MARGIN_X: 10,  // Distance between any visible component and the right or left edge of the screen
     SCREEN_MARGIN_Y: 10,  // Distance between any visible component and the top or bottom edge of the screen
