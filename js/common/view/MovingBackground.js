@@ -122,7 +122,7 @@ define( function( require ) {
        * This also acts as a layout method, as it sets the cloud in its initial position
        */
       cloudNode.reset = function() {
-        cloudNode.scale( initialScale );
+        cloudNode.setScaleMagnitude( initialScale );
         cloudNode.setCenterX( initialCenterX );
         cloudNode.setTop( initialTopY );
       }
@@ -137,7 +137,7 @@ define( function( require ) {
         // If we hit the top, then reset
         // TODO: Ensure cloud is placed in proper order so it lies either behind or in front of other clouds depending on scale
         if ( cloudNode.bottom < self.sky.top ) {
-          cloudNode.scale( self.genCloudNodeScale() );
+          cloudNode.setScaleMagnitude( self.genCloudNodeScale() );
           cloudNode.setCenterX( self.genCloudNodeXPos() );
           cloudNode.setTop( self.sky.bottom );
         }
