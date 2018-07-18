@@ -22,11 +22,12 @@ define( function( require ) {
   /**
    * Construct the node
    *
-   * @param {FallingObjectsModel} fallingObjectsModel - model to pull play property and step method from
+   * @param {FallingObjectsModel} fallingObjectsModel - model to pull play property, step and reset method from
+   * @param {FallingObjectsScreenView} fallingObjectsScreenView - screen view to pull reset method from
    * @param {number} controlButtonsMaxWidth - max width of the node
    * @constructor
    */
-  function ControlButtons( fallingObjectsModel, controlButtonsMaxWidth ) {
+  function ControlButtons( fallingObjectsModel, fallingObjectsScreenView, controlButtonsMaxWidth ) {
 
     // Call super constructor
     Node.call( this );
@@ -44,6 +45,7 @@ define( function( require ) {
     var resetAllButton = new ResetAllButton( {
       listener: function() {
         fallingObjectsModel.reset();
+        fallingObjectsScreenView.reset();
       },
       radius: controlButtonRadius
     } );
