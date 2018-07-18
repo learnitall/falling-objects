@@ -69,7 +69,7 @@ define( function( require ) {
     );
 
     // Control Buttons (Play/Pause, Reset, Step)
-    this.controlButtons = new ControlButtons( fallingObjectsModel, controlPanelsMaxWidth );
+    this.controlButtons = new ControlButtons( fallingObjectsModel, this, controlPanelsMaxWidth );
 
     // Falling Object Selector Node
     // The parent holds the comboBox
@@ -170,6 +170,15 @@ define( function( require ) {
 
       // Update the visible bounds of the screen view based on our previous calculations
       this.visibleBoundsProperty.set( new Bounds2( -offsetX, -offsetY, width / scale - offsetX, height / scale - offsetY ) );
+    },
+
+    /**
+     * Reset the elements contained in the screen view
+     */
+    reset: function() {
+      // Most of the items on the screen view will be reset when the model properties are reset, since they are linked
+      // Some elements however have their own reset methods which need to be called.
+      this.movingBackground.reset();
     }
 
   } );
