@@ -18,6 +18,7 @@ define( function( require ) {
   var FreeBodyDiagram = require( 'FALLING_OBJECTS/common/view/FreeBodyDiagram' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
+  var MovingBackground = require( 'FALLING_OBJECTS/common/view/MovingBackground' );
   var Node = require( 'SCENERY/nodes/Node' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -51,6 +52,9 @@ define( function( require ) {
     var freeBodyDiagramHeight = screenHeight - ( 2 * this.screenMarginY );
     var freeBodyDiagramWidth = controlPanelsMaxWidth / 4;
 
+    // Create the moving background
+    this.movingBackground = new MovingBackground( this.fallingObjectsModel );
+
     // Create model-view transform
     this.modelViewTransform = ModelViewTransform2.createOffsetScaleMapping( center, scale );
 
@@ -63,7 +67,6 @@ define( function( require ) {
       this.fallingObjectViewFactory,
       this.modelViewTransform
     );
-    this.addChild( this.fallingObjectNode );
 
     // Control Buttons (Play/Pause, Reset, Step)
     this.controlButtons = new ControlButtons( fallingObjectsModel, controlPanelsMaxWidth );
@@ -90,7 +93,9 @@ define( function( require ) {
     // Create the Free Body Diagram
     this.freeBodyDiagram = new FreeBodyDiagram( this.fallingObjectsModel, freeBodyDiagramWidth, freeBodyDiagramHeight );
 
-    // Add all the controls as children
+    // Add all of the children
+    this.addChild( this.movingBackground );
+    this.addChild( this.fallingObjectNode );
     this.addChild( this.fallingObjectSelectorNode );
     this.addChild( this.togglePanel );
     this.addChild( this.controlButtons );
@@ -101,12 +106,6 @@ define( function( require ) {
   fallingObjects.register( 'FallingObjectsScreenView', FallingObjectsScreenView );
 
   return inherit( ScreenView, FallingObjectsScreenView, {
-
-    //TODO Called by the animation loop. Optional, so if your view has no animation, please delete this.
-    // @public
-    step: function( dt ) {
-      //TODO Handle view animation here.
-    },
 
     /**
      * Layout the Nodes on the screen
@@ -135,12 +134,12 @@ define( function( require ) {
 
       // If we are scaling the screen view based off of width, then center it on the screen vertically
       if ( scale === width / this.layoutBounds.width ) {
-        offsetY = (height / scale - this.layoutBounds.height) / 2;
+        offsetY = ( height / scale - this.layoutBounds.height ) / 2;
       }
 
       // If we are scaling the screen view based off of height, then center it on the screen horizontally
       else if ( scale === height / this.layoutBounds.height ) {
-        offsetX = (width / scale - this.layoutBounds.width) / 2;
+        offsetX = ( width / scale - this.layoutBounds.width ) / 2;
       }
 
       // Move the screen view
@@ -148,6 +147,9 @@ define( function( require ) {
 
       // Now position nodes into place
       // Note that the fallingObjectNode will place itself based on the modelViewTransform
+
+      // Transform the background node to take up the screen
+      this.movingBackground.layout( offsetX, offsetY, width, height, scale );
 
       // Move the toggle panel to the top right (it's the control panel highest on screen)
       this.togglePanel.setRightTop( new Vector2( width / scale - offsetX - this.screenMarginX, this.screenMarginY - offsetY ) );
@@ -169,5 +171,7 @@ define( function( require ) {
       // Update the visible bounds of the screen view based on our previous calculations
       this.visibleBoundsProperty.set( new Bounds2( -offsetX, -offsetY, width / scale - offsetX, height / scale - offsetY ) );
     }
+
   } );
+
 } );
