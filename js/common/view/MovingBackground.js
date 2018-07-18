@@ -219,9 +219,9 @@ define( function( require ) {
      */
     reset: function() {
 
-      for ( cloudNode in this.cloudContainerNode.children ) {
+      this.cloudContainerNode.children.forEach( function( cloudNode ) {
         cloudNode.reset();
-      }
+      } )
 
     }
 
