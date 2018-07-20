@@ -175,6 +175,7 @@ define( function( require ) {
       // Create our cloud nodes
 
       // If we already have cloud nodes created on the screen, then dispose so we can start fresh
+      // TODO: Is this the right way to solve this problem? Something more efficient?
       if ( this.cloudContainerNode.children.length > 0 ) {
         this.cloudContainerNode.children.forEach( function( cloudNode ) {
           cloudNode.dispose();
