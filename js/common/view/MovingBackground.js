@@ -162,11 +162,6 @@ define( function( require ) {
      */
     layout: function( offsetX, offsetY, width, height, scale ) {
 
-      // If we already have cloud nodes created on the screen, then just return- don't need to create more
-      if ( this.cloudContainerNode.children.length > 0 ) {
-        return;
-      }
-
       // Determine center of the screen for convenience in the following calculations
       var center = new Vector2( ( -offsetX + ( width / scale - offsetX ) ) / 2, ( -offsetY + ( height / scale - offsetY ) ) / 2 );
 
@@ -178,6 +173,13 @@ define( function( require ) {
       this.updateSkyGradient();
 
       // Create our cloud nodes
+
+      // If we already have cloud nodes created on the screen, then dispose so we can start fresh
+      if ( this.cloudContainerNode.children.length > 0 ) {
+        this.cloudContainerNode.children.forEach( function( cloudNode ) {
+          cloudNode.dispose();
+        } );
+      }
 
       // Define these constants for convenience
       var cloudMarginY = FallingObjectsConstants.MB_CLOUD_MARGIN_Y;
