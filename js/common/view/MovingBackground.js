@@ -125,13 +125,13 @@ define( function( require ) {
         cloudNode.setScaleMagnitude( initialScale );
         cloudNode.setCenterX( initialCenterX );
         cloudNode.setTop( initialTopY );
-      }
+      };
 
       // Link the cloudNode's position with the selected falling object's position property
       this.fallingObjectsModel.selectedFallingObject.positionProperty.lazyLink( function( newPosition, oldPosition ) {
 
         // Animate the cloud to move upwards so the selected falling object appears to fall downwards
-        var dy = ( ( newPosition.y - oldPosition.y ) * cloudNode.getScaleVector().y )
+        var dy = ( ( newPosition.y - oldPosition.y ) * cloudNode.getScaleVector().y );
         cloudNode.setCenterY( cloudNode.getCenterY() + dy );
 
         // If we hit the top, then reset
@@ -162,31 +162,33 @@ define( function( require ) {
      */
     layout: function( offsetX, offsetY, width, height, scale ) {
 
-      // If we already have cloud nodes created on the screen, then just return- don't need to create more
-      if ( this.cloudContainerNode.children.length > 0 ) {
-        return;
-      }
-
       // Determine center of the screen for convenience in the following calculations
       var center = new Vector2( ( -offsetX + ( width / scale - offsetX ) ) / 2, ( -offsetY + ( height / scale - offsetY ) ) / 2 );
 
       // Set the sky's dimensions and position
-      this.sky.setRect( 0, 0, width / scale, height / scale );
-      this.sky.center = center
+      this.sky.setRect( -offsetX, -offsetY, width / scale, height / scale );
+      this.sky.center = center;
       // And now set the sky's color
       // TODO: Move this to a property link on altitude
       this.updateSkyGradient();
 
       // Create our cloud nodes
 
+      // If we already have cloud nodes created on the screen, then dispose so we can start fresh
+      // TODO: Is this the right way to solve this problem? Something more efficient?
+      if ( this.cloudContainerNode.children.length > 0 ) {
+        this.cloudContainerNode.children.forEach( function( cloudNode ) {
+          cloudNode.dispose();
+        } );
+      }
+
       // Define these constants for convenience
       var cloudMarginY = FallingObjectsConstants.MB_CLOUD_MARGIN_Y;
       var cloudMarginYVariance = FallingObjectsConstants.MB_CLOUD_MARGIN_Y_VARIANCE;
 
       // These variable will help with generating the clouds
-      var lastBotY = 0;  // bottom y coordinate of the last cloud node to be created (set initially to min value of zero, which is top of screen)
+      var lastBotY = -offsetY;  // bottom y coordinate of the last cloud node to be created (set initially to min value of zero, which is top of screen)
       var posOnLeftCounter = 0;  // which side of the center the cloud should be placed on (if the counter is divisible by 2, will be on the left, otherwise on the right)
-      var counter = 0;
 
       // While we still have sky left to create a cloud
       while ( lastBotY <= this.sky.height ) {
@@ -207,9 +209,6 @@ define( function( require ) {
         posOnLeftCounter += 1;
         lastBotY = newCloudNode.getBottom();
 
-        // TODO: Remove this and test
-        counter += 1;
-        if ( counter > 1 ) { break; }
       }
 
     },
@@ -221,7 +220,7 @@ define( function( require ) {
 
       this.cloudContainerNode.children.forEach( function( cloudNode ) {
         cloudNode.reset();
-      } )
+      } );
 
     }
 
