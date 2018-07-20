@@ -125,13 +125,13 @@ define( function( require ) {
         cloudNode.setScaleMagnitude( initialScale );
         cloudNode.setCenterX( initialCenterX );
         cloudNode.setTop( initialTopY );
-      }
+      };
 
       // Link the cloudNode's position with the selected falling object's position property
       this.fallingObjectsModel.selectedFallingObject.positionProperty.lazyLink( function( newPosition, oldPosition ) {
 
         // Animate the cloud to move upwards so the selected falling object appears to fall downwards
-        var dy = ( ( newPosition.y - oldPosition.y ) * cloudNode.getScaleVector().y )
+        var dy = ( ( newPosition.y - oldPosition.y ) * cloudNode.getScaleVector().y );
         cloudNode.setCenterY( cloudNode.getCenterY() + dy );
 
         // If we hit the top, then reset
@@ -172,7 +172,7 @@ define( function( require ) {
 
       // Set the sky's dimensions and position
       this.sky.setRect( 0, 0, width / scale, height / scale );
-      this.sky.center = center
+      this.sky.center = center;
       // And now set the sky's color
       // TODO: Move this to a property link on altitude
       this.updateSkyGradient();
@@ -206,6 +206,8 @@ define( function( require ) {
         posOnLeftCounter += 1;
         lastBotY = newCloudNode.getBottom();
 
+      }
+
     },
 
     /**
@@ -215,7 +217,7 @@ define( function( require ) {
 
       this.cloudContainerNode.children.forEach( function( cloudNode ) {
         cloudNode.reset();
-      } )
+      } );
 
     }
 
