@@ -171,7 +171,7 @@ define( function( require ) {
       var center = new Vector2( ( -offsetX + ( width / scale - offsetX ) ) / 2, ( -offsetY + ( height / scale - offsetY ) ) / 2 );
 
       // Set the sky's dimensions and position
-      this.sky.setRect( 0, 0, width / scale, height / scale );
+      this.sky.setRect( -offsetX, -offsetY, width / scale, height / scale );
       this.sky.center = center;
       // And now set the sky's color
       // TODO: Move this to a property link on altitude
