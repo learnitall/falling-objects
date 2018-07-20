@@ -184,9 +184,8 @@ define( function( require ) {
       var cloudMarginYVariance = FallingObjectsConstants.MB_CLOUD_MARGIN_Y_VARIANCE;
 
       // These variable will help with generating the clouds
-      var lastBotY = 0;  // bottom y coordinate of the last cloud node to be created (set initially to min value of zero, which is top of screen)
+      var lastBotY = -offsetY;  // bottom y coordinate of the last cloud node to be created (set initially to min value of zero, which is top of screen)
       var posOnLeftCounter = 0;  // which side of the center the cloud should be placed on (if the counter is divisible by 2, will be on the left, otherwise on the right)
-      var counter = 0;
 
       // While we still have sky left to create a cloud
       while ( lastBotY <= this.sky.height ) {
@@ -206,11 +205,6 @@ define( function( require ) {
         // Set these for the next iteration
         posOnLeftCounter += 1;
         lastBotY = newCloudNode.getBottom();
-
-        // TODO: Remove this and test
-        counter += 1;
-        if ( counter > 1 ) { break; }
-      }
 
     },
 
