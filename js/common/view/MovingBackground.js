@@ -204,10 +204,7 @@ define( function( require ) {
           this.cloudContainerNode.setTop( -offsetY + cloudMarginY + ( Math.random() * cloudMarginYVariance ) );
           // if we need to move the clouds up, then most likely we'll need to add clouds as well
           lastBotY = lastChild.getBottom();
-          console.log(lastChild.getCenterX(), "child center x");
-          console.log(center.x, "center x");
           posOnLeftCounter = lastChild.getCenterX() < center.x ? 1 : 0;
-          console.log(posOnLeftCounter, "poso on left counter");
 
         } else {
           // if we don't need to move the clouds upward, then don't need to add clouds either
