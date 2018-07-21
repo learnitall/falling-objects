@@ -59,8 +59,8 @@ define( function( require ) {
     FBD_WEIGHT_FORCE_ARROW_COLOR: 'orange',
     FBD_NET_FORCE_ARROW_COLOR: 'green',
 
-    MB_CLOUD_MARGIN_X: 80,  // Minimum horizontal space between the falling object and clouds in the background
-    MB_CLOUD_MARGIN_X_VARIANCE: 60,  // Maximum amount of extra horizontal space between the falling object and clouds in the background
+    MB_CLOUD_MARGIN_X: 90,  // Minimum horizontal space between the falling object and center of the clouds in the background
+    MB_CLOUD_MARGIN_X_VARIANCE: 120,  // Maximum amount of extra horizontal space between the falling object and clouds in the background
     MB_CLOUD_MARGIN_Y: 60,  // Minimum vertical space added between each of the clouds in the moving background
     MB_CLOUD_MARGIN_Y_VARIANCE: 100,  // Maximum amount of extra space added between each of the clouds in the moving background
     MB_CLOUD_SCALE_RANGE: new Range( 0.4, 1.2 ),  // Minimum to maximum values of scales for the clouds in the moving background
