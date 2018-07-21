@@ -40,7 +40,7 @@ define( function( require ) {
       yMargin: 10,
       fill: 'rgb( 219, 255, 219 )',  // This was modified to be more green in color
       lineWidth: 1,
-      stroke: 'black',
+      stroke: 'black'
     },
     CONTROL_PANEL_VERTICAL_SPACING: 10,  // Vertical spacing of labels inside control panels
 

@@ -63,7 +63,7 @@ define( function( require ) {
     var firstItemNode = new VBox( {
       align: 'left',
       children: [
-        new Text( fallingObjectNames[ 0 ], itemNodeOptions ),
+        new Text( fallingObjectNames[ 0 ], itemNodeOptions )
       ]
     } );
 
