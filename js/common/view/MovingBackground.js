@@ -33,8 +33,9 @@ define( function( require ) {
     // Call the super
     Node.call( this );
     
-    // Get a reference to model
+    // Get a reference to model and self
     this.fallingObjectsModel = fallingObjectsModel;
+    var self = this;
 
     // Create a rectangular sky
     this.sky = new Rectangle( 0, 0, 0, 0 );  // don't know screen dimensions yet, so sizing for later
@@ -43,6 +44,11 @@ define( function( require ) {
     // Create a container node for the clouds
     this.cloudContainerNode = new Node();
     this.addChild( this.cloudContainerNode );
+
+    // Create a link so when the selected falling object changes the background is reset (same behavior with the Free Body Diagram)
+    fallingObjectsModel.selectedFallingObjectNameProperty.link( function( selectedFallingObjectName ) {
+      self.reset();
+    } );
 
   }
 
