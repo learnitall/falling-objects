@@ -33,16 +33,22 @@ define( function( require ) {
     // Call the super
     Node.call( this );
     
-    // Get a reference to model
+    // Get a reference to model and self
     this.fallingObjectsModel = fallingObjectsModel;
+    var self = this;
 
     // Create a rectangular sky
     this.sky = new Rectangle( 0, 0, 0, 0 );  // don't know screen dimensions yet, so sizing for later
     this.addChild( this.sky );
 
-    // Create a container node for the clouds
+    // Create a container node for the clouds (children are sorted, i.e., cloud at index 0 is closest to the top)
     this.cloudContainerNode = new Node();
     this.addChild( this.cloudContainerNode );
+
+    // Create a link so when the selected falling object changes the background is reset (same behavior with the Free Body Diagram)
+    fallingObjectsModel.selectedFallingObjectNameProperty.link( function( selectedFallingObjectName ) {
+      self.reset();
+    } );
 
   }
 
@@ -135,7 +141,6 @@ define( function( require ) {
         cloudNode.setCenterY( cloudNode.getCenterY() + dy );
 
         // If we hit the top, then reset
-        // TODO: Ensure cloud is placed in proper order so it lies either behind or in front of other clouds depending on scale
         if ( cloudNode.bottom < self.sky.top ) {
           cloudNode.setScaleMagnitude( self.genCloudNodeScale() );
           cloudNode.setCenterX( self.genCloudNodeXPos() );
@@ -149,7 +154,6 @@ define( function( require ) {
       return cloudNode;
 
     },
-
 
     /**
      * Layout nodes on the moving background
@@ -172,14 +176,11 @@ define( function( require ) {
       // TODO: Move this to a property link on altitude
       this.updateSkyGradient();
 
-      // Create our cloud nodes
+      // Layout our cloud nodes
 
-      // If we already have cloud nodes created on the screen, then dispose so we can start fresh
-      // TODO: Is this the right way to solve this problem? Something more efficient?
-      if ( this.cloudContainerNode.children.length > 0 ) {
-        this.cloudContainerNode.children.forEach( function( cloudNode ) {
-          cloudNode.dispose();
-        } );
+      // If in motion, then first reset our clouds to their initial position
+      if ( this.fallingObjectsModel.playEnabledProperty.get() ) {
+        this.reset();
       }
 
       // Define these constants for convenience
@@ -190,6 +191,33 @@ define( function( require ) {
       var lastBotY = -offsetY;  // bottom y coordinate of the last cloud node to be created (set initially to min value of zero, which is top of screen)
       var posOnLeftCounter = 0;  // which side of the center the cloud should be placed on (if the counter is divisible by 2, will be on the left, otherwise on the right)
 
+      // Check if we already have cloud nodes created on the screen
+      if ( this.cloudContainerNode.children.length > 0 ) {
+        // TODO: Check the cloud nodes' x coordinate
+
+        // If we have clouds extending past the screen, then remove them (this means screen size has decreased)
+        var lastChild = this.cloudContainerNode.getChildAt( this.cloudContainerNode.children.length - 1 );
+        while ( lastChild.getTop() > this.sky.height && this.cloudContainerNode.children.length >= 2 ) {
+          this.cloudContainerNode.removeChild( lastChild );
+          lastChild = this.cloudContainerNode.getChildAt( this.cloudContainerNode.children.length - 1 );
+        }
+
+        // If the screen size has increased or decreased, then make sure the existing clouds are at the top of the screen
+        if ( this.cloudContainerNode.getTop() > -offsetY + cloudMarginY + cloudMarginYVariance || this.cloudContainerNode.getTop() < -offsetY ) {
+
+          this.cloudContainerNode.setTop( -offsetY + cloudMarginY + ( Math.random() * cloudMarginYVariance ) );
+          // if we need to move the clouds up, then most likely we'll need to add clouds as well
+          lastBotY = lastChild.getBottom();
+          posOnLeftCounter = lastChild.getCenterX() < center.x ? 1 : 0;
+
+        } else {
+          // if we don't need to move the clouds upward, then don't need to add clouds either
+          return;
+        }
+
+      }
+
+      // Create and add cloud nodes
       // While we still have sky left to create a cloud
       while ( lastBotY <= this.sky.height ) {
 
