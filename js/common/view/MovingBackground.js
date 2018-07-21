@@ -176,6 +176,13 @@ define( function( require ) {
       // TODO: Move this to a property link on altitude
       this.updateSkyGradient();
 
+      // Layout our cloud nodes
+
+      // If in motion, then first reset our clouds to their initial position
+      if ( this.fallingObjectsModel.playEnabledProperty.get() ) {
+        this.reset();
+      }
+
       // Define these constants for convenience
       var cloudMarginY = FallingObjectsConstants.MB_CLOUD_MARGIN_Y;
       var cloudMarginYVariance = FallingObjectsConstants.MB_CLOUD_MARGIN_Y_VARIANCE;
@@ -183,9 +190,6 @@ define( function( require ) {
       // These variable will help with generating the clouds
       var lastBotY = -offsetY;  // bottom y coordinate of the last cloud node to be created (set initially to min value of zero, which is top of screen)
       var posOnLeftCounter = 0;  // which side of the center the cloud should be placed on (if the counter is divisible by 2, will be on the left, otherwise on the right)
-
-
-      // Layout our cloud nodes
 
       // Check if we already have cloud nodes created on the screen
       if ( this.cloudContainerNode.children.length > 0 ) {
