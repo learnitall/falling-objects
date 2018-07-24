@@ -9,7 +9,9 @@ define( function( require ) {
 
   // modules
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
+  var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
@@ -27,10 +29,17 @@ define( function( require ) {
     // Call the super
     Node.call( this );
 
+    // Construct the background, using the same options as the free body diagram
+    var backgroundRectangle = new Rectangle( 0, 0, maxWidth, maxHeight, FallingObjectsConstants.FBD_BACKGROUND_OPTIONS );
+
+    // Set children
+    this.addChild( backgroundRectangle );
+
   }
 
   // Make sure ValueGraph still inherits from its super
   ValueGraph = inherit( Node, ValueGraph );
+
 
   function PVAGraphs( ) {
 
