@@ -11,6 +11,7 @@ define( function( require ) {
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Shape = require( 'KITE/Shape' );
 
   /**
    * Construct the value graph
@@ -20,7 +21,7 @@ define( function( require ) {
   function ValueGraph( valueProperty ) {
 
     // Call the super
-    Node.call( this );
+    Shape.call( this );
 
   }
 
