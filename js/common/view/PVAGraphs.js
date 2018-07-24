@@ -24,8 +24,15 @@ define( function( require ) {
 
   }
 
-  fallingObjects.register( 'ValueGraph', ValueGraph );
+  function PVAGraphs( ) {
 
-  return inherit( Node, ValueGraph );
+    // Call the super
+    Node.call( this );
+
+  }
+
+  fallingObjects.register( 'PVAGraphs', PVAGraphs );
+
+  return inherit( Node, PVAGraphs );
 
 } );
