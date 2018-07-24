@@ -16,9 +16,10 @@ define( function( require ) {
   /**
    * Construct the value graph
    *
+   * @param {string} name - name of the graph
    * @param {NumberProperty} valueProperty - value to graph with time
    */
-  function ValueGraph( valueProperty ) {
+  function ValueGraph( name, valueProperty ) {
 
     // Call the super
     Shape.call( this );
