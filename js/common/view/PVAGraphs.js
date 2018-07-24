@@ -29,6 +29,9 @@ define( function( require ) {
 
   }
 
+  // Make sure ValueGraph still inherits from its super
+  ValueGraph = inherit( Node, ValueGraph );
+
   function PVAGraphs( ) {
 
     // Call the super
