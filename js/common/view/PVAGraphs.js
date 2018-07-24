@@ -11,6 +11,7 @@ define( function( require ) {
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
 
   /**
@@ -18,11 +19,13 @@ define( function( require ) {
    *
    * @param {string} name - name of the graph
    * @param {NumberProperty} valueProperty - value to graph with time
+   * @param {number} maxWidth - max width of the free body diagram panel
+   * @param {height} maxHeight - max height of the free body diagram panel
    */
-  function ValueGraph( name, valueProperty ) {
+  function ValueGraph( name, valueProperty, maxWidth, maxHeight ) {
 
     // Call the super
-    Shape.call( this );
+    Node.call( this );
 
   }
 
