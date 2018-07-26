@@ -41,14 +41,18 @@ define( function( require ) {
     // Define where the origin of the graph lies (VG_RELATIVE_ORIGIN is relative to the top left corner of the background rectangle)
     this.graphOrigin = FallingObjectsConstants.VG_RELATIVE_ORIGIN;
 
+    // Determine max plot area
+    var maxPlotHeight = backgroundRectangle.getHeight() - FallingObjectsConstants.VG_PLOT_EDGE_PADDING.y;
+    var maxPlotWidth = backgroundRectangle.getWidth() - FallingObjectsConstants.VG_PLOT_EDGE_PADDING.x;
+
     // Max amount of seconds that can be plotted on x axis at a time
     var maxTimeInterval = FallingObjectsConstants.VG_MAX_TIME_INTERVAL;
     // Maps model seconds onto the graph's X axis
-    var timeScale = maxWidth / maxTimeInterval;
+    var timeScale = maxPlotWidth / maxTimeInterval;
     // Max amount of valueProperty units that can be plotted on the y axis at a time before an adjustment happens
     var maxValueInterval = FallingObjectsConstants.VG_MAX_VALUE_INTERVAL;
     // Maps model valueProperty onto the graph's Y axis
-    var valueScale = maxHeight / maxValueInterval;
+    var valueScale = maxPlotHeight / maxValueInterval;
 
     // Frequency at which to update the graph
     var updateFrequency = FallingObjectsConstants.VG_UPDATE_FREQUENCY;
@@ -68,8 +72,6 @@ define( function( require ) {
     // Add a link onto the time property in the model to update our plot
     // TODO: Axis
     // TODO: Axis scale changes
-    // TODO: Add padding for graph bounds
-    // TODO: Proper scaling
     var lastUpdateTime = 1;  // holds the last time our graph was updated, set initially to one so we trigger a reset (see the if statement below)
     var maxValue;  // holds the max value that can be plotted (set initially to the maxValueInterval)
     // Every time the valueProperty extends past the top of the graph, this value will be incremented by one
@@ -108,7 +110,7 @@ define( function( require ) {
         if ( newVal > maxValue ) {
           maxValueIntervalPower++;
           maxValue = maxValueInterval * ( Math.pow( 2, maxValueIntervalPower ) );
-          valueScale = maxHeight / maxValue;
+          valueScale = maxPlotHeight / maxValue;
           // Modify our transform to use the new scale
           // In a offsetXYScale mapping transform, the yScale is stored in m11 in the transformation matrix
           // See ModelViewTransform2.createOffsetXYScaleMapping and Matrix3.affine
@@ -119,10 +121,10 @@ define( function( require ) {
         }
 
         // If we have run out of space on the X Axis, then change scale and redraw
-        if ( totalFallTime > maxTime) {
+        if ( totalFallTime > maxTime ) {
           // Just increment by adding on another interval, since we now the rate at which time changes stays constant
           maxTime += maxTimeInterval;
-          timeScale = maxWidth / maxTime;
+          timeScale = maxPlotWidth / maxTime;
           // Modify the transform to use the new scale
           // In a offsetXYScale mapping transform, the xScale is stored in m00 in the transformation matrix
           self.modelViewTransform.matrix.set00( timeScale );

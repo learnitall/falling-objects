@@ -85,6 +85,7 @@ define( function( require ) {
       lineWidth: 2
     },
     VG_UPDATE_FREQUENCY: 1,  // Frequency (in seconds) at which to update the graph
+    VG_PLOT_EDGE_PADDING: new Vector2( 50, 50 ),  // Horizontal and vertical plot padding- smaller the value the closer the data will get to the edge of the graph
 
     MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates
 
