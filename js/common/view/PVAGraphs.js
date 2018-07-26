@@ -74,7 +74,6 @@ define( function( require ) {
     // TODO: Axis
     // TODO: Axis scale changes
     // TODO: Proper scaling
-    // TODO: No fill on line
     var lastUpdateTime = 0;
     fallingObjectsModel.totalFallTimeProperty.lazyLink( function( totalFallTime ) {
 

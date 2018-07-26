@@ -81,7 +81,6 @@ define( function( require ) {
     VG_MAX_TIME_INTERVAL: 20,  // Maximum number of seconds that can be plotted on the X axis at once (determines length of axis)
     VG_MAX_VALUE_INTERVAL: 30,  // Maximum 'number' of the value property that can be plotted on the Y axis at once, until the axis is increased
     VG_DATA_PLOT_NODE_OPTIONS: {  // Options for the Path node that is used to plot the data on the graph
-      fill: 'black',
       stroke: 'black',
       lineWidth: 2
     },
