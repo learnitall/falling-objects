@@ -39,7 +39,7 @@ define( function( require ) {
     var backgroundRectangle = new Rectangle( 0, 0, maxWidth, maxHeight, FallingObjectsConstants.FBD_BACKGROUND_OPTIONS );
 
     // Define where the origin of the graph lies (VG_RELATIVE_ORIGIN is relative to the top left corner of the background rectangle)
-    var graphOrigin = FallingObjectsConstants.VG_RELATIVE_ORIGIN;
+    this.graphOrigin = FallingObjectsConstants.VG_RELATIVE_ORIGIN;
 
     // Maps model seconds onto the graph's X axis
     var timeScale = maxWidth / FallingObjectsConstants.VG_MAX_TIME_INTERVAL;
@@ -53,20 +53,19 @@ define( function( require ) {
     var updateFrequency = FallingObjectsConstants.VG_UPDATE_FREQUENCY;
 
     // Construct the model-view transform which will translate between the valueProperty and time to the graph on screen
-    this.modelViewTransform = ModelViewTransform2.createOffsetXYScaleMapping( graphOrigin, timeScale, valueScale );
+    this.modelViewTransform = ModelViewTransform2.createOffsetXYScaleMapping( this.graphOrigin, timeScale, valueScale );
 
     // Construct a Shape and Path object that will hold our data plot
-    this.plotDataShape = new Shape();
-    // make sure our shape's origin matches the graph's
-    this.plotDataShape.moveToPoint( graphOrigin );
-    // pull default options from constants
+    // Call reset to initialize a Shape node (called this.plotDataShape) which will hold data points
+    this.resetPlotDataShape();
+    // Pull default options from constants
     var dataPlotNodeOptions = _.extend( {
       stroke: lineColor
     }, FallingObjectsConstants.VG_DATA_PLOT_NODE_OPTIONS );
+    // Create a Path node that will draw the shape
     this.dataPlotNode = new Path( this.plotDataShape, dataPlotNodeOptions );
 
     // Add a link onto the time property in the model to update our plot
-    // TODO: Proper reset functionality
     // TODO: Axis
     // TODO: Axis scale changes
     // TODO: Proper scaling
@@ -76,6 +75,8 @@ define( function( require ) {
       // If the fallTime has been reset, then reset as well
       if ( totalFallTime < lastUpdateTime ) {
         lastUpdateTime = 0;
+        self.resetPlotDataShape();  // reset the shape
+        self.dataPlotNode.setShape( self.plotDataShape );  // tell path to draw the fresh shape
       }
 
       // Check if its time for us to update
@@ -86,7 +87,7 @@ define( function( require ) {
         if ( newVal.dimension ) {  // if we are working with a vector, pull the appropriate component
           newVal = newVal[ valueVectorComp ];
         }
-        newVal *= -1; // Inverse polarity so negative values plot down the screen instead of up
+        newVal *= -1; // Inverse polarity so positive values plot up the screen instead of down
 
         // Convert to view coordinates and plot
         self.plotDataShape.lineToPoint( self.modelViewTransform.modelToViewXY( totalFallTime, newVal ) );
@@ -104,7 +105,26 @@ define( function( require ) {
   }
 
   // ValueGraph still needs to inherit from its super
-  ValueGraph = inherit( Node, ValueGraph );
+  ValueGraph = inherit( Node, ValueGraph, {
+
+    /**
+     * Reset plotDataShape to reset our plot, as the shape holds the data points.
+     * After calling, also make a call to dataPlotNode.setShape
+     */
+    resetPlotDataShape: function( ) {
+
+      // if defined, then dispose
+      if ( this.plotDataShape ) {
+        this.plotDataShape.dispose();
+      }
+
+      // create a new shape and move it to the origin
+      this.plotDataShape = new Shape();
+      this.plotDataShape.moveToPoint( this.graphOrigin );
+
+    }
+
+  } );
 
   /**
    * Construct the graphs for Position, Velocity and Acceleration by implementing ValueGraph
