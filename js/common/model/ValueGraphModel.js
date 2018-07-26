@@ -58,7 +58,7 @@ define( function( require) {
     // Change the method used to determine equality between values- default doesn't play nice with arrays
     this.dataPointsProperty.areValuesEqual = function( a, b ) {
       return false;  // just always assume they are not equal
-    }
+    };
 
     // @public {Property.<boolean>} if true, then when possible then the data points on the graph will be re-plotted
     this.replotGraphProperty = new BooleanProperty( false );
