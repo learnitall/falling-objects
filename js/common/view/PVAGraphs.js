@@ -75,6 +75,7 @@ define( function( require ) {
     // Every time the valueProperty extends past the top of the graph, this value will be incremented by one
     // In context, length of y axis is calculated using: maxValueInterval * ( 2 ** maxValueIntervalPower )
     var maxValueIntervalPower;
+    var maxTime;  // holds the max time that can be plotted on the x axis
     var dataPoints;  // create an array of Vector2's to hold raw data points
     var redrawPlot;  // signals to redraw the whole plot (for instance if a scale changes)
     fallingObjectsModel.totalFallTimeProperty.link( function( totalFallTime ) {
@@ -84,6 +85,7 @@ define( function( require ) {
         lastUpdateTime = 0;
         maxValue = maxValueInterval;
         maxValueIntervalPower = 0;
+        maxTime = maxTimeInterval;
         dataPoints = [];
         redrawPlot = false;
         self.resetPlotDataShape();  // reset the shape
@@ -106,11 +108,24 @@ define( function( require ) {
         if ( newVal > maxValue ) {
           maxValueIntervalPower++;
           maxValue = maxValueInterval * ( Math.pow( 2, maxValueIntervalPower ) );
-          valueScale = maxHeight / ( maxValue );
+          valueScale = maxHeight / maxValue;
           // Modify our transform to use the new scale
           // In a offsetXYScale mapping transform, the yScale is stored in m11 in the transformation matrix
           // See ModelViewTransform2.createOffsetXYScaleMapping and Matrix3.affine
           self.modelViewTransform.matrix.set11( valueScale );
+
+          // signal to redraw the whole shape
+          redrawPlot = true;
+        }
+
+        // If we have run out of space on the X Axis, then change scale and redraw
+        if ( totalFallTime > maxTime) {
+          // Just increment by adding on another interval, since we now the rate at which time changes stays constant
+          maxTime += maxTimeInterval;
+          timeScale = maxWidth / maxTime;
+          // Modify the transform to use the new scale
+          // In a offsetXYScale mapping transform, the xScale is stored in m00 in the transformation matrix
+          self.modelViewTransform.matrix.set00( timeScale );
 
           // signal to redraw the whole shape
           redrawPlot = true;
@@ -177,6 +192,8 @@ define( function( require ) {
 
     // Call the super
     Node.call( this );
+
+    this.addChild( new ValueGraph( fallingObjectsModel, "test", fallingObjectsModel.selectedFallingObject.positionProperty, 'black', 320, 320, 'y' ) );
 
   }
 
