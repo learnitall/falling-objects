@@ -18,6 +18,7 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
+  var ValueGraphModel = require( 'FALLING_OBJECTS/common/model/ValueGraphModel' );
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
@@ -96,24 +97,24 @@ define( function( require ) {
         var newDataPoint = new Vector2( totalFallTime, newVal );
 
         // If our new value is greater than the bounds of the graph, then change the scale and redraw
-        if ( newVal > maxValue ) {
+        if ( newVal > self.valueGraphModel.maxValueProperty.get() ) {
           // Incrementing the max value will also propagate a change onto the scale
           self.valueGraphModel.incrementMaxValue();
 
           // Modify our transform to use the new scale
           // In a offsetXYScale mapping transform, the yScale is stored in m11 in the transformation matrix
           // See ModelViewTransform2.createOffsetXYScaleMapping and Matrix3.affine
-          self.modelViewTransform.matrix.set11( valueScale );
+          self.modelViewTransform.matrix.set11( self.valueGraphModel.valueScaleProperty.get() );
         }
 
         // If we have run out of space on the X Axis, then change scale and redraw
-        if ( totalFallTime > maxTime ) {
+        if ( totalFallTime > self.valueGraphModel.maxTimeProperty.get() ) {
           // Incrementing the max time will also propagate a change onto the scale
           self.valueGraphModel.incrementMaxTime();
 
           // Modify our transform to use the new scale
           // The xScale is stored in m00
-          self.modelViewTransform.matrix.set00( timeScale );
+          self.modelViewTransform.matrix.set00( self.valueGraphModel.timeScaleProperty.get() );
         }
 
         // After updating our scales, push new data point so it can be plotted
@@ -138,7 +139,7 @@ define( function( require ) {
           self.plotPoint( dataPoints[ i] );
         }
       }
-    } )
+    } );
 
     // Create a property link to draw the last point pushed into our data points array
     this.valueGraphModel.dataPointsProperty.lazyLink( function( dataPoints ) {
@@ -166,7 +167,7 @@ define( function( require ) {
     reset: function() {
       this.valueGraphModel.reset();
       this.resetPlot();
-    }
+    },
 
     /**
      * Reset plotDataShape to reset our plot, as the shape holds the data points, and reset our scales

@@ -70,7 +70,7 @@ define( function( require) {
 
     this.maxTimeProperty.link( function( maxTime ) {
       self.timeScaleProperty.set( self.maxPlotWidth / maxTime );
-    } )
+    } );
 
   }
 
@@ -96,7 +96,7 @@ define( function( require) {
      *
      * @param {boolean} replot - If true, set replotGraphProperty to true in order to signal a replot
      */
-    incrementMaxValue: function( redraw ) {
+    incrementMaxValue: function( replot ) {
       // Increment the valueScalePower
       this._valueScalePower.set( this._valueScalePower.get() + 1 );
       // Set the maxValue to the interval multiplied by 2 raised to our power
@@ -112,7 +112,7 @@ define( function( require) {
      *
      * @param {boolean} replot - If true, set replotGraphProperty to true in order to signal a replot
      */
-    incrementMaxTime: function() {
+    incrementMaxTime: function( replot ) {
       // Just tack another interval onto our maxTime
       this.maxTimeProperty.set( this.maxTimeProperty.get() + this.maxTimeInterval );
 
