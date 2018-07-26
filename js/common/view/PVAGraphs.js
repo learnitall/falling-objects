@@ -38,12 +38,8 @@ define( function( require ) {
     // Construct the background, using the same options as the free body diagram
     var backgroundRectangle = new Rectangle( 0, 0, maxWidth, maxHeight, FallingObjectsConstants.FBD_BACKGROUND_OPTIONS );
 
-    // Define where the origin of the graph lies
-    var graphOrigin = new Vector2(
-      FallingObjectsConstants.VG_RELATIVE_ORIGIN.x,
-      // VG_RELATIVE_ORIGIN is relative to bottom left corner of the background rectangle
-      backgroundRectangle.getHeight() - FallingObjectsConstants.VG_RELATIVE_ORIGIN.y
-    );
+    // Define where the origin of the graph lies (VG_RELATIVE_ORIGIN is relative to the top left corner of the background rectangle)
+    var graphOrigin = FallingObjectsConstants.VG_RELATIVE_ORIGIN;
 
     // Maps model seconds onto the graph's X axis
     var timeScale = maxWidth / FallingObjectsConstants.VG_MAX_TIME_INTERVAL;
@@ -90,6 +86,7 @@ define( function( require ) {
         if ( newVal.dimension ) {  // if we are working with a vector, pull the appropriate component
           newVal = newVal[ valueVectorComp ];
         }
+        newVal *= -1; // Inverse polarity so negative values plot down the screen instead of up
 
         // Convert to view coordinates and plot
         self.plotDataShape.lineToPoint( self.modelViewTransform.modelToViewXY( totalFallTime, newVal ) );
