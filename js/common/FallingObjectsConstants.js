@@ -84,6 +84,10 @@ define( function( require ) {
       stroke: 'black',
       lineWidth: 2
     },
+    VG_AXIS_LINE_OPTIONS: {  // Options for the Line nodes that are used to create the graph axes
+      stroke: 'black',
+      lineWidth: 3
+    },
     VG_UPDATE_FREQUENCY: 1,  // Frequency (in seconds) at which to update the graph
     VG_PLOT_EDGE_PADDING: new Vector2( 50, 50 ),  // Horizontal and vertical plot padding- smaller the value the closer the data will get to the edge of the graph
 

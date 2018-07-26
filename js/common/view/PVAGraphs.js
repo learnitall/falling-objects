@@ -11,6 +11,7 @@ define( function( require ) {
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Line = require( 'SCENERY/nodes/Line' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -59,6 +60,16 @@ define( function( require ) {
 
     // Construct the model-view transform which will translate between the valueProperty and time to the graph on screen
     this.modelViewTransform = ModelViewTransform2.createOffsetXYScaleMapping( this.graphOrigin, timeScale, valueScale );
+
+    // Construct our axis lines
+    var valueAxis = new Line(
+      this.graphOrigin.x, this.graphOrigin.y, this.graphOrigin.x, this.graphOrigin.y + maxPlotHeight,
+      FallingObjectsConstants.VG_AXIS_LINE_OPTIONS
+    );
+    var timeAxis = new Line(
+      this.graphOrigin.x, this.graphOrigin.y, this.graphOrigin.x + maxPlotWidth, this.graphOrigin.y,
+      FallingObjectsConstants.VG_AXIS_LINE_OPTIONS
+    );
 
     // Construct a Path object that will hold our data plot
     // The Shape object is stored in this.plotDataShape, and is initialized below
@@ -160,6 +171,8 @@ define( function( require ) {
     // Set children
     this.addChild( backgroundRectangle );
     this.addChild( this.dataPlotNode );
+    this.addChild( valueAxis );
+    this.addChild( timeAxis );
 
   }
 
