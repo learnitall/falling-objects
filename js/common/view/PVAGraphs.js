@@ -21,33 +21,40 @@ define( function( require ) {
   /**
    * Construct the value graph, which plots the value of a property over time.
    *
+   * @param {FallingObjectsModel} fallingObjectsModel - will be used to pull total fall time property
    * @param {string} name - name of the graph
    * @param {NumberProperty} valueProperty - value to graph with time
    * @param {string} lineColor - color of the line to plot on the graph (rbg formatted, name of a color, etc.)
    * @param {number} maxWidth - max width of the free body diagram panel
    * @param {number} maxHeight - max height of the free body diagram panel
+   * @param {string} valueVectorComp - if the valueProperty is a vector, pass in the name of the component that should be plotted
    */
-  function ValueGraph( name, valueProperty, lineColor, maxWidth, maxHeight ) {
+  function ValueGraph( fallingObjectsModel, name, valueProperty, lineColor, maxWidth, maxHeight, valueVectorComp ) {
 
-    // Call the super
+    // Call the super and grab reference to self
     Node.call( this );
+    var self = this;
 
     // Construct the background, using the same options as the free body diagram
     var backgroundRectangle = new Rectangle( 0, 0, maxWidth, maxHeight, FallingObjectsConstants.FBD_BACKGROUND_OPTIONS );
 
-    // Define these here for convenience and clarity
+    // Define where the origin of the graph lies
     var graphOrigin = new Vector2(
       FallingObjectsConstants.VG_RELATIVE_ORIGIN.x,
       // VG_RELATIVE_ORIGIN is relative to bottom left corner of the background rectangle
       backgroundRectangle.getHeight() - FallingObjectsConstants.VG_RELATIVE_ORIGIN.y
     );
-    // maps model seconds onto the graph's X axis
+
+    // Maps model seconds onto the graph's X axis
     var timeScale = maxWidth / FallingObjectsConstants.VG_MAX_TIME_INTERVAL;
-    // maps model valueProperty onto the graph's Y axis
+    // Maps model valueProperty onto the graph's Y axis
     // NOTE: VG_MAX_VALUE_INTERVAL describes the max amount of valueProperty units that can be plotted on the Y axis, until the
     // axis is extended by another VG_MAX_TIME_INTERVAL. When the extension is not needed anymore (i.e. all plotted data
     // has gone below the previously added extension), then it is removed and the axis bounds are changed
     var valueScale = maxHeight / FallingObjectsConstants.VG_MAX_VALUE_INTERVAL;
+
+    // Frequency at which to update the graph
+    var updateFrequency = FallingObjectsConstants.VG_UPDATE_FREQUENCY;
 
     // Construct the model-view transform which will translate between the valueProperty and time to the graph on screen
     this.modelViewTransform = ModelViewTransform2.createOffsetXYScaleMapping( graphOrigin, timeScale, valueScale );
@@ -58,10 +65,41 @@ define( function( require ) {
     this.plotDataShape.moveToPoint( graphOrigin );
     // pull default options from constants
     var dataPlotNodeOptions = _.extend( {
-      fill: lineColor,
       stroke: lineColor
     }, FallingObjectsConstants.VG_DATA_PLOT_NODE_OPTIONS );
     this.dataPlotNode = new Path( this.plotDataShape, dataPlotNodeOptions );
+
+    // Add a link onto the time property in the model to update our plot
+    // TODO: Proper reset functionality
+    // TODO: Axis
+    // TODO: Axis scale changes
+    // TODO: Proper scaling
+    // TODO: No fill on line
+    var lastUpdateTime = 0;
+    fallingObjectsModel.totalFallTimeProperty.lazyLink( function( totalFallTime ) {
+
+      // If the fallTime has been reset, then reset as well
+      if ( totalFallTime < lastUpdateTime ) {
+        lastUpdateTime = 0;
+      }
+
+      // Check if its time for us to update
+      if ( totalFallTime - lastUpdateTime > updateFrequency ) {
+
+        // Get the new value to plot
+        var newVal = valueProperty.get();
+        if ( newVal.dimension ) {  // if we are working with a vector, pull the appropriate component
+          newVal = newVal[ valueVectorComp ];
+        }
+
+        // Convert to view coordinates and plot
+        self.plotDataShape.lineToPoint( self.modelViewTransform.modelToViewXY( totalFallTime, newVal ) );
+
+        // Set lastUpdateTime
+        lastUpdateTime = totalFallTime;
+      }
+
+    } );
 
     // Set children
     this.addChild( backgroundRectangle );
@@ -72,8 +110,12 @@ define( function( require ) {
   // ValueGraph still needs to inherit from its super
   ValueGraph = inherit( Node, ValueGraph );
 
-
-  function PVAGraphs( ) {
+  /**
+   * Construct the graphs for Position, Velocity and Acceleration by implementing ValueGraph
+   *
+   * @param {FallingObjectsModel} fallingObjectsModel
+   */
+  function PVAGraphs( fallingObjectsModel ) {
 
     // Call the super
     Node.call( this );

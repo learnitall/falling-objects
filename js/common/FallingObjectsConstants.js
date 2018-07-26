@@ -85,6 +85,7 @@ define( function( require ) {
       stroke: 'black',
       lineWidth: 2
     },
+    VG_UPDATE_FREQUENCY: 1,  // Frequency (in seconds) at which to update the graph
 
     MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates
 
