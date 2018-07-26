@@ -54,8 +54,6 @@ define( function( require ) {
     // @public {Property.<boolean>} whether or not to display the free body diagram
     this.showFreeBodyDiagramProperty = new BooleanProperty( true );
 
-    // TODO: Determine the appropriate initial values for these properties
-
     // @public {Property.<number>} simulation's acceleration due to gravity (initially set to density at sea level)
     this.accelerationGravityProperty = new NumberProperty( this.getAccelerationGravity( 0 ) );
 
@@ -64,6 +62,9 @@ define( function( require ) {
 
     // @public {Property.<boolean>} whether or not drag force will affect the FallingObject's fall
     this.dragForceEnabledProperty = new BooleanProperty( false );
+
+    // @public {Property.<number>} holds total amount of time in seconds that an object has been in free fall
+    this.totalFallTimeProperty = new NumberProperty( 0 );
 
     // @public {Property.<string>} the name of the currently selected FallingObject (from string! plugin)
     this.selectedFallingObjectNameProperty = new Property( defaultFallingObjectName );
@@ -147,6 +148,7 @@ define( function( require ) {
       this.accelerationGravityProperty.reset();
       this.airDensityProperty.reset();
       this.dragForceEnabledProperty.reset();
+      this.totalFallTimeProperty.reset();
 
       // Reset FallingObject
       this.selectedFallingObject.reset();
@@ -167,6 +169,9 @@ define( function( require ) {
 
       // Now just step the selectedFallingObject
       this.selectedFallingObject.step( dt );
+
+      // And increment the timer
+      this.totalFallTimeProperty.set( this.totalFallTimeProperty.get() + dt );
     },
 
     /**
