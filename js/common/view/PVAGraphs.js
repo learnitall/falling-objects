@@ -41,13 +41,14 @@ define( function( require ) {
     // Define where the origin of the graph lies (VG_RELATIVE_ORIGIN is relative to the top left corner of the background rectangle)
     this.graphOrigin = FallingObjectsConstants.VG_RELATIVE_ORIGIN;
 
+    // Max amount of seconds that can be plotted on x axis at a time
+    var maxTimeInterval = FallingObjectsConstants.VG_MAX_TIME_INTERVAL;
     // Maps model seconds onto the graph's X axis
-    var timeScale = maxWidth / FallingObjectsConstants.VG_MAX_TIME_INTERVAL;
+    var timeScale = maxWidth / maxTimeInterval;
+    // Max amount of valueProperty units that can be plotted on the y axis at a time before an adjustment happens
+    var maxValueInterval = FallingObjectsConstants.VG_MAX_VALUE_INTERVAL;
     // Maps model valueProperty onto the graph's Y axis
-    // NOTE: VG_MAX_VALUE_INTERVAL describes the max amount of valueProperty units that can be plotted on the Y axis, until the
-    // axis is extended by another VG_MAX_TIME_INTERVAL. When the extension is not needed anymore (i.e. all plotted data
-    // has gone below the previously added extension), then it is removed and the axis bounds are changed
-    var valueScale = maxHeight / FallingObjectsConstants.VG_MAX_VALUE_INTERVAL;
+    var valueScale = maxHeight / maxValueInterval;
 
     // Frequency at which to update the graph
     var updateFrequency = FallingObjectsConstants.VG_UPDATE_FREQUENCY;
@@ -55,26 +56,36 @@ define( function( require ) {
     // Construct the model-view transform which will translate between the valueProperty and time to the graph on screen
     this.modelViewTransform = ModelViewTransform2.createOffsetXYScaleMapping( this.graphOrigin, timeScale, valueScale );
 
-    // Construct a Shape and Path object that will hold our data plot
-    // Call reset to initialize a Shape node (called this.plotDataShape) which will hold data points
-    this.resetPlotDataShape();
+    // Construct a Path object that will hold our data plot
+    // The Shape object is stored in this.plotDataShape, and is initialized below
     // Pull default options from constants
     var dataPlotNodeOptions = _.extend( {
       stroke: lineColor
     }, FallingObjectsConstants.VG_DATA_PLOT_NODE_OPTIONS );
     // Create a Path node that will draw the shape
-    this.dataPlotNode = new Path( this.plotDataShape, dataPlotNodeOptions );
+    this.dataPlotNode = new Path( null, dataPlotNodeOptions );
 
     // Add a link onto the time property in the model to update our plot
     // TODO: Axis
     // TODO: Axis scale changes
+    // TODO: Add padding for graph bounds
     // TODO: Proper scaling
-    var lastUpdateTime = 0;
-    fallingObjectsModel.totalFallTimeProperty.lazyLink( function( totalFallTime ) {
+    var lastUpdateTime = 1;  // holds the last time our graph was updated, set initially to one so we trigger a reset (see the if statement below)
+    var maxValue;  // holds the max value that can be plotted (set initially to the maxValueInterval)
+    // Every time the valueProperty extends past the top of the graph, this value will be incremented by one
+    // In context, length of y axis is calculated using: maxValueInterval * ( 2 ** maxValueIntervalPower )
+    var maxValueIntervalPower;
+    var dataPoints;  // create an array of Vector2's to hold raw data points
+    var redrawPlot;  // signals to redraw the whole plot (for instance if a scale changes)
+    fallingObjectsModel.totalFallTimeProperty.link( function( totalFallTime ) {
 
-      // If the fallTime has been reset, then reset as well
+      // If the fallTime has been reset, then reset as well and (re)initialize our helper variables
       if ( totalFallTime < lastUpdateTime ) {
         lastUpdateTime = 0;
+        maxValue = maxValueInterval;
+        maxValueIntervalPower = 0;
+        dataPoints = [];
+        redrawPlot = false;
         self.resetPlotDataShape();  // reset the shape
         self.dataPlotNode.setShape( self.plotDataShape );  // tell path to draw the fresh shape
       }
@@ -88,9 +99,40 @@ define( function( require ) {
           newVal = newVal[ valueVectorComp ];
         }
         newVal *= -1; // Inverse polarity so positive values plot up the screen instead of down
+        var newDataPoint = new Vector2( totalFallTime, newVal );
+        dataPoints.push( newDataPoint );
 
-        // Convert to view coordinates and plot
-        self.plotDataShape.lineToPoint( self.modelViewTransform.modelToViewXY( totalFallTime, newVal ) );
+        // If our new value is greater than the bounds of the graph, then change the scale and redraw
+        if ( newVal > maxValue ) {
+          maxValueIntervalPower++;
+          maxValue = maxValueInterval * ( Math.pow( 2, maxValueIntervalPower ) );
+          valueScale = maxHeight / ( maxValue );
+          // Modify our transform to use the new scale
+          // In a offsetXYScale mapping transform, the yScale is stored in m11 in the transformation matrix
+          // See ModelViewTransform2.createOffsetXYScaleMapping and Matrix3.affine
+          self.modelViewTransform.matrix.set11( valueScale );
+
+          // signal to redraw the whole shape
+          redrawPlot = true;
+        }
+
+        // Draw the point(s)
+        if ( redrawPlot ) {  // if we need to, redraw the whole plot
+
+          // Reset the shape and redraw
+          self.resetPlotDataShape();
+          self.dataPlotNode.setShape( self.plotDataShape );
+          for ( var i = 0; i < dataPoints.length; i++ ) {
+            self.plotDataShape.lineToPoint( self.modelViewTransform.modelToViewXY( dataPoints[ i ].x, dataPoints[ i ].y ) );
+          }
+          redrawPlot = false;  // make sure we reset
+
+        } else {  // otherwise just plot the new point
+
+          // Convert to view coordinates and plot
+          self.plotDataShape.lineToPoint( self.modelViewTransform.modelToViewXY( newDataPoint.x, newDataPoint.y ) );
+
+        }
 
         // Set lastUpdateTime
         lastUpdateTime = totalFallTime;
