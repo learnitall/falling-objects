@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var Range = require( 'DOT/Range' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // strings
   var baseballString = require( 'string!FALLING_OBJECTS/baseball' );
@@ -75,6 +76,10 @@ define( function( require ) {
     CONTROL_BUTTON_RADIUS: 23,  // Radius of each of the Reset, Play/Pause and Step buttons
     CONTROL_BUTTON_STEP_DT: 1 / 60,  // Assume frame rate for manual steps (60th of a sec)
     CONTROL_BUTTON_MARGIN_X: 10,  // Padding on each side of the row of control buttons (larger the number, more condensed they will be)
+
+    VG_RELATIVE_ORIGIN: new Vector2( 20, 20 ),  // Relative origin point of the ValueGraphs, determined empirically.
+    VG_MAX_TIME_INTERVAL: 20,  // Maximum number of seconds that can be plotted on the X axis at once (determines length of axis)
+    VG_MAX_VALUE_INTERVAL: 30,  // Maximum 'number' of the value property that can be plotted on the Y axis at once, until the axis is increased
 
     MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates
 
