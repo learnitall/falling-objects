@@ -36,30 +36,32 @@ define( function( require ) {
     var backgroundRectangle = new Rectangle( 0, 0, maxWidth, maxHeight, FallingObjectsConstants.FBD_BACKGROUND_OPTIONS );
 
     // Define these here for convenience and clarity
-    var graphOrigin = new Vector2(  // VG_RELATIVE_ORIGIN is relative to bottom left corner of the background rectangle
+    var graphOrigin = new Vector2(
       FallingObjectsConstants.VG_RELATIVE_ORIGIN.x,
+      // VG_RELATIVE_ORIGIN is relative to bottom left corner of the background rectangle
       backgroundRectangle.getHeight() - FallingObjectsConstants.VG_RELATIVE_ORIGIN.y
     );
-    var timeScale = maxWidth / FallingObjectsConstants.VG_MAX_TIME_INTERVAL;  // maps model seconds onto the graph's X axis
-    /*
-     VG_MAX_VALUE_INTERVAL describes the max amount of valueProperty units that can be plotted on the Y axis, until the
-     axis is extended by another VG_MAX_TIME_INTERVAL. For instance, if VG_MAX_VALUE_INTERVAL is 3, and the point
-     (1, 3) is plotted, then the y axis bounds will be increased by 3. This process works in reverse as well
-    */
-    var valueScale = maxHeight / FallingObjectsConstants.VG_MAX_VALUE_INTERVAL;   // maps model valueProperty onto the graph's Y axis
+    // maps model seconds onto the graph's X axis
+    var timeScale = maxWidth / FallingObjectsConstants.VG_MAX_TIME_INTERVAL;
+    // maps model valueProperty onto the graph's Y axis
+    // NOTE: VG_MAX_VALUE_INTERVAL describes the max amount of valueProperty units that can be plotted on the Y axis, until the
+    // axis is extended by another VG_MAX_TIME_INTERVAL. When the extension is not needed anymore (i.e. all plotted data
+    // has gone below the previously added extension), then it is removed and the axis bounds are changed
+    var valueScale = maxHeight / FallingObjectsConstants.VG_MAX_VALUE_INTERVAL;
 
     // Construct the model-view transform which will translate between the valueProperty and time to the graph on screen
     this.modelViewTransform = ModelViewTransform2.createOffsetXYScaleMapping( graphOrigin, timeScale, valueScale );
 
     // Construct a Shape and Path object that will hold our data plot
     this.plotDataShape = new Shape();
+    // make sure our shape's origin matches the graph's
     this.plotDataShape.moveToPoint( graphOrigin );
-
+    // pull default options from constants
     var dataPlotNodeOptions = _.extend( {
       fill: lineColor,
       stroke: lineColor
     }, FallingObjectsConstants.VG_DATA_PLOT_NODE_OPTIONS );
-    this.dataPlotNode = new Path( this.plotDataShape, dataPlotNodeOptions);
+    this.dataPlotNode = new Path( this.plotDataShape, dataPlotNodeOptions );
 
     // Set children
     this.addChild( backgroundRectangle );
@@ -67,7 +69,7 @@ define( function( require ) {
 
   }
 
-  // Make sure ValueGraph still inherits from its super
+  // ValueGraph still needs to inherit from its super
   ValueGraph = inherit( Node, ValueGraph );
 
 
