@@ -39,6 +39,7 @@ require.config( {
     SCENERY_PHET: '../../scenery-phet/js',
     FALLING_OBJECTS: '.',
     SUN: '../../sun/js',
+    TAMBO: '../../tambo/js',
     TANDEM: '../../tandem/js'
   },
 

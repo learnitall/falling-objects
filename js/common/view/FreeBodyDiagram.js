@@ -126,7 +126,7 @@ define( function( require ) {
      * @param {NumberProperty} forceProperty - force property that the arrow will model
      * @param {string} color - color/fill of the arrow
      */
-    var createForceArrow = function( center, forceProperty, color, i_am_drag ) {
+    var createForceArrow = function( center, forceProperty, color ) {
       // Create a node to hold the arrow's shape
       var arrowNode = new Path( null, {
         fill: color,
