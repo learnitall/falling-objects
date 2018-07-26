@@ -55,6 +55,10 @@ define( function( require) {
 
     // @public {Property.<array>} data points that have been plotted on the graph
     this.dataPointsProperty = new Property( [] );
+    // Change the method used to determine equality between values- default doesn't play nice with arrays
+    this.dataPointsProperty.areValuesEqual = function( a, b ) {
+      return false;  // just always assume they are not equal
+    }
 
     // @public {Property.<boolean>} if true, then when possible then the data points on the graph will be re-plotted
     this.replotGraphProperty = new BooleanProperty( false );
@@ -93,31 +97,21 @@ define( function( require) {
     /**
      * Exponentially increment the maxValue that can be plotted on the graph.
      * Calculated using the formula: maxValueInterval * ( 2 ** _valueScalePower)
-     *
-     * @param {boolean} replot - If true, set replotGraphProperty to true in order to signal a replot
      */
-    incrementMaxValue: function( replot ) {
+    incrementMaxValue: function() {
       // Increment the valueScalePower
       this._valueScalePower.set( this._valueScalePower.get() + 1 );
       // Set the maxValue to the interval multiplied by 2 raised to our power
       this.maxValueProperty.set( this.maxValueInterval * ( Math.pow( 2, this._valueScalePower.get() ) ) );
-
-      // Replot
-      if ( replot ) { this.replotGraphProperty.set( true ); }
     },
 
     /**
      * Linearly increment the maxTime that can be plotted on the graph.
      * Calculated using the formula: maxTime + maxTimeInterval
-     *
-     * @param {boolean} replot - If true, set replotGraphProperty to true in order to signal a replot
      */
-    incrementMaxTime: function( replot ) {
+    incrementMaxTime: function() {
       // Just tack another interval onto our maxTime
       this.maxTimeProperty.set( this.maxTimeProperty.get() + this.maxTimeInterval );
-
-      // Replot
-      if ( replot ) { this.replotGraphProperty.set( true ); }
     }
 
 

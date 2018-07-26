@@ -56,7 +56,7 @@ define( function( require ) {
 
     // Construct the model-view transform which will translate between the valueProperty and time to the graph on screen
     this.modelViewTransform = ModelViewTransform2.createOffsetXYScaleMapping(
-      this.graphOrigin, this.valueGraphModel.timeScaleProperty, this.valueGraphModel.valueScaleProperty
+      this.graphOrigin, this.valueGraphModel.timeScaleProperty.get(), this.valueGraphModel.valueScaleProperty.get()
     );
 
     // Construct our axis lines
@@ -93,7 +93,7 @@ define( function( require ) {
       if ( totalFallTime - self.valueGraphModel.lastUpdateTimeProperty.get() > updateFrequency ) {
 
         // Get the new value to plot
-        var newVal = this.getTargetValue * -1;  // Inverse polarity so positive values plot up the screen instead of down
+        var newVal = self.getTargetValue() * -1;  // Inverse polarity so positive values plot up the screen instead of down
         var newDataPoint = new Vector2( totalFallTime, newVal );
 
         // If our new value is greater than the bounds of the graph, then change the scale and redraw
@@ -105,6 +105,9 @@ define( function( require ) {
           // In a offsetXYScale mapping transform, the yScale is stored in m11 in the transformation matrix
           // See ModelViewTransform2.createOffsetXYScaleMapping and Matrix3.affine
           self.modelViewTransform.matrix.set11( self.valueGraphModel.valueScaleProperty.get() );
+
+          // Signal a replot
+          self.valueGraphModel.replotGraphProperty.set( true );
         }
 
         // If we have run out of space on the X Axis, then change scale and redraw
@@ -115,11 +118,15 @@ define( function( require ) {
           // Modify our transform to use the new scale
           // The xScale is stored in m00
           self.modelViewTransform.matrix.set00( self.valueGraphModel.timeScaleProperty.get() );
+
+          // Signal a replot
+          self.valueGraphModel.replotGraphProperty.set( true );
         }
 
         // After updating our scales, push new data point so it can be plotted
-        self.valueGraphModel.dataPointsProperty.get().push( newDataPoint );
-
+        var dataPoints = self.valueGraphModel.dataPointsProperty.get().slice();
+        dataPoints.push( newDataPoint );
+        self.valueGraphModel.dataPointsProperty.set( dataPoints );
         // Set lastUpdateTime
         self.valueGraphModel.lastUpdateTimeProperty.set( totalFallTime );
       }
@@ -134,18 +141,24 @@ define( function( require ) {
         // Grab a reference to the data points so we don't have to keep calling the getter
         var dataPoints = self.valueGraphModel.dataPointsProperty.get();
 
+        // Reset the plot
+        self.resetPlot();
+
         // Loop through all the points and plot
         for ( var i = 0; i < dataPoints.length; i++ ) {
           self.plotPoint( dataPoints[ i] );
         }
+
+        // Reset
+        self.valueGraphModel.replotGraphProperty.reset();
       }
     } );
 
     // Create a property link to draw the last point pushed into our data points array
     this.valueGraphModel.dataPointsProperty.lazyLink( function( dataPoints ) {
-       // This function will only plot the last data point added
-       self.plotPoint( dataPoints[ dataPoints.length - 1] );
-     } );
+      // This function will only plot the last data point added
+      self.plotPoint( dataPoints[ dataPoints.length - 1] );
+    } );
 
 
     // Set children
