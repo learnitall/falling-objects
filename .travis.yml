@@ -28,6 +28,7 @@ before_install:
   - git clone https://github.com/phetsims/scenery-phet.git
   - git clone https://github.com/phetsims/sherpa.git
   - git clone https://github.com/phetsims/sun.git
+  - git clone https://github.com/phetsims/tambo.git
   - git clone https://github.com/phetsims/tandem.git
   - npm install -g grunt-cli
   - cd chipper
