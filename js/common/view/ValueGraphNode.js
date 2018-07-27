@@ -291,7 +291,7 @@ define( function( require ) {
     // Create a property link to draw the last point pushed into our data points array
     this.valueGraphModel.dataPointsProperty.lazyLink( function( dataPoints ) {
       // This function will only plot the last data point added
-      var dataPoint = dataPoints[ dataPoints.length ] - 1;
+      var dataPoint = dataPoints[ dataPoints.length - 1 ];
       if ( dataPoint ) {
         self.plotPoint( dataPoint );
       }
