@@ -99,6 +99,10 @@ define( function( require ) {
       stroke: 'gray',
       lineWidth: 3
     },
+    VG_ACCELERATION_COLOR: 'red',  // Color of the acceleration graph
+    VG_VELOCITY_COLOR: 'green',  // Color of the velocity graph
+    VG_POSITION_COLOR: 'blue',  // Color of the position graph
+    VG_VERTICAL_SPACING: 15,  // Vertical spacing between each graph
 
     MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates
 

@@ -61,5 +61,14 @@
   },
   "sportsCar": {
     "value": "Sports Car"
+  },
+  "acceleration": {
+    "value": "Acceleration"
+  },
+  "velocity": {
+    "value": "Velocity"
+  },
+  "position": {
+    "value": "Position"
   }
 }
