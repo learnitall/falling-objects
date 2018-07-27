@@ -96,7 +96,7 @@ define( function( require ) {
     this.freeBodyDiagram = new FreeBodyDiagram( this.fallingObjectsModel, freeBodyDiagramWidth, freeBodyDiagramHeight );
 
     // Create the PVAGraphs
-    this.PVAGraphs = new PVAGraphs( this.fallingObjectsModel );
+    this.pvaGraphs = new PVAGraphs( this.fallingObjectsModel );
 
     // Add all of the children
     this.addChild( this.movingBackground );
@@ -105,7 +105,7 @@ define( function( require ) {
     this.addChild( this.togglePanel );
     this.addChild( this.controlButtons );
     this.addChild( this.freeBodyDiagram );
-    this.addChild( this.PVAGraphs );
+    this.addChild( this.pvaGraphs );
     this.addChild( this.fallingObjectSelectorParent );
   }
 
@@ -175,8 +175,8 @@ define( function( require ) {
       this.freeBodyDiagram.centerY = ( -offsetY + ( height / scale - offsetY ) ) / 2;
 
       // Place the PVAGraphs just to the right of the freeBodyDiagram
-      this.PVAGraphs.top = this.freeBodyDiagram.top;
-      this.PVAGraphs.left = this.freeBodyDiagram.right + this.graphsHorizontalSpacing;
+      this.pvaGraphs.top = this.freeBodyDiagram.top;
+      this.pvaGraphs.left = this.freeBodyDiagram.right + this.graphsHorizontalSpacing;
 
       // Update the visible bounds of the screen view based on our previous calculations
       this.visibleBoundsProperty.set( new Bounds2( -offsetX, -offsetY, width / scale - offsetX, height / scale - offsetY ) );
@@ -189,7 +189,7 @@ define( function( require ) {
       // Most of the items on the screen view will be reset when the model properties are reset, since they are linked
       // Some elements however have their own reset methods which need to be called.
       this.movingBackground.reset();
-      this.PVAGraphs.reset();
+      this.pvaGraphs.reset();
     }
 
   } );
