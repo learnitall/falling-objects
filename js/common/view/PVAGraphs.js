@@ -10,7 +10,8 @@ define( function( require ) {
   // modules
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var inherit = require( 'PHET_CORE/inherit' );
-
+  var Node = require( 'SCENERY/nodes/Node' );
+  var ValueGraphNode = require( 'FALLING_OBJECTS/common/view/ValueGraphNode' );
 
   /**
    * Construct the graphs for Position, Velocity and Acceleration by implementing ValueGraph
