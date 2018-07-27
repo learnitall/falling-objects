@@ -68,6 +68,11 @@ define( function( require ) {
       graphHeight
     )
 
+    // Add them all as children
+    this.addChild( this.accelerationGraph );
+    this.addChild( this.velocityGraph );
+    this.addChild( this.positionGraph );
+
   }
 
   fallingObjects.register( 'PVAGraphs', PVAGraphs );
