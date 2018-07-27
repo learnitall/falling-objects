@@ -90,6 +90,9 @@ define( function( require) {
       this.lastUpdateTimeProperty.reset();
       this.maxValueProperty.reset();
       this.maxTimeProperty.reset();
+      this._valueScalePowerProperty.reset();
+      this.valueScaleProperty.reset();
+      this.timeScaleProperty.reset();
       this.dataPointsProperty.reset();
       this.replotGraphProperty.reset();
     },
