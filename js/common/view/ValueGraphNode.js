@@ -335,6 +335,9 @@ define( function( require ) {
       this.plotDataShape.moveToPoint( this.graphOrigin );
       this.dataPlotNode.setShape( this.plotDataShape );
 
+      // relayout the axes
+      this.layoutAxes();
+
     },
 
     /**
