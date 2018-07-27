@@ -209,7 +209,6 @@ define( function( require ) {
         stroke: lineColor
       }
     );
-    console.log( dataPlotNodeOptions );
     // Create a Path node that will draw the Shape- Path.setShape will be called in resetPlot
     this.dataPlotNode = new Path( null, dataPlotNodeOptions );
 
