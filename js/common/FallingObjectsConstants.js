@@ -77,7 +77,7 @@ define( function( require ) {
     CONTROL_BUTTON_STEP_DT: 1 / 60,  // Assume frame rate for manual steps (60th of a sec)
     CONTROL_BUTTON_MARGIN_X: 10,  // Padding on each side of the row of control buttons (larger the number, more condensed they will be)
 
-    VG_RELATIVE_ORIGIN: new Vector2( 20, 20 ),  // Origin point of the ValueGraphs, determined empirically, relative to the bottom left corner of background.
+    VG_RELATIVE_ORIGIN: new Vector2( 40, 40 ),  // Origin point of the ValueGraphs, determined empirically, relative to the bottom left corner of background.
     VG_MAX_TIME_INTERVAL: 20,  // Maximum number of seconds that can be plotted on the X axis at once (determines length of axis)
     VG_MAX_VALUE_INTERVAL: 30,  // Maximum 'number' of the value property that can be plotted on the Y axis at once, until the axis is increased
     VG_DATA_PLOT_NODE_OPTIONS: {  // Options for the Path node that is used to plot the data on the graph
@@ -90,9 +90,13 @@ define( function( require ) {
     },
     VG_UPDATE_FREQUENCY: 1,  // Frequency (in seconds) at which to update the graph
     VG_PLOT_EDGE_PADDING: new Vector2( 50, 50 ),  // Horizontal and vertical plot padding- smaller the value the closer the data will get to the edge of the graph
-    VG_AXIS_LABEL_FONT_SIZE: 12,  // Font size of the axis labels
-    VG_AXIS_LABEL_PADDING: 10,  // Padding on the right and left or top and bottom of an axis label on the graph
+    VG_AXIS_LABEL_FONT_SIZE: 15,  // Font size of the axis labels
+    VG_AXIS_LABEL_PADDING: 5,  // Padding on the right and left or top and bottom of an axis label on the graph
     VG_AXIS_LABEL_COUNT: 4,  // Number of labels to create on each axis
+    VG_GRAPH_LINE_OPTIONS: {  // Options for the Line nodes that are used to create the graph tick lines
+      stroke: 'gray',
+      lineWidth: 2
+    },
 
     MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates
 
