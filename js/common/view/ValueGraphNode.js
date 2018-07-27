@@ -29,7 +29,7 @@ define( function( require ) {
   var VStrut = require( 'SCENERY/nodes/VStrut' );
 
   // strings
-  var pattern0Label = require( 'string!FALLING_OBJECTS/pattern.0Label' );
+  var pattern0LabelString = require( 'string!FALLING_OBJECTS/pattern.0Label' );
 
   /**
    * Construct the ValueGraphNode.
@@ -94,11 +94,12 @@ define( function( require ) {
       // Each label is constructed like so: ( edge of graph : padding : label : padding : axis )
       // We want to find the size of 'label' above, so take the length between 'edge of graph' and 'axis' and then
       // subtract 'padding'.
-      return ( yAxis ? this.graphOrigin.x : this.graphOrigin.y ) - ( 2 * axisLabelPadding );
-    }
+      return ( yAxis ? self.graphOrigin.x : self.graphOrigin.y ) - ( 2 * axisLabelPadding );
+    };
 
     // These are used in the below two functions
-    var paddingStrut, containerBox;
+    var paddingStrut;
+    var containerBox;
 
     /**
      * Generate a new label on our axis
@@ -110,17 +111,18 @@ define( function( require ) {
     var genAxisLabel = function( maxLabelSize, locPercent, yAxis ) {
 
       // Labels on the yAxis use different Struts and Boxes than labels on the xAxis to add in the padding
-      var labelOptions, axisLengthProperty;
+      var labelOptions;
+      var axisLengthProperty;
       if ( yAxis ) {
         paddingStrut = HStrut;
         containerBox = HBox;
         labelOptions = { font: axisLabelFont, maxWidth: maxLabelSize };
-        axisLengthProperty = this.valueGraphModel.maxValueProperty;
+        axisLengthProperty = self.valueGraphModel.maxValueProperty;
       } else {
         paddingStrut = VStrut;
         containerBox = VBox;
         labelOptions = { font: axisLabelFont, maxHeight: maxLabelSize };
-        axisLengthProperty = this.valueGraphModel.maxTimeProperty;
+        axisLengthProperty = self.valueGraphModel.maxTimeProperty;
       }
 
       // The label's value will be updated shortly, set to empty string for now
@@ -129,7 +131,7 @@ define( function( require ) {
       // Create a link to update axis label when the length of the axis changes
       axisLengthProperty.link( function( axisLength ) {
         // Multiply total axis length by our location percentage
-        newLabel.setText( StringUtils.fillIn( pattern0Label, axisLength * locPercent ) );
+        newLabel.setText( StringUtils.fillIn( pattern0LabelString, axisLength * locPercent ) );
       } );
 
       // Wrap the label in padding and return
@@ -141,7 +143,7 @@ define( function( require ) {
           new paddingStrut( axisLabelPadding)
         ]
       } );
-    }
+    };
 
     /**
      * Generate axis labels for a whole axis, returning a Box that contains them.
@@ -176,7 +178,7 @@ define( function( require ) {
         axisLabelBox.addChild( genAxisLabel( maxLabelSize, baseLocPercent * i, yAxis ) );
 
         // Add padding if we aren't on the last label
-        if ( i != ( axisLabelCount - 1 ) ) {
+        if ( i !== ( axisLabelCount - 1 ) ) {
           axisLabelBox.addChild( paddingStrut( labelSpacing ) );
         }
 
@@ -184,7 +186,7 @@ define( function( require ) {
 
       return axisLabelBox;
 
-    }
+    };
 
     // Now create our axis labels and position
     var axisLabelCount = FallingObjectsConstants.VG_AXIS_LABEL_COUNT;
