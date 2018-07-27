@@ -82,7 +82,7 @@ define( function( require ) {
 
     // Construct labels for our axis
     var axisLabelFont = new PhetFont( { size: FallingObjectsConstants.VG_AXIS_LABEL_FONT_SIZE } );
-    var axisLabelPadding = FallingObjectsConstants.VB_AXIS_LABEL_PADDING;
+    var axisLabelPadding = FallingObjectsConstants.VG_AXIS_LABEL_PADDING;
 
     /**
      * Determine the maxWidth or maxHeight of a label on the axis, based on padding parameters and the
