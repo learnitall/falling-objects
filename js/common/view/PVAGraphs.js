@@ -38,7 +38,7 @@ define( function( require ) {
 
     // Calculate dimensions of each graph- each gets little less than a third of maxHeight
     this.verticalSpacing = FallingObjectsConstants.VG_VERTICAL_SPACING;
-    var graphHeight = ( maxHeight - ( 2 * this.verticalSpacing ) / 3 );
+    var graphHeight = ( maxHeight - ( 2 * this.verticalSpacing ) ) / 3;
     var graphWidth = maxWidth;
 
     // Create the acceleration, velocity and position graphs
