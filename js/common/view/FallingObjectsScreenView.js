@@ -189,6 +189,7 @@ define( function( require ) {
       // Most of the items on the screen view will be reset when the model properties are reset, since they are linked
       // Some elements however have their own reset methods which need to be called.
       this.movingBackground.reset();
+      this.PVAGraphs.reset();
     }
 
   } );

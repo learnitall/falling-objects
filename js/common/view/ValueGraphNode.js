@@ -213,7 +213,6 @@ define( function( require ) {
     // Initialize out Plot
     this.resetPlot();  // this is defined in the inherit call
 
-    // TODO: Make sure the reset method is called in PVAGraph
     // Frequency at which to update the graph
     var updateFrequency = FallingObjectsConstants.VG_UPDATE_FREQUENCY;
     // Add a link onto the time property in the model to update our plot
