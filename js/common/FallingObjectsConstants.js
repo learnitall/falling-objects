@@ -91,10 +91,10 @@ define( function( require ) {
       lineWidth: 4
     },
     VG_UPDATE_FREQUENCY: 1,  // Frequency (in seconds) at which to update the graph
-    VG_PLOT_EDGE_PADDING: new Vector2( 50, 50 ),  // Horizontal and vertical plot padding- smaller the value the closer the data will get to the edge of the graph
+    VG_PLOT_EDGE_PADDING: new Vector2( 40, 30 ),  // Horizontal and vertical plot padding- smaller the value the closer the data will get to the edge of the graph
     VG_AXIS_LABEL_FONT_SIZE: 15,  // Font size of the axis labels
     VG_AXIS_LABEL_PADDING: 5,  // Padding on the right and left or top and bottom of an axis label on the graph
-    VG_AXIS_LABEL_COUNT: 6,  // Number of labels to create on each axis
+    VG_AXIS_LABEL_COUNT: 4,  // Number of labels to create on each axis
     VG_GRAPH_LINE_OPTIONS: {  // Options for the Line nodes that are used to create the graph tick lines
       stroke: 'gray',
       lineWidth: 3
