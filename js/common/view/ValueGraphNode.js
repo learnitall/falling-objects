@@ -58,8 +58,8 @@ define( function( require ) {
     var backgroundRectangle = new Rectangle( 0, 0, maxWidth, maxHeight, FallingObjectsConstants.FBD_BACKGROUND_OPTIONS );
 
     // Determine max plot area
-    var maxPlotHeight = backgroundRectangle.getHeight() - FallingObjectsConstants.VG_PLOT_EDGE_PADDING.y - this.graphOrigin.x;
-    var maxPlotWidth = backgroundRectangle.getWidth() - FallingObjectsConstants.VG_PLOT_EDGE_PADDING.x - this.graphOrigin.y;
+    var maxPlotHeight = backgroundRectangle.getHeight() - FallingObjectsConstants.VG_PLOT_EDGE_PADDING.y - this.graphOrigin.y;
+    var maxPlotWidth = backgroundRectangle.getWidth() - FallingObjectsConstants.VG_PLOT_EDGE_PADDING.x - this.graphOrigin.x;
 
     // Create a ValueGraphModel that will be used to hold our data
     this.valueGraphModel = new ValueGraphModel( maxPlotWidth, maxPlotHeight );
@@ -144,8 +144,11 @@ define( function( require ) {
       // Determine the maxWidth or maxHeight of the label (interpretation done though yAxis param)
       var maxLabelSize = getMaxLabelSize( yAxis );
 
+      // Create some nodes to hold our labels and lines
       var axisLabelNode = new Node();
       var graphLineNode = new Node();
+
+      // Create some helper variables
       var locPercent;
       var newLabel;
       var newGraphLine;
