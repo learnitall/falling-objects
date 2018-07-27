@@ -46,6 +46,7 @@ define( function( require ) {
     // Store the getter for our targetValue
     // @public
     this.getTargetValue = targetValueGetter;
+    console.log( this.getTargetValue(), name );
 
     // Define where the origin of the graph lies (VG_RELATIVE_ORIGIN is relative to the top left corner of the background rectangle)
     this.graphOrigin = FallingObjectsConstants.VG_RELATIVE_ORIGIN;
@@ -289,7 +290,10 @@ define( function( require ) {
     // Create a property link to draw the last point pushed into our data points array
     this.valueGraphModel.dataPointsProperty.lazyLink( function( dataPoints ) {
       // This function will only plot the last data point added
-      self.plotPoint( dataPoints[ dataPoints.length - 1] );
+      var dataPoint = dataPoints[ dataPoints.length ] - 1;
+      if ( dataPoint ) {
+        self.plotPoint( dataPoint );
+      }
     } );
 
 
