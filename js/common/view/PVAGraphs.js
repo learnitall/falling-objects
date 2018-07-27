@@ -31,7 +31,13 @@ define( function( require ) {
     // Call the super
     Node.call( this );
 
-    // Create a getter for the position property, since it's a vector property
+    // Create a getters for each of the properties
+    var getAccelerationProperty = function() {
+      return fallingObjectsModel.selectedFallingObject.accelerationProperty.get();
+    };
+    var getVelocityProperty = function() {
+      return fallingObjectsModel.selectedFallingObject.velocityProperty.get();
+    };
     var getPositionProperty = function() {
       return fallingObjectsModel.selectedFallingObject.positionProperty.get().y;
     };
@@ -45,7 +51,7 @@ define( function( require ) {
     this.accelerationGraph = new ValueGraphNode(
       fallingObjectsModel,
       accelerationString,
-      fallingObjectsModel.selectedFallingObject.accelerationProperty.get,
+      getAccelerationProperty,
       FallingObjectsConstants.VG_ACCELERATION_COLOR,
       graphWidth,
       graphHeight
@@ -54,7 +60,7 @@ define( function( require ) {
     this.velocityGraph = new ValueGraphNode(
      fallingObjectsModel,
      velocityString,
-     fallingObjectsModel.selectedFallingObject.velocityProperty.get,
+     getVelocityProperty,
      FallingObjectsConstants.VG_VELOCITY_COLOR,
      graphWidth,
      graphHeight
