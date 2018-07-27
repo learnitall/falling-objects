@@ -69,16 +69,6 @@ define( function( require ) {
       this.graphOrigin, this.valueGraphModel.timeScaleProperty.get(), this.valueGraphModel.valueScaleProperty.get()
     );
 
-    // Construct our axis lines
-    var valueAxis = new Line(
-      this.graphOrigin.x, this.graphOrigin.y, this.graphOrigin.x, this.graphOrigin.y + maxPlotHeight,
-      FallingObjectsConstants.VG_AXIS_LINE_OPTIONS
-    );
-    var timeAxis = new Line(
-      this.graphOrigin.x, this.graphOrigin.y, this.graphOrigin.x + maxPlotWidth, this.graphOrigin.y,
-      FallingObjectsConstants.VG_AXIS_LINE_OPTIONS
-    );
-
     // Construct labels for our axis
     var axisLabelFont = new PhetFont( { size: FallingObjectsConstants.VG_AXIS_LABEL_FONT_SIZE } );
     var axisLabelPadding = FallingObjectsConstants.VG_AXIS_LABEL_PADDING;
@@ -131,12 +121,13 @@ define( function( require ) {
     };
 
     /**
-     * Generate and position axis labels for a whole axis, returning a Node that contains them.
+     * Generate and position axis labels, axes, and graph lines. Returning a list containing:
+     * [ label container node, axes and graph lines container node ]
      *
      * @param {number} axisLabelCount - Number of labels to create on the axis
      * @param {boolean} yAxis - If true, then creates axis labels for the yAxis, otherwise for the xAxis
      */
-    var genAxisLabels = function( axisLabelCount, yAxis ) {
+    var genAxisStuff = function( axisLabelCount, yAxis ) {
 
       var axisLength;
       var axisMaxLengthProperty;
@@ -154,35 +145,66 @@ define( function( require ) {
       var maxLabelSize = getMaxLabelSize( yAxis );
 
       var axisLabelNode = new Node();
+      var graphLineNode = new Node();
       var locPercent;
       var newLabel;
-      var setPos;
+      var newGraphLine;
+      var newGraphLineOptions;
+      var pos;
       for ( var i = 0; i < axisLabelCount + 1; i++ ) {  // The first axis label will be 0, then axisLabelCount number of labels will follow
 
         // Create the label and add as child
         locPercent = baseLocPercent * i;
         newLabel = genAxisLabel( maxLabelSize, axisMaxLengthProperty, locPercent, yAxis );
-        axisLabelNode.addChild( newLabel );
 
-        // Position
-        if ( yAxis ) {
-          newLabel.setCenterY( axisLength * locPercent );
+        // Get position of the label
+        pos = axisLength * locPercent;
+
+        // Get the appropriate graph line options
+        if ( i == 0 ) {
+          newGraphLineOptions = FallingObjectsConstants.VG_AXIS_LINE_OPTIONS;
         } else {
-          newLabel.setCenterX( axisLength * locPercent );
+          newGraphLineOptions = FallingObjectsConstants.VG_GRAPH_LINE_OPTIONS;
         }
 
+        if ( yAxis ) {
+          // Position the label
+          newLabel.setCenterY( pos );
+
+          // Create the graph line and position
+          newGraphLine = new Line( 0, 0, maxPlotWidth, 0, newGraphLineOptions );
+          newGraphLine.setCenterY( pos );
+          graphLineNode.addChild( newGraphLine );
+        } else {
+          // Position the label
+          newLabel.setCenterX( pos );
+
+          // Create the graph line and position
+          newGraphLine = new Line( 0, 0, 0, maxPlotHeight, newGraphLineOptions );
+          newGraphLine.setCenterX( pos );
+          graphLineNode.addChild( newGraphLine );
+        }
+
+        axisLabelNode.addChild( newLabel );
       }
 
-      return axisLabelNode;
+      return [ axisLabelNode, graphLineNode ];
 
     };
 
     // Now create our axis labels and position
     var axisLabelCount = FallingObjectsConstants.VG_AXIS_LABEL_COUNT;
-    var valueAxisLabelBox = genAxisLabels( axisLabelCount, true );
-    valueAxisLabelBox.setRightTop( this.graphOrigin );
-    var timeAxisLabelBox = genAxisLabels( axisLabelCount, false );
-    timeAxisLabelBox.setLeftBottom( this.graphOrigin );
+    var valueAxisStuff = genAxisStuff( axisLabelCount, true );
+    var valueAxisLabelNode = valueAxisStuff[ 0 ];
+    valueAxisLabelNode.setRightTop( this.graphOrigin );
+    var valueGraphLinesNode = valueAxisStuff[ 1 ];
+    valueGraphLinesNode.setLeftTop( this.graphOrigin );
+
+    var timeAxisStuff = genAxisStuff( axisLabelCount, false );
+    var timeAxisLabelNode = timeAxisStuff[ 0 ];
+    timeAxisLabelNode.setLeftBottom( this.graphOrigin );
+    var timeGraphLinesNode = timeAxisStuff[ 1 ];
+    timeGraphLinesNode.setLeftTop( this.graphOrigin );
 
     // Data plot is drawn using a Shape object, so we need to construct a Path object that will
     // do the work of displaying it on the screen
@@ -278,11 +300,11 @@ define( function( require ) {
 
     // Set children
     this.addChild( backgroundRectangle );
+    this.addChild( valueAxisLabelNode );
+    this.addChild( timeAxisLabelNode );
+    this.addChild( valueGraphLinesNode );
+    this.addChild( timeGraphLinesNode );
     this.addChild( this.dataPlotNode );
-    this.addChild( valueAxis );
-    this.addChild( timeAxis );
-    this.addChild( valueAxisLabelBox );
-    this.addChild( timeAxisLabelBox );
 
   }
 
