@@ -204,9 +204,12 @@ define( function( require ) {
     // Data plot is drawn using a Shape object, so we need to construct a Path object that will
     // do the work of displaying it on the screen
     // Pull default options from constants
-    var dataPlotNodeOptions = _.extend( {
-      stroke: lineColor
-    }, FallingObjectsConstants.VG_DATA_PLOT_NODE_OPTIONS );
+    var dataPlotNodeOptions = _.extend(
+      FallingObjectsConstants.VG_DATA_PLOT_NODE_OPTIONS, {
+        stroke: lineColor
+      }
+    );
+    console.log( dataPlotNodeOptions );
     // Create a Path node that will draw the Shape- Path.setShape will be called in resetPlot
     this.dataPlotNode = new Path( null, dataPlotNodeOptions );
 
