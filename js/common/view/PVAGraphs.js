@@ -36,8 +36,9 @@ define( function( require ) {
       return fallingObjectsModel.selectedFallingObject.positionProperty.get().y;
     };
 
-    // Calculate height of each graph- each gets little less than a third of maxHeight
-    var graphHeight = ( maxHeight - ( 2 * FallingObjectsConstants.VG_VERTICAL_SPACING ) / 3 );
+    // Calculate dimensions of each graph- each gets little less than a third of maxHeight
+    this.verticalSpacing = FallingObjectsConstants.VG_VERTICAL_SPACING;
+    var graphHeight = ( maxHeight - ( 2 * this.verticalSpacing ) / 3 );
     var graphWidth = maxWidth;
 
     // Create the acceleration, velocity and position graphs
@@ -67,6 +68,11 @@ define( function( require ) {
       graphWidth,
       graphHeight
     )
+
+    // Do some layout (acceleration on top, then velocity and position to follow)
+    this.accelerationGraph.top = 0;
+    this.velocityGraph.top = this.accelerationGraph.bottom + this.verticalSpacing;
+    this.positionGraph.top = this.velocityGraph.bottom + this.verticalSpacing;
 
     // Add them all as children
     this.addChild( this.accelerationGraph );
