@@ -26,6 +26,7 @@ define( function( require ) {
 
   // strings
   var pattern0LabelString = require( 'string!FALLING_OBJECTS/pattern.0Label' );
+  var pattern0LabelWithNegativeString = require( 'string!FALLING_OBJECTS/pattern.0LabelWithNegative' );
 
   /**
    * Construct the ValueGraphNode.
@@ -106,7 +107,8 @@ define( function( require ) {
       // Create a link to update axis label when the length of the axis changes
       axisMaxLengthProperty.link( function( axisLength ) {
         // Multiply total axis length by our location percentage
-        newLabel.setText( StringUtils.fillIn( pattern0LabelString, { label: Math.round( axisLength * locPercent ) } ) );
+        var pattern = yAxis ? pattern0LabelWithNegativeString : pattern0LabelString;
+        newLabel.setText( StringUtils.fillIn( pattern, { label: Math.round( axisLength * locPercent ) } ) );
       } );
 
       return newLabel;
