@@ -90,6 +90,8 @@ define( function( require ) {
     },
     VG_UPDATE_FREQUENCY: 1,  // Frequency (in seconds) at which to update the graph
     VG_PLOT_EDGE_PADDING: new Vector2( 50, 50 ),  // Horizontal and vertical plot padding- smaller the value the closer the data will get to the edge of the graph
+    VG_AXIS_LABEL_FONT_SIZE: 12,  // Font size of the axis labels
+    VG_AXIS_LABEL_PADDING: 10,  // Padding on the right and left or top and bottom of an axis label on the graph
 
     MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates
 

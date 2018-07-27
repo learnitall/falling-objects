@@ -11,15 +11,25 @@ define( function( require ) {
   // modules
   var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
+  var HBox = require( 'SCENERY/nodes/HBox' );
+  var HStrut = require( 'SCENERY/nodes/HStrut' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  var Text = require( 'SCENERY/nodes/Text' );
   var ValueGraphModel = require( 'FALLING_OBJECTS/common/model/ValueGraphModel' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
   var Vector2 = require( 'DOT/Vector2' );
+  var VStrut = require( 'SCENERY/nodes/VStrut' );
+
+  // strings
+  var pattern0Label = require( 'string!FALLING_OBJECTS/pattern.0Label' );
 
   /**
    * Construct the ValueGraphNode.
@@ -68,6 +78,65 @@ define( function( require ) {
       this.graphOrigin.x, this.graphOrigin.y, this.graphOrigin.x + maxPlotWidth, this.graphOrigin.y,
       FallingObjectsConstants.VG_AXIS_LINE_OPTIONS
     );
+
+    // Construct labels for our axis
+    var axisLabelFont = new PhetFont( { size: FallingObjectsConstants.VG_AXIS_LABEL_FONT_SIZE } );
+    var axisLabelPadding = FallingObjectsConstants.VB_AXIS_LABEL_PADDING;
+
+    /**
+     * Determine the maxWidth or maxHeight of a label on the axis, based on padding parameters and the
+     * location of the graph's origin
+     *
+     * @param {boolean} yAxis - if True, then return maxWidth parameter to be passed into a Text node, otherwise return maxHeight
+     */
+    var getMaxLabelSize = function( yAxis ) {
+
+      // Each label is constructed like so: ( edge of graph : padding : label : padding : axis )
+      // We want to find the size of 'label' above, so take the length between 'edge of graph' and 'axis' and then
+      // subtract 'padding'.
+      return ( yAxis ? this.graphOrigin.x : this.graphOrigin.y ) - ( 2 * axisLabelPadding );
+    }
+
+    /**
+     * Generate a new label on our axis
+     *
+     * @param {number} locPercent - Location of the label on the axis as a decimal percentage (i.e. 0.25 represents fourth of the way down the axis)
+     * @param {boolean} yAxis - if True, then the label will be formatted for use on the yAxis, otherwise formatted for use on the xAxis
+     */
+    var genAxisLabel = function( locPercent, yAxis ) {
+
+      // Labels on the yAxis use different Struts and Boxes than labels on the xAxis to add in the padding
+      var paddingStrut, containerBox, labelOptions, axisLengthProperty;
+      if ( yAxis ) {
+        paddingStrut = HStrut;
+        containerBox = HBox;
+        labelOptions = { font: axisLabelFont, maxWidth: getMaxLabelSize( yAxis ) };
+        axisLengthProperty = this.valueGraphModel.maxValueProperty;
+      } else {
+        paddingStrut = VStrut;
+        containerBox = VBox;
+        labelOptions = { font: axisLabelFont, maxHeight: getMaxLabelSize( yAxis ) };
+        axisLengthProperty = this.valueGraphModel.maxTimeProperty;
+      }
+
+      // The label's value will be updated shortly, set to empty string for now
+      var newLabel = new Text( '', labelOptions );
+
+      // Create a link to update axis label when the length of the axis changes
+      axisLengthProperty.link( function( axisLength ) {
+        // Multiply total axis length by our location percentage
+        newLabel.setText( StringUtils.fillIn( pattern0Label, axisLength * locPercent ) );
+      } );
+
+      return new containerBox( {
+        align: 'center',
+        children: [
+          new paddingStrut( axisLabelPadding ),
+          newLabel,
+          new paddingStrut( axisLabelPadding)
+        ]
+      } );
+    }
 
     // Data plot is drawn using a Shape object, so we need to construct a Path object that will
     // do the work of displaying it on the screen

@@ -14,6 +14,9 @@
   "pattern.0Label.1Value": {
     "value": "{{label}}: {{value}}"
   },
+  "pattern.0Label": {
+    "value": "{{label}}"
+  },
   "showValues": {
     "value": "Show Values"
   },
