@@ -97,25 +97,29 @@ define( function( require ) {
       return ( yAxis ? this.graphOrigin.x : this.graphOrigin.y ) - ( 2 * axisLabelPadding );
     }
 
+    // These are used in the below two functions
+    var paddingStrut, containerBox;
+
     /**
      * Generate a new label on our axis
      *
+     * @param {number} maxLabelSize - Max size of the label. If yAxis is true, then interpreted as maxWidth, otherwise as maxHeight
      * @param {number} locPercent - Location of the label on the axis as a decimal percentage (i.e. 0.25 represents fourth of the way down the axis)
-     * @param {boolean} yAxis - if True, then the label will be formatted for use on the yAxis, otherwise formatted for use on the xAxis
+     * @param {boolean} yAxis - If true, then the label will be formatted for use on the yAxis, otherwise formatted for use on the xAxis
      */
-    var genAxisLabel = function( locPercent, yAxis ) {
+    var genAxisLabel = function( maxLabelSize, locPercent, yAxis ) {
 
       // Labels on the yAxis use different Struts and Boxes than labels on the xAxis to add in the padding
-      var paddingStrut, containerBox, labelOptions, axisLengthProperty;
+      var labelOptions, axisLengthProperty;
       if ( yAxis ) {
         paddingStrut = HStrut;
         containerBox = HBox;
-        labelOptions = { font: axisLabelFont, maxWidth: getMaxLabelSize( yAxis ) };
+        labelOptions = { font: axisLabelFont, maxWidth: maxLabelSize };
         axisLengthProperty = this.valueGraphModel.maxValueProperty;
       } else {
         paddingStrut = VStrut;
         containerBox = VBox;
-        labelOptions = { font: axisLabelFont, maxHeight: getMaxLabelSize( yAxis ) };
+        labelOptions = { font: axisLabelFont, maxHeight: maxLabelSize };
         axisLengthProperty = this.valueGraphModel.maxTimeProperty;
       }
 
@@ -128,6 +132,7 @@ define( function( require ) {
         newLabel.setText( StringUtils.fillIn( pattern0Label, axisLength * locPercent ) );
       } );
 
+      // Wrap the label in padding and return
       return new containerBox( {
         align: 'center',
         children: [
@@ -138,6 +143,48 @@ define( function( require ) {
       } );
     }
 
+    /**
+     * Generate axis labels for a whole axis, returning a Box that contains them.
+     *
+     * @param {number} axisLabelCount - Number of labels to create on the axis
+     * @param {boolean} yAxis - If true, then creates axis labels for the yAxis, otherwise for the xAxis
+     */
+    var genAxisLabels = function( axisLabelCount, yAxis ) {
+
+      var axisLength;
+      if ( yAxis ) {
+        paddingStrut = VStrut;
+        containerBox = VBox;
+        axisLength = maxPlotHeight;
+      } else {
+        paddingStrut = HStrut;
+        containerBox = HBox;
+        axisLength = maxPlotWidth;
+      }
+
+      // Determine the base locPercent that we can scale and pass to genAxisLabel
+      var baseLocPercent = 1 / axisLabelCount;
+      // Determine the maxWidth or maxHeight of the label (interpretation done though yAxis param)
+      var maxLabelSize = getMaxLabelSize( yAxis );
+      // Calculate the space in between each axis label (total space - space taken up by labels / number of needed padding sections)
+      var labelSpacing = ( axisLength - ( axisLabelCount * maxLabelSize ) ) / ( axisLabelCount - 1 );
+
+      var axisLabelBox = new containerBox( { align: 'center' } );
+      for ( var i = 0; i < axisLabelCount; i++ ) {
+
+        // Create the label and add it to the box
+        axisLabelBox.addChild( genAxisLabel( maxLabelSize, baseLocPercent * i, yAxis ) );
+
+        // Add padding if we aren't on the last label
+        if ( i != ( axisLabelCount - 1 ) ) {
+          axisLabelBox.addChild( paddingStrut( labelSpacing ) );
+        }
+
+      }
+
+      return axisLabelBox;
+
+    }
     // Data plot is drawn using a Shape object, so we need to construct a Path object that will
     // do the work of displaying it on the screen
     // Pull default options from constants
