@@ -53,6 +53,8 @@ define( function( require ) {
     var freeBodyDiagramHeight = screenHeight - ( 2 * this.screenMarginY );
     var freeBodyDiagramWidth = controlPanelsMaxWidth / 4;
     this.graphsHorizontalSpacing = FallingObjectsConstants.GRAPHS_HORIZONTAL_SPACING;
+    var pvaGraphsHeight = freeBodyDiagramHeight;
+    var pvaGraphsWidth = controlPanelsMaxWidth * 2;
 
     // Create the moving background
     this.movingBackground = new MovingBackground( this.fallingObjectsModel );
@@ -96,7 +98,7 @@ define( function( require ) {
     this.freeBodyDiagram = new FreeBodyDiagram( this.fallingObjectsModel, freeBodyDiagramWidth, freeBodyDiagramHeight );
 
     // Create the PVAGraphs
-    this.pvaGraphs = new PVAGraphs( this.fallingObjectsModel );
+    this.pvaGraphs = new PVAGraphs( this.fallingObjectsModel, pvaGraphsWidth, pvaGraphsHeight );
 
     // Add all of the children
     this.addChild( this.movingBackground );
