@@ -70,6 +70,7 @@ define( function( require ) {
     );
 
     // Construct our axis lines
+    // TODO: Add padding on these lines
     var valueAxis = new Line(
       this.graphOrigin.x, this.graphOrigin.y, this.graphOrigin.x, this.graphOrigin.y + maxPlotHeight,
       FallingObjectsConstants.VG_AXIS_LINE_OPTIONS
@@ -140,7 +141,7 @@ define( function( require ) {
         children: [
           new paddingStrut( axisLabelPadding ),
           newLabel,
-          new paddingStrut( axisLabelPadding)
+          new paddingStrut( axisLabelPadding )
         ]
       } );
     };
@@ -179,7 +180,7 @@ define( function( require ) {
 
         // Add padding if we aren't on the last label
         if ( i !== ( axisLabelCount - 1 ) ) {
-          axisLabelBox.addChild( paddingStrut( labelSpacing ) );
+          axisLabelBox.addChild( new paddingStrut( labelSpacing ) );
         }
 
       }
