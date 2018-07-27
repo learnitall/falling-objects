@@ -204,13 +204,13 @@ define( function( require ) {
     // Data plot is drawn using a Shape object, so we need to construct a Path object that will
     // do the work of displaying it on the screen
     // Pull default options from constants
-    var dataPlotNodeOptions = _.extend(
+    this.dataPlotNodeOptions = _.extend(
       FallingObjectsConstants.VG_DATA_PLOT_NODE_OPTIONS, {
         stroke: lineColor
       }
     );
     // Create a Path node that will draw the Shape- Path.setShape will be called in resetPlot
-    this.dataPlotNode = new Path( null, dataPlotNodeOptions );
+    this.dataPlotNode = new Path( null, this.dataPlotNodeOptions );
 
     // Initialize out Plot
     this.resetPlot();  // this is defined in the inherit call
@@ -332,7 +332,10 @@ define( function( require ) {
       }
       // create a new shape and move it to the origin
       this.plotDataShape = new Shape();
-      this.plotDataShape.moveToPoint( this.graphOrigin );
+      this.plotDataShape.moveTo(
+        this.graphOrigin.x + this.dataPlotNodeOptions.lineWidth,
+        this.graphOrigin.y + this.dataPlotNodeOptions.lineWidth
+      );
       this.dataPlotNode.setShape( this.plotDataShape );
 
       // relayout the axes
