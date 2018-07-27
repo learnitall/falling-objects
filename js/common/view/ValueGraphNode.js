@@ -114,7 +114,7 @@ define( function( require ) {
       // Create a link to update axis label when the length of the axis changes
       axisMaxLengthProperty.link( function( axisLength ) {
         // Multiply total axis length by our location percentage
-        newLabel.setText( StringUtils.fillIn( pattern0LabelString, { label: axisLength * locPercent } ) );
+        newLabel.setText( StringUtils.fillIn( pattern0LabelString, { label: Math.round( axisLength * locPercent ) } ) );
       } );
 
       return newLabel;
