@@ -77,6 +77,17 @@ define( function( require ) {
 
   fallingObjects.register( 'PVAGraphs', PVAGraphs );
 
-  return inherit( Node, PVAGraphs );
+  return inherit( Node, PVAGraphs, {
+
+    /**
+     * Reset the PVAGraphs
+     */
+    reset: function() {
+      this.accelerationGraph.reset();
+      this.velocityGraph.reset();
+      this.positionGraph.reset();
+    }
+
+  } );
 
 } );
