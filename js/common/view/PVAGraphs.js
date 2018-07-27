@@ -61,13 +61,13 @@ define( function( require ) {
     );
 
     this.positionGraph = new ValueGraphNode(
-      fallingObjectsModel
+      fallingObjectsModel,
       positionString,
       getPositionProperty,
       FallingObjectsConstants.VG_POSITION_COLOR,
       graphWidth,
       graphHeight
-    )
+    );
 
     // Do some layout (acceleration on top, then velocity and position to follow)
     this.accelerationGraph.top = 0;
