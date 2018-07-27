@@ -46,7 +46,6 @@ define( function( require ) {
     // Store the getter for our targetValue
     // @public
     this.getTargetValue = targetValueGetter;
-    console.log( this.getTargetValue(), name );
 
     // Define where the origin of the graph lies (VG_RELATIVE_ORIGIN is relative to the top left corner of the background rectangle)
     this.graphOrigin = FallingObjectsConstants.VG_RELATIVE_ORIGIN;
