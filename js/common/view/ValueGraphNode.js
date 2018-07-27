@@ -71,7 +71,7 @@ define( function( require ) {
 
     // Construct labels for our axis
     var axisLabelFont = new PhetFont( { size: FallingObjectsConstants.VG_AXIS_LABEL_FONT_SIZE } );
-    var axisLabelPadding = FallingObjectsConstants.VG_AXIS_LABEL_PADDING;
+    this.axisLabelPadding = FallingObjectsConstants.VG_AXIS_LABEL_PADDING;
 
     /**
      * Determine the maxWidth or maxHeight of a label on the axis, based on padding parameters and the
@@ -84,7 +84,7 @@ define( function( require ) {
       // Each label is constructed like so: ( edge of graph : padding : label : padding : axis )
       // We want to find the size of 'label' above, so take the length between 'edge of graph' and 'axis' and then
       // subtract 'padding'.
-      return ( yAxis ? self.graphOrigin.x : self.graphOrigin.y ) - ( 2 * axisLabelPadding );
+      return ( yAxis ? self.graphOrigin.x : self.graphOrigin.y ) - ( 2 * self.axisLabelPadding );
     };
 
     // These are used in the below two functions
@@ -197,17 +197,17 @@ define( function( require ) {
 
     // Now create our axis labels and position
     var axisLabelCount = FallingObjectsConstants.VG_AXIS_LABEL_COUNT;
+    // Get the value axis
     var valueAxisStuff = genAxisStuff( axisLabelCount, true );
-    var valueAxisLabelNode = valueAxisStuff[ 0 ];
-    valueAxisLabelNode.setRightTop( this.graphOrigin );
-    var valueGraphLinesNode = valueAxisStuff[ 1 ];
-    valueGraphLinesNode.setLeftTop( this.graphOrigin );
-
+    this.valueAxisLabelNode = valueAxisStuff[ 0 ];
+    this.valueGraphLinesNode = valueAxisStuff[ 1 ];
+    // Get the time axis
     var timeAxisStuff = genAxisStuff( axisLabelCount, false );
-    var timeAxisLabelNode = timeAxisStuff[ 0 ];
-    timeAxisLabelNode.setLeftBottom( this.graphOrigin );
-    var timeGraphLinesNode = timeAxisStuff[ 1 ];
-    timeGraphLinesNode.setLeftTop( this.graphOrigin );
+    this.timeAxisLabelNode = timeAxisStuff[ 0 ];
+    this.timeGraphLinesNode = timeAxisStuff[ 1 ];
+
+    // Lay it all out- this is defined in the call to inherit
+    this.layoutAxes();
 
     // Data plot is drawn using a Shape object, so we need to construct a Path object that will
     // do the work of displaying it on the screen
@@ -289,6 +289,9 @@ define( function( require ) {
           self.plotPoint( dataPoints[ i] );
         }
 
+        // Reposition the axis labels
+        self.layoutAxes();
+
         // Reset
         self.valueGraphModel.replotGraphProperty.reset();
       }
@@ -303,10 +306,10 @@ define( function( require ) {
 
     // Set children
     this.addChild( backgroundRectangle );
-    this.addChild( valueAxisLabelNode );
-    this.addChild( timeAxisLabelNode );
-    this.addChild( valueGraphLinesNode );
-    this.addChild( timeGraphLinesNode );
+    this.addChild( this.valueAxisLabelNode );
+    this.addChild( this.timeAxisLabelNode );
+    this.addChild( this.valueGraphLinesNode );
+    this.addChild( this.timeGraphLinesNode );
     this.addChild( this.dataPlotNode );
 
   }
@@ -347,6 +350,22 @@ define( function( require ) {
     plotPoint: function( newPoint ) {
       // Convert the point from model to view coordinates, and then plot
       this.plotDataShape.lineToPoint( this.modelViewTransform.modelToViewXY( newPoint.x, newPoint.y ) );
+    },
+
+    /**
+     * Layout the axes (includes the labels and graph lines) on the graph
+     */
+    layoutAxes: function() {
+
+      // The methodology for laying this all out was determine empirically
+
+      this.valueAxisLabelNode.setTop( this.graphOrigin.y - ( this.valueAxisLabelNode.children[ 0 ].getHeight() / 2 ) );
+      this.valueAxisLabelNode.setRight( this.graphOrigin.x - this.axisLabelPadding );
+      this.valueGraphLinesNode.setLeftTop( this.graphOrigin );
+
+      this.timeAxisLabelNode.setLeftBottom( this.graphOrigin );
+      this.timeGraphLinesNode.setLeftTop( this.graphOrigin );
+
     }
 
   } );
