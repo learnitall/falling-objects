@@ -11,8 +11,6 @@ define( function( require ) {
   // modules
   var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var HStrut = require( 'SCENERY/nodes/HStrut' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
@@ -24,9 +22,7 @@ define( function( require ) {
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
   var ValueGraphModel = require( 'FALLING_OBJECTS/common/model/ValueGraphModel' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
   var Vector2 = require( 'DOT/Vector2' );
-  var VStrut = require( 'SCENERY/nodes/VStrut' );
 
   // strings
   var pattern0LabelString = require( 'string!FALLING_OBJECTS/pattern.0Label' );
@@ -86,10 +82,6 @@ define( function( require ) {
       // subtract 'padding'.
       return ( yAxis ? self.graphOrigin.x : self.graphOrigin.y ) - ( 2 * self.axisLabelPadding );
     };
-
-    // These are used in the below two functions
-    var paddingStrut;
-    var containerBox;
 
     /**
      * Generate a new label on our axis
@@ -164,7 +156,7 @@ define( function( require ) {
         pos = axisLength * locPercent;
 
         // Get the appropriate graph line options
-        if ( i == 0 ) {
+        if ( i === 0 ) {
           newGraphLineOptions = FallingObjectsConstants.VG_AXIS_LINE_OPTIONS;
         } else {
           newGraphLineOptions = FallingObjectsConstants.VG_GRAPH_LINE_OPTIONS;
@@ -361,7 +353,7 @@ define( function( require ) {
       var self = this;
       this.valueAxisLabelNode.children.forEach( function ( labelNode ) {
         labelNode.setRight( self.graphOrigin.x - self.axisLabelPadding );
-      } )
+      } );
 
       this.valueGraphLinesNode.setLeftTop( this.graphOrigin );
 
