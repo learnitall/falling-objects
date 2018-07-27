@@ -58,8 +58,8 @@ define( function( require ) {
     var backgroundRectangle = new Rectangle( 0, 0, maxWidth, maxHeight, FallingObjectsConstants.FBD_BACKGROUND_OPTIONS );
 
     // Determine max plot area
-    var maxPlotHeight = backgroundRectangle.getHeight() - FallingObjectsConstants.VG_PLOT_EDGE_PADDING.y;
-    var maxPlotWidth = backgroundRectangle.getWidth() - FallingObjectsConstants.VG_PLOT_EDGE_PADDING.x;
+    var maxPlotHeight = backgroundRectangle.getHeight() - FallingObjectsConstants.VG_PLOT_EDGE_PADDING.y - this.graphOrigin.x;
+    var maxPlotWidth = backgroundRectangle.getWidth() - FallingObjectsConstants.VG_PLOT_EDGE_PADDING.x - this.graphOrigin.y;
 
     // Create a ValueGraphModel that will be used to hold our data
     this.valueGraphModel = new ValueGraphModel( maxPlotWidth, maxPlotHeight );
@@ -70,7 +70,6 @@ define( function( require ) {
     );
 
     // Construct our axis lines
-    // TODO: Add padding on these lines
     var valueAxis = new Line(
       this.graphOrigin.x, this.graphOrigin.y, this.graphOrigin.x, this.graphOrigin.y + maxPlotHeight,
       FallingObjectsConstants.VG_AXIS_LINE_OPTIONS
