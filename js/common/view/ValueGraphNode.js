@@ -185,6 +185,14 @@ define( function( require ) {
       return axisLabelBox;
 
     }
+
+    // Now create our axis labels and position
+    var axisLabelCount = FallingObjectsConstants.VG_AXIS_LABEL_COUNT;
+    var valueAxisLabelBox = genAxisLabels( axisLabelCount, true );
+    valueAxisLabelBox.setLeftBottom( this.graphOrigin );
+    var timeAxisLabelBox = genAxisLabels( axisLabelCount, false );
+    timeAxisLabelBox.setRightTop( this.graphOrigin );
+
     // Data plot is drawn using a Shape object, so we need to construct a Path object that will
     // do the work of displaying it on the screen
     // Pull default options from constants
@@ -282,6 +290,8 @@ define( function( require ) {
     this.addChild( this.dataPlotNode );
     this.addChild( valueAxis );
     this.addChild( timeAxis );
+    this.addChild( valueAxisLabelBox );
+    this.addChild( timeAxisLabelBox );
 
   }
 
