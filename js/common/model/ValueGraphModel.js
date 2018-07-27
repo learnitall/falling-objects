@@ -45,7 +45,7 @@ define( function( require) {
     this.maxTimeProperty = new NumberProperty( this.maxTimeInterval );
     
     // @private {Property.<number>} power used to increase the valueScale exponentially (see increaseValueScale)
-    this._valueScalePower = new NumberProperty( 0 );
+    this._valueScalePowerProperty = new NumberProperty( 0 );
 
     // @public {Property.<number>} scalar that maps model values to view coordinates
     this.valueScaleProperty = new NumberProperty( 0 );
@@ -103,9 +103,9 @@ define( function( require) {
      */
     incrementMaxValue: function() {
       // Increment the valueScalePower
-      this._valueScalePower.set( this._valueScalePower.get() + 1 );
+      this._valueScalePowerProperty.set( this._valueScalePowerProperty.get() + 1 );
       // Set the maxValue to the interval multiplied by 2 raised to our power
-      this.maxValueProperty.set( this.maxValueInterval * ( Math.pow( 2, this._valueScalePower.get() ) ) );
+      this.maxValueProperty.set( this.maxValueInterval * ( Math.pow( 2, this._valueScalePowerProperty.get() ) ) );
     },
 
     /**
