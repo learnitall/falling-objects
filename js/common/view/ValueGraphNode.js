@@ -358,7 +358,11 @@ define( function( require ) {
       // The methodology for laying this all out was determine empirically
 
       this.valueAxisLabelNode.setTop( this.graphOrigin.y - ( this.valueAxisLabelNode.children[ 0 ].getHeight() / 2 ) );
-      this.valueAxisLabelNode.setRight( this.graphOrigin.x - this.axisLabelPadding );
+      var self = this;
+      this.valueAxisLabelNode.children.forEach( function ( labelNode ) {
+        labelNode.setRight( self.graphOrigin.x - self.axisLabelPadding );
+      } )
+
       this.valueGraphLinesNode.setLeftTop( this.graphOrigin );
 
       this.timeAxisLabelNode.setLeftBottom( this.graphOrigin );
