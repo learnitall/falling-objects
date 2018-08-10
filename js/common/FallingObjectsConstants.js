@@ -80,7 +80,7 @@ define( function( require ) {
     CONTROL_BUTTON_MARGIN_X: 10,  // Padding on each side of the row of control buttons (larger the number, more condensed they will be)
 
     VG_TOP_LEFT_BOUND: new Vector2( 50, 30 ),  // Top left bound of the ValueGraphs, determined empirically, relative to the top left corner of background.
-    VG_TIME_INTERVAL: 20,  // Interval of seconds that the maximum plottable time is incremented by when needed
+    VG_TIME_INTERVAL: 10,  // Interval of seconds that the maximum plottable time is incremented by when needed
     VG_VALUE_INTERVAL: 30,  // Interval 'number' of the value property that is used to increase the min and max plotable values
     VG_DATA_PLOT_NODE_OPTIONS: {  // Options for the Path node that is used to plot the data on the graph
       stroke: 'black',

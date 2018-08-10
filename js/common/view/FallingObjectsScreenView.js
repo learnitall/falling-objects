@@ -54,7 +54,7 @@ define( function( require ) {
     var freeBodyDiagramWidth = controlPanelsMaxWidth / 4;
     this.graphsHorizontalSpacing = FallingObjectsConstants.GRAPHS_HORIZONTAL_SPACING;
     var pvaGraphsHeight = freeBodyDiagramHeight;
-    var pvaGraphsWidth = controlPanelsMaxWidth * 2;
+    var pvaGraphsWidth = center.x - freeBodyDiagramWidth - this.graphsHorizontalSpacing - 80;
 
     // Create the moving background
     this.movingBackground = new MovingBackground( this.fallingObjectsModel );
