@@ -20,6 +20,7 @@ define( function( require ) {
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var MovingBackground = require( 'FALLING_OBJECTS/common/view/MovingBackground' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var PVAGraphs = require( 'FALLING_OBJECTS/common/view/PVAGraphs' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -51,6 +52,9 @@ define( function( require ) {
     this.controlPanelsVerticalSpacing = FallingObjectsConstants.CONTROL_PANELS_VERTICAL_SPACING;
     var freeBodyDiagramHeight = screenHeight - ( 2 * this.screenMarginY );
     var freeBodyDiagramWidth = controlPanelsMaxWidth / 4;
+    this.graphsHorizontalSpacing = FallingObjectsConstants.GRAPHS_HORIZONTAL_SPACING;
+    var pvaGraphsHeight = freeBodyDiagramHeight;
+    var pvaGraphsWidth = center.x - freeBodyDiagramWidth - this.graphsHorizontalSpacing - 80;
 
     // Create the moving background
     this.movingBackground = new MovingBackground( this.fallingObjectsModel );
@@ -93,6 +97,9 @@ define( function( require ) {
     // Create the Free Body Diagram
     this.freeBodyDiagram = new FreeBodyDiagram( this.fallingObjectsModel, freeBodyDiagramWidth, freeBodyDiagramHeight );
 
+    // Create the PVAGraphs
+    this.pvaGraphs = new PVAGraphs( this.fallingObjectsModel, pvaGraphsWidth, pvaGraphsHeight );
+
     // Add all of the children
     this.addChild( this.movingBackground );
     this.addChild( this.fallingObjectNode );
@@ -100,6 +107,7 @@ define( function( require ) {
     this.addChild( this.togglePanel );
     this.addChild( this.controlButtons );
     this.addChild( this.freeBodyDiagram );
+    this.addChild( this.pvaGraphs );
     this.addChild( this.fallingObjectSelectorParent );
   }
 
@@ -168,6 +176,10 @@ define( function( require ) {
       this.freeBodyDiagram.left =  -offsetX + this.screenMarginX;
       this.freeBodyDiagram.centerY = ( -offsetY + ( height / scale - offsetY ) ) / 2;
 
+      // Place the PVAGraphs just to the right of the freeBodyDiagram
+      this.pvaGraphs.top = this.freeBodyDiagram.top;
+      this.pvaGraphs.left = this.freeBodyDiagram.right + this.graphsHorizontalSpacing;
+
       // Update the visible bounds of the screen view based on our previous calculations
       this.visibleBoundsProperty.set( new Bounds2( -offsetX, -offsetY, width / scale - offsetX, height / scale - offsetY ) );
     },
@@ -179,6 +191,7 @@ define( function( require ) {
       // Most of the items on the screen view will be reset when the model properties are reset, since they are linked
       // Some elements however have their own reset methods which need to be called.
       this.movingBackground.reset();
+      this.pvaGraphs.reset();
     }
 
   } );

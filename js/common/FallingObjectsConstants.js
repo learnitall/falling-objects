@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var Range = require( 'DOT/Range' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // strings
   var baseballString = require( 'string!FALLING_OBJECTS/baseball' );
@@ -72,9 +73,32 @@ define( function( require ) {
     CONTROL_PANELS_FONT_SIZE: 18,  // Font size of text used in the Control Panels
     CONTROL_PANELS_ALIGNMENT: 'left',  // Alignment of Nodes inside control panels
 
+    GRAPHS_HORIZONTAL_SPACING: 20,  // Horizontal space in between the FBD and PVAGraphs
+
     CONTROL_BUTTON_RADIUS: 23,  // Radius of each of the Reset, Play/Pause and Step buttons
     CONTROL_BUTTON_STEP_DT: 1 / 60,  // Assume frame rate for manual steps (60th of a sec)
     CONTROL_BUTTON_MARGIN_X: 10,  // Padding on each side of the row of control buttons (larger the number, more condensed they will be)
+
+    VG_TOP_LEFT_BOUND: new Vector2( 50, 30 ),  // Top left bound of the ValueGraphs, determined empirically, relative to the top left corner of background.
+    VG_TIME_INTERVAL: 10,  // Interval of seconds that the maximum plottable time is incremented by when needed
+    VG_VALUE_INTERVAL: 30,  // Interval 'number' of the value property that is used to increase the min and max plotable values
+    VG_DATA_PLOT_NODE_OPTIONS: {  // Options for the Path node that is used to plot the data on the graph
+      stroke: 'black',
+      lineWidth: 2
+    },
+    VG_UPDATE_FREQUENCY: 1,  // Frequency (in seconds) at which to update the graph
+    VG_PLOT_EDGE_PADDING: new Vector2( 40, 30 ),  // Horizontal and vertical plot padding- smaller the value the closer the data will get to the edge of the graph
+    VG_AXIS_LABEL_FONT_SIZE: 15,  // Font size of the axis labels
+    VG_AXIS_LABEL_PADDING: 5,  // Padding on the right and left or top and bottom of an axis label on the graph
+    VG_AXIS_LABEL_COUNT: 4,  // Number of labels to create on each axis
+    VG_GRAPH_LINE_OPTIONS: {  // Options for the Line nodes that are used to create the graph tick lines
+      stroke: 'gray',
+      lineWidth: 3
+    },
+    VG_ACCELERATION_COLOR: 'red',  // Color of the acceleration graph
+    VG_VELOCITY_COLOR: 'green',  // Color of the velocity graph
+    VG_POSITION_COLOR: 'blue',  // Color of the position graph
+    VG_VERTICAL_SPACING: 15,  // Vertical spacing between each graph
 
     MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates
 
