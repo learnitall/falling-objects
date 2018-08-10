@@ -26,7 +26,6 @@ define( function( require ) {
 
   // strings
   var pattern0LabelString = require( 'string!FALLING_OBJECTS/pattern.0Label' );
-  var pattern0LabelWithNegativeString = require( 'string!FALLING_OBJECTS/pattern.0LabelWithNegative' );
 
   /**
    * Construct the ValueGraphNode.
@@ -48,51 +47,51 @@ define( function( require ) {
     // @public
     this.getTargetValue = targetValueGetter;
 
-    // Define where the origin of the graph lies (VG_RELATIVE_ORIGIN is relative to the top left corner of the background rectangle)
-    this.graphOrigin = FallingObjectsConstants.VG_RELATIVE_ORIGIN;
+    // Define where the top left bound of the graph lies (VG_TOP_LEFT_BOUND is relative to the top left corner of the background rectangle)
+    this.graphTopLeftBound = FallingObjectsConstants.VG_TOP_LEFT_BOUND;
 
     // Construct the background, using the same options as the free body diagram
     var backgroundRectangle = new Rectangle( 0, 0, maxWidth, maxHeight, FallingObjectsConstants.FBD_BACKGROUND_OPTIONS );
 
     // Determine max plot area
-    var maxPlotHeight = backgroundRectangle.getHeight() - FallingObjectsConstants.VG_PLOT_EDGE_PADDING.y - this.graphOrigin.y;
-    var maxPlotWidth = backgroundRectangle.getWidth() - FallingObjectsConstants.VG_PLOT_EDGE_PADDING.x - this.graphOrigin.x;
+    var maxPlotHeight = backgroundRectangle.getHeight() - FallingObjectsConstants.VG_PLOT_EDGE_PADDING.y - this.graphTopLeftBound.y;
+    var maxPlotWidth = backgroundRectangle.getWidth() - FallingObjectsConstants.VG_PLOT_EDGE_PADDING.x - this.graphTopLeftBound.x;
 
     // Create a ValueGraphModel that will be used to hold our data
     this.valueGraphModel = new ValueGraphModel( maxPlotWidth, maxPlotHeight );
 
     // Construct the model-view transform which will translate between the valueProperty and time to the graph on screen
-    this.modelViewTransform = ModelViewTransform2.createOffsetXYScaleMapping(
-      this.graphOrigin, this.valueGraphModel.timeScaleProperty.get(), this.valueGraphModel.valueScaleProperty.get()
-    );
+    this.modelViewTransform = null;  // will be set below
+    // Have it update with the origin's location percentage
+    this.valueGraphModel.originLocPercentProperty.link( function( locPercent ) {
+      self.modelViewTransform = ModelViewTransform2.createOffsetXYScaleMapping(
+        new Vector2(
+          self.graphTopLeftBound.x,
+          // Starting at the top left bound, then translate depending on our locPercent
+          // locPercent is relative to the bottom of the graph
+          // MIN -------------ORIGIN ------------- MAX
+          // <----------------locPercent * maxPlotHeight
+          // <-----------------maxPlotHeight--------->
+          self.graphTopLeftBound.y + ( maxPlotHeight - ( maxPlotHeight * locPercent ) )
+        ),
+        self.valueGraphModel.timeScaleProperty.get(),
+        self.valueGraphModel.valueScaleProperty.get()
+      );
+    } );
 
     // Construct labels for our axis
     var axisLabelFont = new PhetFont( { size: FallingObjectsConstants.VG_AXIS_LABEL_FONT_SIZE } );
     this.axisLabelPadding = FallingObjectsConstants.VG_AXIS_LABEL_PADDING;
 
     /**
-     * Determine the maxWidth or maxHeight of a label on the axis, based on padding parameters and the
-     * location of the graph's origin
-     *
-     * @param {boolean} yAxis - if True, then return maxWidth parameter to be passed into a Text node, otherwise return maxHeight
-     */
-    var getMaxLabelSize = function( yAxis ) {
-
-      // Each label is constructed like so: ( edge of graph : padding : label : padding : axis )
-      // We want to find the size of 'label' above, so take the length between 'edge of graph' and 'axis' and then
-      // subtract 'padding'.
-      return ( yAxis ? self.graphOrigin.x : self.graphOrigin.y ) - ( 2 * self.axisLabelPadding );
-    };
-
-    /**
      * Generate a new label on our axis
      *
      * @param {number} maxLabelSize - Max size of the label. If yAxis is true, then interpreted as maxWidth, otherwise as maxHeight
-     * @param {NumberProperty} axisMaxLengthProperty - Property that points to the max length this label resides on
+     * @param {NumberProperty} axisLengthProperty - Property that points to the length this label resides on
      * @param {number} locPercent - Location of the label on the axis as a decimal percentage (i.e. 0.25 represents fourth of the way down the axis)
      * @param {boolean} yAxis - If true, then the label will be formatted for use on the yAxis, otherwise formatted for use on the xAxis
      */
-    var genAxisLabel = function( maxLabelSize, axisMaxLengthProperty, locPercent, yAxis ) {
+    var genAxisLabel = function( maxLabelSize, axisLengthProperty, locPercent, yAxis ) {
 
       var labelOptions;
       if ( yAxis ) {
@@ -105,10 +104,34 @@ define( function( require ) {
       var newLabel = new Text( '', labelOptions );
 
       // Create a link to update axis label when the length of the axis changes
-      axisMaxLengthProperty.link( function( axisLength ) {
+      axisLengthProperty.link( function( axisLength ) {
+
         // Multiply total axis length by our location percentage
-        var pattern = yAxis ? pattern0LabelWithNegativeString : pattern0LabelString;
-        newLabel.setText( StringUtils.fillIn( pattern, { label: Math.round( axisLength * locPercent ) } ) );
+        var labelVal = Math.abs( axisLength.getLength() * locPercent );
+
+        // Normalize the labelVal
+        if ( yAxis ) {
+
+          // First determine if we are above or below the origin
+          // (distinction between being at the origin and above it doesn't matter)
+          var belowOrigin = self.valueGraphModel.originLocPercentProperty.get() > locPercent;
+
+          if ( belowOrigin ) {
+
+            // Need to normalize our label's value
+            // MIN --------------- 0 ------- MAX
+            // --------labelVal-----------------
+            // labelVal right now measures distance from MIN to labelVal, but we instead want
+            // distance from origin
+            labelVal = ( Math.abs( axisLength.min ) - labelVal ) * -1;
+          } else {
+
+            // Need to normalize our label's value, same deal as in the last block
+            labelVal = ( labelVal - Math.abs( axisLength.min ) );
+          }
+        }
+
+        newLabel.setText( StringUtils.fillIn( pattern0LabelString, { label: labelVal } ) );
       } );
 
       return newLabel;
@@ -124,19 +147,22 @@ define( function( require ) {
     var genAxisStuff = function( axisLabelCount, yAxis ) {
 
       var axisLength;
-      var axisMaxLengthProperty;
+      var axisLengthProperty;
       if ( yAxis ) {
         axisLength = maxPlotHeight;
-        axisMaxLengthProperty = self.valueGraphModel.maxValueProperty;
+        axisLengthProperty = self.valueGraphModel.valueLengthProperty;
       } else {
         axisLength = maxPlotWidth;
-        axisMaxLengthProperty = self.valueGraphModel.maxTimeProperty;
+        axisLengthProperty = self.valueGraphModel.timeLengthProperty;
       }
 
       // Determine the base locPercent that we can scale and pass to genAxisLabel
       var baseLocPercent = 1 / axisLabelCount;
       // Determine the maxWidth or maxHeight of the label (interpretation done though yAxis param)
-      var maxLabelSize = getMaxLabelSize( yAxis );
+      // Each label is constructed like so: ( edge of graph : padding : label : padding : axis )
+      // We want to find the size of 'label' above, so take the length between 'edge of graph' and 'axis' and then
+      // subtract 'padding'.
+      var maxLabelSize = ( yAxis ? self.graphTopLeftBound.x : self.graphTopLeftBound.y ) - ( 2 * self.axisLabelPadding );
 
       // Create some nodes to hold our labels and lines
       var axisLabelNode = new Node();
@@ -146,22 +172,21 @@ define( function( require ) {
       var locPercent;
       var newLabel;
       var newGraphLine;
-      var newGraphLineOptions;
       var pos;
-      for ( var i = 0; i < axisLabelCount + 1; i++ ) {  // The first axis label will be 0, then axisLabelCount number of labels will follow
+      for ( var i = 0; i < axisLabelCount + 1; i++ ) {  // add one line for the top and left bound axes
 
-        // Create the label and add as child
+        // Determine our locPercent
         locPercent = baseLocPercent * i;
-        newLabel = genAxisLabel( maxLabelSize, axisMaxLengthProperty, locPercent, yAxis );
 
-        // Get position of the label
-        pos = axisLength * locPercent;
+        // Create our label
+        newLabel = genAxisLabel( maxLabelSize, axisLengthProperty, locPercent, yAxis );
 
-        // Get the appropriate graph line options
-        if ( i === 0 ) {
-          newGraphLineOptions = FallingObjectsConstants.VG_AXIS_LINE_OPTIONS;
+        // Get position of the label in view coordinates
+        // pos is relative to the minimum value on the graph, or relative to the axisLength
+        if ( yAxis ) {
+          pos = axisLength - ( axisLength * locPercent );
         } else {
-          newGraphLineOptions = FallingObjectsConstants.VG_GRAPH_LINE_OPTIONS;
+          pos = axisLength * locPercent;
         }
 
         if ( yAxis ) {
@@ -169,15 +194,16 @@ define( function( require ) {
           newLabel.setCenterY( pos );
 
           // Create the graph line and position
-          newGraphLine = new Line( 0, 0, maxPlotWidth, 0, newGraphLineOptions );
+          newGraphLine = new Line( 0, 0, maxPlotWidth, 0, FallingObjectsConstants.VG_GRAPH_LINE_OPTIONS );
           newGraphLine.setCenterY( pos );
           graphLineNode.addChild( newGraphLine );
+
         } else {
           // Position the label
           newLabel.setCenterX( pos );
 
           // Create the graph line and position
-          newGraphLine = new Line( 0, 0, 0, maxPlotHeight, newGraphLineOptions );
+          newGraphLine = new Line( 0, 0, 0, maxPlotHeight, FallingObjectsConstants.VG_GRAPH_LINE_OPTIONS );
           newGraphLine.setCenterX( pos );
           graphLineNode.addChild( newGraphLine );
         }
@@ -226,14 +252,32 @@ define( function( require ) {
       if ( totalFallTime - self.valueGraphModel.lastUpdateTimeProperty.get() > updateFrequency ) {
 
         // Get the new value to plot
-        var newVal = self.getTargetValue() * -1;  // Inverse polarity so positive values plot up the screen instead of down
-        var newDataPoint = new Vector2( totalFallTime, newVal );
+        var newVal = self.getTargetValue();
+        // Inverse polarity so positive values plot up the screen instead of down
+        var newDataPoint = new Vector2( totalFallTime, newVal * -1 );
 
         // If our new value is greater than the bounds of the graph, then change the scale and redraw
-        if ( newVal > self.valueGraphModel.maxValueProperty.get() ) {
-          // Incrementing the max value will also propagate a change onto the scale
-          self.valueGraphModel.incrementMaxValue();
+        var updateScale;
+        while ( newVal > self.valueGraphModel.valueLengthProperty.get().max ) {
 
+          // Incrementing the max value will also propagate a change onto the scale
+          self.valueGraphModel.incrementMaxValue( newVal );
+          // Signal to update the scale
+          updateScale = true;
+
+        }
+
+        while ( newVal < self.valueGraphModel.valueLengthProperty.get().min ) {
+
+          // Incrementing the min value will also propagate a change onto the scale
+          self.valueGraphModel.incrementMinValue();
+          // Signal to update the scale
+          updateScale = true;
+
+        }
+
+        // Update the scale if needed
+        if ( updateScale ) {
           // Modify our transform to use the new scale
           // In a offsetXYScale mapping transform, the yScale is stored in m11 in the transformation matrix
           // See ModelViewTransform2.createOffsetXYScaleMapping and Matrix3.affine
@@ -244,7 +288,7 @@ define( function( require ) {
         }
 
         // If we have run out of space on the X Axis, then change scale and redraw
-        if ( totalFallTime > self.valueGraphModel.maxTimeProperty.get() ) {
+        if ( totalFallTime > self.valueGraphModel.timeLengthProperty.get().max ) {
           // Incrementing the max time will also propagate a change onto the scale
           self.valueGraphModel.incrementMaxTime();
 
@@ -302,8 +346,8 @@ define( function( require ) {
 
     // Set children
     this.addChild( backgroundRectangle );
-    this.addChild( this.valueAxisLabelNode );
     this.addChild( this.timeAxisLabelNode );
+    this.addChild( this.valueAxisLabelNode );
     this.addChild( this.valueGraphLinesNode );
     this.addChild( this.timeGraphLinesNode );
     this.addChild( this.dataPlotNode );
@@ -335,8 +379,9 @@ define( function( require ) {
       // create a new shape and move it to the origin
       this.plotDataShape = new Shape();
       this.plotDataShape.moveTo(
-        this.graphOrigin.x + this.dataPlotNodeOptions.lineWidth,
-        this.graphOrigin.y + this.dataPlotNodeOptions.lineWidth
+        // m02 and m12 hold the XY offset
+        this.modelViewTransform.matrix.m02() + this.dataPlotNodeOptions.lineWidth,
+        this.modelViewTransform.matrix.m12() + this.dataPlotNodeOptions.lineWidth
       );
       this.dataPlotNode.setShape( this.plotDataShape );
 
@@ -361,16 +406,16 @@ define( function( require ) {
 
       // The methodology for laying this all out was determine empirically
 
-      this.valueAxisLabelNode.setTop( this.graphOrigin.y - ( this.valueAxisLabelNode.children[ 0 ].getHeight() / 2 ) );
+      this.valueAxisLabelNode.setTop( this.graphTopLeftBound.y - ( this.valueAxisLabelNode.children[ 0 ].getHeight() / 2 ) );
       var self = this;
       this.valueAxisLabelNode.children.forEach( function ( labelNode ) {
-        labelNode.setRight( self.graphOrigin.x - self.axisLabelPadding );
+        labelNode.setRight( self.graphTopLeftBound.x - self.axisLabelPadding );
       } );
 
-      this.valueGraphLinesNode.setLeftTop( this.graphOrigin );
+      this.valueGraphLinesNode.setLeftTop( this.graphTopLeftBound );
 
-      this.timeAxisLabelNode.setLeftBottom( this.graphOrigin );
-      this.timeGraphLinesNode.setLeftTop( this.graphOrigin );
+      this.timeAxisLabelNode.setLeftBottom( this.graphTopLeftBound );
+      this.timeGraphLinesNode.setLeftTop( this.graphTopLeftBound );
 
     }
 

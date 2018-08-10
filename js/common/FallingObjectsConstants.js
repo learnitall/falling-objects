@@ -79,16 +79,12 @@ define( function( require ) {
     CONTROL_BUTTON_STEP_DT: 1 / 60,  // Assume frame rate for manual steps (60th of a sec)
     CONTROL_BUTTON_MARGIN_X: 10,  // Padding on each side of the row of control buttons (larger the number, more condensed they will be)
 
-    VG_RELATIVE_ORIGIN: new Vector2( 50, 30 ),  // Origin point of the ValueGraphs, determined empirically, relative to the bottom left corner of background.
-    VG_MAX_TIME_INTERVAL: 20,  // Maximum number of seconds that can be plotted on the X axis at once (determines length of axis)
-    VG_MAX_VALUE_INTERVAL: 30,  // Maximum 'number' of the value property that can be plotted on the Y axis at once, until the axis is increased
+    VG_TOP_LEFT_BOUND: new Vector2( 50, 30 ),  // Top left bound of the ValueGraphs, determined empirically, relative to the top left corner of background.
+    VG_TIME_INTERVAL: 20,  // Interval of seconds that the maximum plottable time is incremented by when needed
+    VG_VALUE_INTERVAL: 30,  // Interval 'number' of the value property that is used to increase the min and max plotable values
     VG_DATA_PLOT_NODE_OPTIONS: {  // Options for the Path node that is used to plot the data on the graph
       stroke: 'black',
-      lineWidth: 5
-    },
-    VG_AXIS_LINE_OPTIONS: {  // Options for the Line nodes that are used to create the graph axes
-      stroke: 'black',
-      lineWidth: 4
+      lineWidth: 2
     },
     VG_UPDATE_FREQUENCY: 1,  // Frequency (in seconds) at which to update the graph
     VG_PLOT_EDGE_PADDING: new Vector2( 40, 30 ),  // Horizontal and vertical plot padding- smaller the value the closer the data will get to the edge of the graph
