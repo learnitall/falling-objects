@@ -261,6 +261,7 @@ define( function( require ) {
 
         // If our new value is greater than the bounds of the graph, then change the scale and redraw
         var updateScale;
+        // Increment until our new value will fit
         while ( newVal > self.valueGraphModel.valueLengthProperty.get().max ) {
 
           // Incrementing the max value will also propagate a change onto the scale
@@ -313,7 +314,6 @@ define( function( require ) {
 
     } );
 
-    // Now from within the context of the ValueGraphNode, create property links that will plot our data
     // Create a property link to replot the graph when needed
     this.valueGraphModel.replotGraphProperty.lazyLink( function( replotGraph ) {
 

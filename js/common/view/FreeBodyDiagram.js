@@ -143,8 +143,12 @@ define( function( require ) {
         self.maxForce = selectedMass * FallingObjectsConstants.ACCELERATION_GRAVITY_SEA_LEVEL;
       } );
 
-      // Update the arrow's length as the force value changes
-      forceProperty.link( function( forceValue ) {
+      /**
+       * Creates the arrow's shape based on the value of the force property
+       *
+       * @param {number} forceValue - value of the force property to map the arrow to
+       */
+      var updateArrowNode = function( forceValue ) {
         // If the free body diagram is shown, then do calculations
         if ( fallingObjectsModel.showFreeBodyDiagramProperty.get() ) {
 
@@ -166,6 +170,17 @@ define( function( require ) {
             // Scale the arrows dynamically when they become small
             { isHeadDynamic: true, scaleTailToo: true, tailWidth: centerCircleRadius / 2 }
           );
+        }
+      };
+
+      // Link the above auxiliary function onto the forceProperty and onto the showFreeBodyDiagramProperty
+      forceProperty.link( updateArrowNode );
+      // Have to also link onto the show property, because we need to guarantee that the arrows will be accurately
+      // drawn when the graph is displayed
+      fallingObjectsModel.showFreeBodyDiagramProperty.link( function( showFreeBodyDiagramValue ) {
+        // Only update if shown
+        if ( showFreeBodyDiagramValue ) {
+          updateArrowNode( forceProperty.get() );
         }
       } );
 
