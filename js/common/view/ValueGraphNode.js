@@ -43,6 +43,9 @@ define( function( require ) {
     Node.call( this );
     var self = this;
 
+    // Grab reference to the model
+    this.fallingObjectsModel = fallingObjectsModel;
+
     // Store the getter for our targetValue
     // @public
     this.getTargetValue = targetValueGetter;
@@ -314,7 +317,9 @@ define( function( require ) {
     // Create a property link to replot the graph when needed
     this.valueGraphModel.replotGraphProperty.lazyLink( function( replotGraph ) {
 
-      if ( replotGraph ) {
+      // Only replot if we are actually displaying the graph
+      if ( replotGraph && ( self.fallingObjectsModel.showPVAGraphsProperty.get() === true ) ) {
+
         // Grab a reference to the data points so we don't have to keep calling the getter
         var dataPoints = self.valueGraphModel.dataPointsProperty.get();
 
@@ -328,17 +333,18 @@ define( function( require ) {
 
         // Reposition the axis labels
         self.layoutAxes();
-
-        // Reset
-        self.valueGraphModel.replotGraphProperty.reset();
       }
+
+      // Reset the value, even if we didn't need a replot
+      self.valueGraphModel.replotGraphProperty.reset();
     } );
 
     // Create a property link to draw the last point pushed into our data points array
     this.valueGraphModel.dataPointsProperty.lazyLink( function( dataPoints ) {
       // This function will only plot the last data point added
       var dataPoint = dataPoints[ dataPoints.length - 1 ];
-      if ( dataPoint ) {
+      // Only plot if we have a data point and the graph is being shown
+      if ( dataPoint && self.fallingObjectsModel.showPVAGraphsProperty.get() ) {
         self.plotPoint( dataPoint );
       }
     } );
@@ -351,6 +357,18 @@ define( function( require ) {
     this.addChild( this.valueGraphLinesNode );
     this.addChild( this.timeGraphLinesNode );
     this.addChild( this.dataPlotNode );
+
+    // Create a link to update the graph when it is shown
+    this.fallingObjectsModel.showPVAGraphsProperty.link( function( showPVAGraphsValue ) {
+      if ( showPVAGraphsValue ) {
+        // When displaying the graph, trigger a replot
+        self.valueGraphModel.replotGraphProperty.set( true );
+        self.setVisible( true );
+      }
+      else {
+        self.setVisible( false );
+      }
+    } );
 
   }
 

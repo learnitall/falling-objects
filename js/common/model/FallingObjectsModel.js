@@ -52,7 +52,10 @@ define( function( require ) {
     this.showValuesProperty = new BooleanProperty( false );
 
     // @public {Property.<boolean>} whether or not to display the free body diagram
-    this.showFreeBodyDiagramProperty = new BooleanProperty( true );
+    this.showFreeBodyDiagramProperty = new BooleanProperty( false );
+
+    // @public {Property.<boolean>} whether or not to display the PVA graphs
+    this.showPVAGraphsProperty = new BooleanProperty( false );
 
     // @public {Property.<number>} simulation's acceleration due to gravity (initially set to density at sea level)
     this.accelerationGravityProperty = new NumberProperty( this.getAccelerationGravity( 0 ) );

@@ -27,6 +27,7 @@ define( function( require ) {
   // strings
   var showValuesString = require( 'string!FALLING_OBJECTS/showValues' );
   var showFreeBodyDiagramString = require( 'string!FALLING_OBJECTS/showFreeBodyDiagram' );
+  var showPVAGraphsString = require('string!FALLING_OBJECTS/showPVAGraphs' );
   var enableDragString = require( 'string!FALLING_OBJECTS/enableDrag' );
 
   /**
@@ -91,7 +92,8 @@ define( function( require ) {
       [
         { label: enableDragString, property: this.fallingObjectsModel.dragForceEnabledProperty },
         { label: showValuesString, property: this.fallingObjectsModel.showValuesProperty },
-        { label: showFreeBodyDiagramString, property: this.fallingObjectsModel.showFreeBodyDiagramProperty }
+        { label: showFreeBodyDiagramString, property: this.fallingObjectsModel.showFreeBodyDiagramProperty },
+        { label: showPVAGraphsString, property: this.fallingObjectsModel.showPVAGraphsProperty }
       ],
       controlPanelsMaxWidth
     );
