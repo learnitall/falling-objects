@@ -23,6 +23,9 @@
   "showValues": {
     "value": "Show Values"
   },
+  "showFreeBodyDiagram": {
+    "value": "Show Free Body Diagram"
+  },
   "enableDrag": {
     "value": "Enable Drag"
   },
