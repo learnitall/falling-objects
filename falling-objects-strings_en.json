@@ -17,9 +17,6 @@
   "pattern.0Label": {
     "value": "{{label}}"
   },
-  "pattern.0LabelWithNegative": {
-    "value": "-{{label}}"
-  },
   "showValues": {
     "value": "Show Values"
   },
