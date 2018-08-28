@@ -45,6 +45,8 @@ define( function( require ) {
     },
     CONTROL_PANEL_VERTICAL_SPACING: 10,  // Vertical spacing of labels inside control panels
 
+    SELECTOR_LABEL_SIG_FIGS: 4,  // Number of sig figs to round displayed values to in the selector
+
     FBD_BACKGROUND_OPTIONS: {  // Options for the background of the FreeBodyDiagram
       fill: 'rgb( 255, 255, 255 )',
       lineWidth: 1,

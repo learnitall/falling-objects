@@ -29,8 +29,14 @@ define( function( require ) {
   var massString = require( 'string!FALLING_OBJECTS/mass' );
   var referenceAreaString = require( 'string!FALLING_OBJECTS/referenceArea' );
   var dragCoefficientString = require( 'string!FALLING_OBJECTS/dragCoefficient' );
+  var positionString = require( 'string!FALLING_OBJECTS/position' );
+  var velocityString = require( 'string!FALLING_OBJECTS/velocity' );
+  var accelerationString = require( 'string!FALLING_OBJECTS/acceleration' );
   var kgString = require( 'string!FALLING_OBJECTS/kg' );
+  var mString = require( 'string!FALLING_OBJECTS/m' );
   var m2String = require( 'string!FALLING_OBJECTS/m2' );
+  var msString = require( 'string!FALLING_OBJECTS/ms' );
+  var ms2String = require( 'string!FALLING_OBJECTS/ms2' );
 
   /**
    * Construct the ComboBox
@@ -110,23 +116,25 @@ define( function( require ) {
      * @param {string} unitsString - will be subbed into the 'units' key in the patternString
      */
     var createNewLabel = function( attributeName, patternString, labelString, unitsString ) {
+
+      // Create a blank text for the label
       var labelText = new Text( '', objectLabelOptions );
 
-      fallingObjectModel.selectedFallingObjectNameProperty.link( function ( selectedFallingObjectName ) {
-        // Grab a reference to the newly selected falling object
-        var selectedFallingObject = fallingObjectModel.selectedFallingObject;
+      // Pull the attribute
+      var attributeProperty = fallingObjectModel.selectedFallingObject[ attributeName ];
+      // Link so the label gets updated on changes
+      attributeProperty.link( function( attributeValue ) {
 
-        // Get the value for the label
-        var value = selectedFallingObject[ attributeName ];
-        if ( typeof value === 'object' ) {
-          value = value.get();
+        // Deal with special cases that don't fit the generic label builder
+        if ( attributeName === "positionProperty" ) {
+          // Pull the y component of the vector
+          attributeValue = attributeValue.y;
         }
 
-        // Set the text for the label
         labelText.setText(
           StringUtils.fillIn( patternString, {
             label: labelString,
-            value: value,
+            value: attributeValue.toPrecision( FallingObjectsConstants.SELECTOR_LABEL_SIG_FIGS ),
             units: unitsString
           } )
         );
@@ -143,9 +151,12 @@ define( function( require ) {
       return labelNode;
     };
 
-    var massLabel = createNewLabel( 'mass', pattern0Label1Value2UnitsString, massString, kgString );
+    var massLabel = createNewLabel( 'massProperty', pattern0Label1Value2UnitsString, massString, kgString );
     var referenceAreaLabel = createNewLabel( 'referenceAreaProperty', pattern0Label1Value2UnitsString, referenceAreaString, m2String );
-    var dragCoefficientLabel = createNewLabel( 'dragCoefficient', pattern0Label1ValueString, dragCoefficientString );
+    var dragCoefficientLabel = createNewLabel( 'dragCoefficientProperty', pattern0Label1ValueString, dragCoefficientString );
+    var positionLabel = createNewLabel( 'positionProperty', pattern0Label1Value2UnitsString, positionString, mString );
+    var velocityLabel = createNewLabel( 'velocityProperty', pattern0Label1Value2UnitsString, velocityString, msString );
+    var accelerationLabel = createNewLabel( 'accelerationProperty', pattern0Label1Value2UnitsString, accelerationString, ms2String );
 
     // Create a VBox to add all the elements
     var selectorControlVBox = new VBox( {
@@ -156,7 +167,10 @@ define( function( require ) {
         new VStrut( comboBox.height ),  // Gives some space for the comboBox
         massLabel,
         referenceAreaLabel,
-        dragCoefficientLabel
+        dragCoefficientLabel,
+        positionLabel,
+        velocityLabel,
+        accelerationLabel
       ]
     } );
 

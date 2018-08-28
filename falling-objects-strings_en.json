@@ -41,8 +41,17 @@
   "kg": {
     "value": "kg"
   },
+  "m": {
+    "value": "m"
+  },
   "m2": {
     "value": "m²"
+  },
+  "ms": {
+    "value": "m/s"
+  },
+  "ms2": {
+    "value": "m/s²"
   },
   "bowlingBall": {
     "value": "Bowling Ball"
