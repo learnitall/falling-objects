@@ -34,12 +34,18 @@ define( function( require ) {
     // @public
     this.FallingObjectsModel = FallingObjectsModel;
     this.name = fallingObjectName;
-    this.mass = objectAttributes.mass;
-    this.dragCoefficient = objectAttributes.dragCoefficient;
-    this.initialAltitude = initialAltitude;
+
+    // @public {Property.<number>} - the mass of the FallingObject
+    this.massProperty = new NumberProperty( objectAttributes.mass );
+
+    // @public {Property.<number>} - the drag coefficient of the FallingObject
+    this.dragCoefficientProperty = new NumberProperty( objectAttributes.dragCoefficient );
+
+    // @public {Property.<Vector2>} - the initial altitude of the Falling Object
+    this.initialAltitudeProperty = new Property( initialAltitude );
 
     // @public {Property.<Vector2>} - the position of the FallingObject
-    this.positionProperty = new Property( this.initialAltitude );
+    this.positionProperty = new Property( this.initialAltitudeProperty.get() );
 
     // @public {Property.<number>} reference area of the projectile
     this.referenceAreaProperty = new NumberProperty( objectAttributes.referenceArea );
@@ -83,8 +89,8 @@ define( function( require ) {
 
         // Construct options dictionary from the named entry in FallingObjectsConstants, overriding values using the given options param
         var objectAttributes = FallingObjectsConstants[ FallingObjectsConstants.stringToConstantsName( fallingObjectName ) ];
-        this.mass = objectAttributes.mass;
-        this.dragCoefficient = objectAttributes.dragCoefficient;
+        this.massProperty = new NumberProperty( objectAttributes.mass );
+        this.dragCoefficientProperty = new NumberProperty( objectAttributes.dragCoefficient );
         this.referenceArea = new NumberProperty( objectAttributes.referenceArea );
       }  // otherwise don't do anything
     },
@@ -94,7 +100,7 @@ define( function( require ) {
      * @public
      */
     updateWeightForce: function() {
-      this.weightForceProperty.set( this.FallingObjectsModel.accelerationGravityProperty.get() * this.mass );
+      this.weightForceProperty.set( this.FallingObjectsModel.accelerationGravityProperty.get() * this.massProperty.get() );
     },
 
     /**
@@ -103,7 +109,7 @@ define( function( require ) {
      */
     updateDragForce: function() {
       this.dragForceProperty.set(
-        0.5 * ( this.dragCoefficient * this.FallingObjectsModel.airDensityProperty.get() * Math.pow( this.velocityProperty.get(), 2 ) * this.referenceAreaProperty.get() )
+        0.5 * ( this.dragCoefficientProperty.get() * this.FallingObjectsModel.airDensityProperty.get() * Math.pow( this.velocityProperty.get(), 2 ) * this.referenceAreaProperty.get() )
       );
     },
 
@@ -139,7 +145,7 @@ define( function( require ) {
       // Update value that will be use to calculate acceleration
       this.updateNetForce();
 
-      this.accelerationProperty.set( this.netForceProperty.get() / this.mass );
+      this.accelerationProperty.set( this.netForceProperty.get() / this.massProperty.get() );
     },
 
     /**
@@ -181,6 +187,9 @@ define( function( require ) {
      * @override
      */
     reset: function() {
+      this.massProperty.reset();
+      this.dragCoefficientProperty.reset();
+      this.initialAltitudeProperty.reset();
       this.positionProperty.reset();
       this.velocityProperty.reset();
       this.accelerationProperty.reset();
