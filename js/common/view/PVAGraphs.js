@@ -31,17 +31,6 @@ define( function( require ) {
     // Call the super
     Node.call( this );
 
-    // Create a getters for each of the properties
-    var getAccelerationProperty = function() {
-      return fallingObjectsModel.selectedFallingObject.accelerationProperty.get();
-    };
-    var getVelocityProperty = function() {
-      return fallingObjectsModel.selectedFallingObject.velocityProperty.get();
-    };
-    var getPositionProperty = function() {
-      return fallingObjectsModel.selectedFallingObject.positionProperty.get().y;
-    };
-
     // Calculate dimensions of each graph- each gets little less than a third of maxHeight
     this.verticalSpacing = FallingObjectsConstants.VG_VERTICAL_SPACING;
     var graphHeight = ( maxHeight - ( 2 * this.verticalSpacing ) ) / 3;
@@ -51,7 +40,7 @@ define( function( require ) {
     this.accelerationGraph = new ValueGraphNode(
       fallingObjectsModel,
       accelerationString,
-      getAccelerationProperty,
+      'accelerationProperty',
       FallingObjectsConstants.VG_ACCELERATION_COLOR,
       graphWidth,
       graphHeight
@@ -60,7 +49,7 @@ define( function( require ) {
     this.velocityGraph = new ValueGraphNode(
      fallingObjectsModel,
      velocityString,
-     getVelocityProperty,
+     'velocityProperty',
      FallingObjectsConstants.VG_VELOCITY_COLOR,
      graphWidth,
      graphHeight
@@ -69,7 +58,7 @@ define( function( require ) {
     this.positionGraph = new ValueGraphNode(
       fallingObjectsModel,
       positionString,
-      getPositionProperty,
+      'positionProperty',
       FallingObjectsConstants.VG_POSITION_COLOR,
       graphWidth,
       graphHeight

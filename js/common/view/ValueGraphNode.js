@@ -32,23 +32,25 @@ define( function( require ) {
    *
    * @param {FallingObjectsModel} fallingObjectsModel - will be used to pull total fall time property
    * @param {string} name - name of the graph
-   * @param {Object} targetValueGetter - function used to retrieve the data value to be plotted on the graph
+   * @param {Property} targetPropertyName - name of a FallingObject property that holds the data values to be plotted on the graph
    * @param {string} lineColor - color of the line to plot on the graph (rbg formatted, name of a color, etc.)
    * @param {number} maxWidth - max width of the free body diagram panel
    * @param {number} maxHeight - max height of the free body diagram panel
    */
-  function ValueGraphNode( fallingObjectsModel, name, targetValueGetter, lineColor, maxWidth, maxHeight ) {
+  function ValueGraphNode( fallingObjectsModel, name, targetPropertyName, lineColor, maxWidth, maxHeight ) {
 
     // Call the super, grab reference to self
     Node.call( this );
     var self = this;
 
+    // Get the name of the graph/what we are plotting and the units
+    this.name = name;
+
     // Grab reference to the model
     this.fallingObjectsModel = fallingObjectsModel;
 
-    // Store the getter for our targetValue
-    // @public
-    this.getTargetValue = targetValueGetter;
+    // Store the property that we are graphing
+    this.targetPropertyName = targetPropertyName;
 
     // Define where the top left bound of the graph lies (VG_TOP_LEFT_BOUND is relative to the top left corner of the background rectangle)
     this.graphTopLeftBound = FallingObjectsConstants.VG_TOP_LEFT_BOUND;
@@ -229,6 +231,9 @@ define( function( require ) {
     this.timeAxisLabelNode = timeAxisStuff[ 0 ];
     this.timeGraphLinesNode = timeAxisStuff[ 1 ];
 
+    // Create a label for the graph that shows the last plotted value
+    this.valueLabelNode = new Text( self.name, { font: axisLabelFont, fill: lineColor } );
+
     // Lay it all out- this is defined in the call to inherit
     this.layoutAxes();
 
@@ -255,7 +260,10 @@ define( function( require ) {
       if ( totalFallTime - self.valueGraphModel.lastUpdateTimeProperty.get() > updateFrequency ) {
 
         // Get the new value to plot
-        var newVal = self.getTargetValue();
+        var newVal = self.fallingObjectsModel.selectedFallingObject[ self.targetPropertyName ].get();
+        if ( typeof newVal === 'object' && newVal.y ) {  // if we are working with a vector
+          newVal = newVal.y;
+        }
         // Inverse polarity so positive values plot up the screen instead of down
         var newDataPoint = new Vector2( totalFallTime, newVal * -1 );
 
@@ -356,6 +364,7 @@ define( function( require ) {
     this.addChild( this.valueAxisLabelNode );
     this.addChild( this.valueGraphLinesNode );
     this.addChild( this.timeGraphLinesNode );
+    this.addChild( this.valueLabelNode );
     this.addChild( this.dataPlotNode );
 
     // Create a link to update the graph when it is shown
@@ -434,6 +443,9 @@ define( function( require ) {
 
       this.timeAxisLabelNode.setLeftBottom( this.graphTopLeftBound );
       this.timeGraphLinesNode.setLeftTop( this.graphTopLeftBound );
+
+      this.valueLabelNode.setLeft( this.graphTopLeftBound.x );
+      this.valueLabelNode.setTop( this.timeGraphLinesNode.getBottom() + this.axisLabelPadding );
 
     }
 

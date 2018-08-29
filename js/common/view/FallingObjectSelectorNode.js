@@ -114,11 +114,17 @@ define( function( require ) {
      * @param {string} patternString - pattern string that will be used with StringUtils to construct the label's text
      * @param {string} labelString - will be subbed into the 'label' key in the patternString
      * @param {string} unitsString - will be subbed into the 'units' key in the patternString
+     * @param {string} color - color of the label text to use (hex string)
      */
-    var createNewLabel = function( attributeName, patternString, labelString, unitsString ) {
+    var createNewLabel = function( attributeName, patternString, labelString, unitsString, color ) {
 
       // Create a blank text for the label
       var labelText = new Text( '', objectLabelOptions );
+
+      // Set the color if given
+      if ( color ) {
+        labelText.setFill( color );
+      }
 
       // Pull the attribute
       var attributeProperty = fallingObjectModel.selectedFallingObject[ attributeName ];
@@ -126,7 +132,7 @@ define( function( require ) {
       attributeProperty.link( function( attributeValue ) {
 
         // Deal with special cases that don't fit the generic label builder
-        if ( attributeName === "positionProperty" ) {
+        if ( attributeName === 'positionProperty' ) {
           // Pull the y component of the vector
           attributeValue = attributeValue.y;
         }
@@ -148,15 +154,20 @@ define( function( require ) {
         ]
       } );
 
+      // Create a link to hide the label node if "Show Values" is not toggled on the toggle panel
+      fallingObjectModel.showValuesProperty.link( function( showValues ) {
+        labelNode.setVisible( showValues );
+      } );
+
       return labelNode;
     };
 
     var massLabel = createNewLabel( 'massProperty', pattern0Label1Value2UnitsString, massString, kgString );
     var referenceAreaLabel = createNewLabel( 'referenceAreaProperty', pattern0Label1Value2UnitsString, referenceAreaString, m2String );
     var dragCoefficientLabel = createNewLabel( 'dragCoefficientProperty', pattern0Label1ValueString, dragCoefficientString );
-    var positionLabel = createNewLabel( 'positionProperty', pattern0Label1Value2UnitsString, positionString, mString );
-    var velocityLabel = createNewLabel( 'velocityProperty', pattern0Label1Value2UnitsString, velocityString, msString );
-    var accelerationLabel = createNewLabel( 'accelerationProperty', pattern0Label1Value2UnitsString, accelerationString, ms2String );
+    var positionLabel = createNewLabel( 'positionProperty', pattern0Label1Value2UnitsString, positionString, mString, FallingObjectsConstants.VG_POSITION_COLOR );
+    var velocityLabel = createNewLabel( 'velocityProperty', pattern0Label1Value2UnitsString, velocityString, msString, FallingObjectsConstants.VG_VELOCITY_COLOR );
+    var accelerationLabel = createNewLabel( 'accelerationProperty', pattern0Label1Value2UnitsString, accelerationString, ms2String, FallingObjectsConstants.VG_ACCELERATION_COLOR );
 
     // Create a VBox to add all the elements
     var selectorControlVBox = new VBox( {
