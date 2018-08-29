@@ -101,6 +101,7 @@ define( function( require ) {
     VG_VELOCITY_COLOR: 'green',  // Color of the velocity graph
     VG_POSITION_COLOR: 'blue',  // Color of the position graph
     VG_VERTICAL_SPACING: 15,  // Vertical spacing between each graph
+    VG_LABEL_SIG_FIGS: 4,  // Number of sig figs to round displayed values to on the graphs
 
     MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates
 

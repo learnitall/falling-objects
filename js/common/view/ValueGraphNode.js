@@ -26,6 +26,8 @@ define( function( require ) {
 
   // strings
   var pattern0LabelString = require( 'string!FALLING_OBJECTS/pattern.0Label' );
+  var pattern0Label1Value2UnitsString = require( 'string!FALLING_OBJECTS/pattern.0Label.1Value.2Units' );
+
 
   /**
    * Construct the ValueGraphNode.
@@ -33,11 +35,12 @@ define( function( require ) {
    * @param {FallingObjectsModel} fallingObjectsModel - will be used to pull total fall time property
    * @param {string} name - name of the graph
    * @param {Property} targetPropertyName - name of a FallingObject property that holds the data values to be plotted on the graph
+   * @param {string} unitString - string! containing the units label for the data to plot
    * @param {string} lineColor - color of the line to plot on the graph (rbg formatted, name of a color, etc.)
    * @param {number} maxWidth - max width of the free body diagram panel
    * @param {number} maxHeight - max height of the free body diagram panel
    */
-  function ValueGraphNode( fallingObjectsModel, name, targetPropertyName, lineColor, maxWidth, maxHeight ) {
+  function ValueGraphNode( fallingObjectsModel, name, targetPropertyName, unitString, lineColor, maxWidth, maxHeight ) {
 
     // Call the super, grab reference to self
     Node.call( this );
@@ -45,6 +48,7 @@ define( function( require ) {
 
     // Get the name of the graph/what we are plotting and the units
     this.name = name;
+    this.unitString = unitString;
 
     // Grab reference to the model
     this.fallingObjectsModel = fallingObjectsModel;
@@ -261,7 +265,7 @@ define( function( require ) {
 
         // Get the new value to plot
         var newVal = self.fallingObjectsModel.selectedFallingObject[ self.targetPropertyName ].get();
-        if ( typeof newVal === 'object' && newVal.y ) {  // if we are working with a vector
+        if ( typeof newVal === "object" && newVal.y !== undefined ) {  // if we are working with a vector
           newVal = newVal.y;
         }
         // Inverse polarity so positive values plot up the screen instead of down
@@ -357,6 +361,33 @@ define( function( require ) {
       }
     } );
 
+    /**
+     * Small auxiliary function to update the text of valueLabelNode when needed
+     */
+    var updateValueLabelNode = function( targetValue ) {
+      // If we are given a value to use through 'targetValue' then use it, otherwise pull our own
+      if ( !targetValue ) {
+        targetValue = self.fallingObjectsModel.selectedFallingObject[ self.targetPropertyName ].get();
+      }
+
+    };
+
+    // Create a property link to update the valueLabelNode
+    this.fallingObjectsModel.selectedFallingObject[ this.targetPropertyName ].link( function( targetValue ) {
+      // Check for vectors
+      if ( typeof targetValue === "object" && targetValue.y !== undefined ) {
+        targetValue = targetValue.y;
+      }
+
+      // Use string utils to fill in the pattern
+      self.valueLabelNode.setText(
+        StringUtils.fillIn( pattern0Label1Value2UnitsString, {
+          label: self.name,
+           value: targetValue.toPrecision( FallingObjectsConstants.VG_LABEL_SIG_FIGS ),  // Round
+           units: self.unitString
+        } )
+      );
+    } );
 
     // Set children
     this.addChild( backgroundRectangle );

@@ -18,6 +18,9 @@ define( function( require ) {
   var accelerationString = require( 'string!FALLING_OBJECTS/acceleration' );
   var velocityString = require( 'string!FALLING_OBJECTS/velocity' );
   var positionString = require( 'string!FALLING_OBJECTS/position' );
+  var mString = require( 'string!FALLING_OBJECTS/m' );
+  var msString = require( 'string!FALLING_OBJECTS/ms' );
+  var ms2String = require( 'string!FALLING_OBJECTS/ms2' );
 
   /**
    * Construct the graphs for Position, Velocity and Acceleration by implementing ValueGraph
@@ -41,6 +44,7 @@ define( function( require ) {
       fallingObjectsModel,
       accelerationString,
       'accelerationProperty',
+      ms2String,
       FallingObjectsConstants.VG_ACCELERATION_COLOR,
       graphWidth,
       graphHeight
@@ -50,6 +54,7 @@ define( function( require ) {
      fallingObjectsModel,
      velocityString,
      'velocityProperty',
+     msString,
      FallingObjectsConstants.VG_VELOCITY_COLOR,
      graphWidth,
      graphHeight
@@ -59,6 +64,7 @@ define( function( require ) {
       fallingObjectsModel,
       positionString,
       'positionProperty',
+      mString,
       FallingObjectsConstants.VG_POSITION_COLOR,
       graphWidth,
       graphHeight
