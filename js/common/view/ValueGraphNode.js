@@ -265,7 +265,7 @@ define( function( require ) {
 
         // Get the new value to plot
         var newVal = self.fallingObjectsModel.selectedFallingObject[ self.targetPropertyName ].get();
-        if ( typeof newVal === "object" && newVal.y !== undefined ) {  // if we are working with a vector
+        if ( typeof newVal === 'object' && newVal.y !== undefined ) {  // if we are working with a vector
           newVal = newVal.y;
         }
         // Inverse polarity so positive values plot up the screen instead of down
@@ -361,21 +361,10 @@ define( function( require ) {
       }
     } );
 
-    /**
-     * Small auxiliary function to update the text of valueLabelNode when needed
-     */
-    var updateValueLabelNode = function( targetValue ) {
-      // If we are given a value to use through 'targetValue' then use it, otherwise pull our own
-      if ( !targetValue ) {
-        targetValue = self.fallingObjectsModel.selectedFallingObject[ self.targetPropertyName ].get();
-      }
-
-    };
-
     // Create a property link to update the valueLabelNode
     this.fallingObjectsModel.selectedFallingObject[ this.targetPropertyName ].link( function( targetValue ) {
       // Check for vectors
-      if ( typeof targetValue === "object" && targetValue.y !== undefined ) {
+      if ( typeof targetValue === 'object' && targetValue.y !== undefined ) {
         targetValue = targetValue.y;
       }
 
