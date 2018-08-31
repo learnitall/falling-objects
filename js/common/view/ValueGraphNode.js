@@ -377,7 +377,7 @@ define( function( require ) {
           label: self.name,
           // Multiply by 10 * numLabelDigits so all of the wanted digits are to the left of the decimal, then cast
           // to an int and divide by the same value
-          value: parseInt( targetValue * Math.pow( 10, numLabelDigits ) ) / Math.pow( 10, numLabelDigits ),
+          value: parseInt( targetValue * Math.pow( 10, numLabelDigits ), 10 ) / Math.pow( 10, numLabelDigits ),
           units: self.unitString
         } )
       );

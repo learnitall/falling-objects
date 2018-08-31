@@ -22,7 +22,6 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // strings
@@ -188,7 +187,7 @@ define( function( require ) {
           // Round the forceValue to remove super tiny values that could create weird arrows
           // Multiply by 10 * numForceDigits so all of the wanted digits are to the left of the decimal, then cast
           // to an int and divide by the same value
-          var roundedForceValue = parseInt( forceValue * Math.pow( 10, numForceDigits ) ) / Math.pow( 10, numForceDigits );
+          var roundedForceValue = parseInt( forceValue * Math.pow( 10, numForceDigits ), 10 ) / Math.pow( 10, numForceDigits );
 
           // The length of the arrow is set to the property's value times the arrow scale
           var forceRatio;
@@ -221,7 +220,9 @@ define( function( require ) {
           // Position the label
           // If the roundedForceValue is 0, then the arrowNode will not have values for its center, top and bottom, so
           // instead we will just use the center
-          var arrowTop, arrowBottom, arrowCenterX;
+          var arrowTop;
+          var arrowBottom;
+          var arrowCenterX;
           if ( roundedForceValue === 0 ) {
             arrowCenterX = center.x;
             arrowTop = center.y - centerCircleRadius;
