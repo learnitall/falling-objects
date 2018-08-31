@@ -56,6 +56,9 @@ define( function( require ) {
     // Store the property that we are graphing
     this.targetPropertyName = targetPropertyName;
 
+    // Get the number of digits labels will be rounded to when displayed
+    var numLabelDigits = FallingObjectsConstants.VG_NUM_LABEL_DIGITS;
+
     // Define where the top left bound of the graph lies (VG_TOP_LEFT_BOUND is relative to the top left corner of the background rectangle)
     this.graphTopLeftBound = FallingObjectsConstants.VG_TOP_LEFT_BOUND;
 
@@ -372,8 +375,10 @@ define( function( require ) {
       self.valueLabelNode.setText(
         StringUtils.fillIn( pattern0Label1Value2UnitsString, {
           label: self.name,
-           value: targetValue.toPrecision( FallingObjectsConstants.VG_LABEL_SIG_FIGS ),  // Round
-           units: self.unitString
+          // Multiply by 10 * numLabelDigits so all of the wanted digits are to the left of the decimal, then cast
+          // to an int and divide by the same value
+          value: parseInt( targetValue * Math.pow( 10, numLabelDigits ) ) / Math.pow( 10, numLabelDigits ),
+          units: self.unitString
         } )
       );
     } );
