@@ -61,7 +61,7 @@ define( function( require ) {
     FBD_DRAG_FORCE_ARROW_COLOR: 'blue',
     FBD_WEIGHT_FORCE_ARROW_COLOR: 'orange',
     FBD_NET_FORCE_ARROW_COLOR: 'green',
-    FBD_NUM_FORCE_DIGITS: 3, // Number of decimals to round force values to before they are used to calculate arrow lengths and displayed on labels
+    FBD_NUM_FORCE_DIGITS: 2, // Number of decimals to round force values to before they are used to calculate arrow lengths and displayed on labels
     FBD_FORCE_LABEL_FONT_SIZE: 12,  // Font size of the force labels towards the bottom of the Free Body Diagram
     FBD_FORCE_LABEL_ARROW_PADDING: 10,  // Padding space between labels and the tips of the negative force arrows
 
