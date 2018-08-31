@@ -53,10 +53,10 @@ define( function( require ) {
     var controlPanelsMaxWidth = screenWidth / 4;
     this.controlPanelsVerticalSpacing = FallingObjectsConstants.CONTROL_PANELS_VERTICAL_SPACING;
     var freeBodyDiagramHeight = screenHeight - ( 2 * this.screenMarginY );
-    var freeBodyDiagramWidth = controlPanelsMaxWidth / 4;
+    var freeBodyDiagramWidth = controlPanelsMaxWidth / 1.5;
     this.graphsHorizontalSpacing = FallingObjectsConstants.GRAPHS_HORIZONTAL_SPACING;
     var pvaGraphsHeight = freeBodyDiagramHeight;
-    var pvaGraphsWidth = center.x - freeBodyDiagramWidth - this.graphsHorizontalSpacing - 80;
+    var pvaGraphsWidth = center.x - freeBodyDiagramWidth - this.graphsHorizontalSpacing - FallingObjectsConstants.VG_CENTER_PADDING;
 
     // Create the moving background
     this.movingBackground = new MovingBackground( this.fallingObjectsModel );
@@ -181,7 +181,7 @@ define( function( require ) {
       this.freeBodyDiagram.centerY = ( -offsetY + ( height / scale - offsetY ) ) / 2;
 
       // Place the PVAGraphs just to the right of the freeBodyDiagram
-      this.pvaGraphs.top = this.freeBodyDiagram.top;
+      this.pvaGraphs.centerY = this.freeBodyDiagram.centerY;
       this.pvaGraphs.left = this.freeBodyDiagram.right + this.graphsHorizontalSpacing;
 
       // Update the visible bounds of the screen view based on our previous calculations
