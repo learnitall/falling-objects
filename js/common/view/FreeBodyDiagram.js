@@ -18,8 +18,19 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  var Text = require( 'SCENERY/nodes/Text' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
   var Vector2 = require( 'DOT/Vector2' );
+
+  // strings
+  var pattern0Label1Value2UnitsString = require('string!FALLING_OBJECTS/pattern.0Label.1Value.2Units' );
+  var nString = require( 'string!FALLING_OBJECTS/n' );
+  var weightForceString = require( 'string!FALLING_OBJECTS/weightForce' );
+  var dragForceString = require( 'string!FALLING_OBJECTS/dragForce' );
+  var netForceString = require( 'string!FALLING_OBJECTS/netForce' );
 
   /**
    * Construct the FreeBodyDiagram
@@ -42,7 +53,13 @@ define( function( require ) {
     var centerForcesPos = new Vector2( ( maxWidth - horizontalMargin * 2 ) * ( 1 / 4 ) + horizontalMargin, maxHeight / 2 );
     // Total force plotted to the right of the center
     var centerNetForcePos = new Vector2( ( maxWidth - horizontalMargin * 2 ) * ( 3 / 4 ) + horizontalMargin, maxHeight / 2 );
-    var maxArrowLength = ( maxHeight / 2 ) - FallingObjectsConstants.FBD_VERTICAL_MARGIN;
+    // Font of force arrow labels
+    var forceLabelFont = new PhetFont( { size: FallingObjectsConstants.FBD_FORCE_LABEL_FONT_SIZE } );
+    // Calculate the max arrow length
+    var maxArrowLength = ( maxHeight / 2 ) -
+                         FallingObjectsConstants.FBD_VERTICAL_MARGIN -
+                         FallingObjectsConstants.FBD_FORCE_LABEL_ARROW_PADDING -
+                         new Text( 'SAMPLE', { font: forceLabelFont } ).getHeight();
 
     // Loop through each of the objects the selector will display and determine the largest mass
     var objectMasses = [];
@@ -119,20 +136,31 @@ define( function( require ) {
 
     };
 
+    // Number of digits to round force values to before they are used
+    var numForceDigits = FallingObjectsConstants.FBD_NUM_FORCE_DIGITS;
+    var forceLabelArrowPadding = FallingObjectsConstants.FBD_FORCE_LABEL_ARROW_PADDING;
+
     /**
-     * Auxiliary function to create force arrows
+     * Auxiliary function to create force arrows and labels
      *
      * @param {Vector2} center - center of the arrow/it's base
      * @param {NumberProperty} forceProperty - force property that the arrow will model
      * @param {string} color - color/fill of the arrow
+     * @param {string} labelName - string! representing the name of the force labeled (fd, fg, etc.)
      */
-    var createForceArrow = function( center, forceProperty, color ) {
+    var createForceArrow = function( center, forceProperty, color, labelName ) {
+      // Adjust the y value of center to give some extra spacing for the arrows
+      center.y += arrowCenterSpacing;
+
       // Create a node to hold the arrow's shape
       var arrowNode = new Path( null, {
         fill: color,
         stroke: color,
         lineWidth: centerCircleRadius
       } );
+
+      // Create a text node to hold the arrow's label
+      var forceLabel = new Text( '', { font:forceLabelFont, fill: color } );
 
       // The link below deals with max force (which is set to the selected falling object's weight)
       // If the selected falling object changes, then dispose of the arrow's shape and set the max arrow length and max force
@@ -144,18 +172,28 @@ define( function( require ) {
       } );
 
       /**
-       * Creates the arrow's shape based on the value of the force property
+       * Creates the arrow's shape and label based on the value of the force property
        *
        * @param {number} forceValue - value of the force property to map the arrow to
        */
-      var updateArrowNode = function( forceValue ) {
+      var updateArrow = function( forceValue ) {
         // If the free body diagram is shown, then do calculations
-        if ( fallingObjectsModel.showFreeBodyDiagramProperty.get() ) {
+        if (
+          fallingObjectsModel.showFreeBodyDiagramProperty.get() && (  // Show FBD must be enabled
+            ( labelName === dragForceString && fallingObjectsModel.dragForceEnabledProperty.get() ) ||  // If working with the drag arrow, then Fd must be enabled
+            ( labelName !== dragForceString )  // If not working with the drag arrow and FBD is enabled, then update
+          )
+        ) {
+
+          // Round the forceValue to remove super tiny values that could create weird arrows
+          // Multiply by 10 * numForceDigits so all of the wanted digits are to the left of the decimal, then cast
+          // to an int and divide by the same value
+          var roundedForceValue = parseInt( forceValue * Math.pow( 10, numForceDigits ) ) / Math.pow( 10, numForceDigits );
 
           // The length of the arrow is set to the property's value times the arrow scale
           var forceRatio;
           if ( Math.abs( forceValue ) > Math.abs( self.maxForce ) )  {  // this happens when one enables drag after dropping an object for too long
-            forceRatio = 1 * ( ( forceValue / self.maxForce ) < 1 ? -1 : 1 );
+            forceRatio = 1 * ( ( roundedForceValue / self.maxForce ) < 1 ? -1 : 1 );
           }
           else {
             forceRatio = forceValue / self.maxForce;
@@ -164,57 +202,101 @@ define( function( require ) {
           // Create the arrow shape
           arrowNode.shape = new ArrowShape(
             center.x,
-            center.y + arrowCenterSpacing,
+            center.y,
             center.x,
-            center.y + arrowCenterSpacing + arrowLength,
+            center.y + arrowLength,
             // Scale the arrows dynamically when they become small
             { isHeadDynamic: true, scaleTailToo: true, tailWidth: centerCircleRadius / 2 }
           );
+
+          // Set the text
+          forceLabel.setText(
+            StringUtils.fillIn( pattern0Label1Value2UnitsString, {
+              label: labelName,  // Fd, Fg, etc.
+              value: roundedForceValue,
+              units: nString  // Newton string
+            } )
+          );
+
+          // Position the label
+          // If the roundedForceValue is 0, then the arrowNode will not have values for its center, top and bottom, so
+          // instead we will just use the center
+          var arrowTop, arrowBottom, arrowCenterX;
+          if ( roundedForceValue === 0 ) {
+            arrowCenterX = center.x;
+            arrowTop = center.y - centerCircleRadius;
+            arrowBottom = center.y + centerCircleRadius;
+          } else {
+            arrowCenterX = arrowNode.getCenterX();
+            arrowTop = arrowNode.getTop();
+            arrowBottom = arrowNode.getBottom();
+          }
+
+          // Set X
+          forceLabel.setCenterX( arrowCenterX );
+
+          // Set y
+          // If the arrow is positive (i.e. facing up) then position the label just above the head
+          if ( roundedForceValue >= 0 ) {
+            forceLabel.setBottom( arrowTop - forceLabelArrowPadding );
+
+          // If the arrow is negative (i.e. facing down) then position the label just below the head
+          } else {
+            forceLabel.setTop( arrowBottom + forceLabelArrowPadding );
+          }
         }
       };
 
       // Link the above auxiliary function onto the forceProperty and onto the showFreeBodyDiagramProperty
-      forceProperty.link( updateArrowNode );
+      forceProperty.link( updateArrow );
       // Have to also link onto the show property, because we need to guarantee that the arrows will be accurately
       // drawn when the graph is displayed
       fallingObjectsModel.showFreeBodyDiagramProperty.link( function( showFreeBodyDiagramValue ) {
         // Only update if shown
         if ( showFreeBodyDiagramValue ) {
-          updateArrowNode( forceProperty.get() );
+          updateArrow( forceProperty.get() );
         }
       } );
 
-      return arrowNode;
+      return [ arrowNode, forceLabel ];
     };
 
     // Create the arrows
     // Drag Force
-    var dragForceArrow = createForceArrow(
+    var dragForceStuff = createForceArrow(
       centerForcesPos,
       fallingObjectsModel.selectedFallingObject.dragForceProperty,
       FallingObjectsConstants.FBD_DRAG_FORCE_ARROW_COLOR,
-      true
+      dragForceString
     );
+
     // Weight Force
-    var weightForceArrow = createForceArrow(
+    var weightForceStuff = createForceArrow(
       centerForcesPos,
       fallingObjectsModel.selectedFallingObject.weightForceProperty,
-      FallingObjectsConstants.FBD_WEIGHT_FORCE_ARROW_COLOR
+      FallingObjectsConstants.FBD_WEIGHT_FORCE_ARROW_COLOR,
+      weightForceString
     );
     // Net Force
-    var netForceArrow = createForceArrow(
+    var netForceStuff = createForceArrow(
       centerNetForcePos,
       fallingObjectsModel.selectedFallingObject.netForceProperty,
-      FallingObjectsConstants.FBD_NET_FORCE_ARROW_COLOR
+      FallingObjectsConstants.FBD_NET_FORCE_ARROW_COLOR,
+      netForceString
     );
 
     // Add children (set rendering order)
     this.addChild( backgroundRectangle );
-    this.addChild( dragForceArrow );
-    this.addChild( weightForceArrow );
-    this.addChild( netForceArrow );
+    // Add arrows
+    this.addChild( dragForceStuff[ 0 ]);
+    this.addChild( weightForceStuff[ 0 ] );
+    this.addChild( netForceStuff[ 0 ] );
     this.addChild( centerForcesNode );
     this.addChild( centerNetForceNode );
+    // Add labels
+    this.addChild( dragForceStuff[ 1 ] );
+    this.addChild( weightForceStuff[ 1 ] );
+    this.addChild( netForceStuff[ 1 ] );
 
     // Now link the showFreeBodyDiagramProperty in the model with the visibility of this node
     fallingObjectsModel.showFreeBodyDiagramProperty.link( function( showFreeBodyDiagramValue ) {
@@ -224,7 +306,13 @@ define( function( require ) {
     // Also create a link where the dragForceArrow is only shown if the dragForceEnabledProperty is true
     fallingObjectsModel.dragForceEnabledProperty.link( function ( dragForceEnabledValue ) {
       if ( !dragForceEnabledValue ) {
-        dragForceArrow.shape = null;
+        // Set the shape of the dragForceArrow to null
+        dragForceStuff[ 0 ].shape = null;
+        // Set the visibility of the label to false
+        dragForceStuff[ 1 ].setVisible( false );
+      } else {
+        // Set the visibility of the label to true
+        dragForceStuff[ 1 ].setVisible( true );
       }
     } );
   }

@@ -56,11 +56,14 @@ define( function( require ) {
     FBD_HORIZONTAL_MARGIN: 5,  // Extra padding to be given to vertical edges of the FBD (greater the value, closer the centers will be)
     FBD_VERTICAL_MARGIN: 20,  // Margin between the edges of the FDB background and the arrows
     FBD_ARROW_CENTER_SPACING: 2,  // Smaller arrows can get swallowed up in the center circles- this pads the arrows' centers to reduce this
-    FBD_CENTER_CIRCLE_RADIUS: 5,  // Radius of the center points plotted in the FBD
+    FBD_CENTER_CIRCLE_RADIUS: 8,  // Radius of the center points plotted in the FBD
     // Define colors of the arrows
     FBD_DRAG_FORCE_ARROW_COLOR: 'blue',
     FBD_WEIGHT_FORCE_ARROW_COLOR: 'orange',
     FBD_NET_FORCE_ARROW_COLOR: 'green',
+    FBD_NUM_FORCE_DIGITS: 3, // Number of decimals to round force values to before they are used to calculate arrow lengths and displayed on labels
+    FBD_FORCE_LABEL_FONT_SIZE: 12,  // Font size of the force labels towards the bottom of the Free Body Diagram
+    FBD_FORCE_LABEL_ARROW_PADDING: 10,  // Padding space between labels and the tips of the negative force arrows
 
     MB_CLOUD_MARGIN_X: 90,  // Minimum horizontal space between the falling object and center of the clouds in the background
     MB_CLOUD_MARGIN_X_VARIANCE: 120,  // Maximum amount of extra horizontal space between the falling object and clouds in the background
@@ -81,6 +84,7 @@ define( function( require ) {
     CONTROL_BUTTON_STEP_DT: 1 / 60,  // Assume frame rate for manual steps (60th of a sec)
     CONTROL_BUTTON_MARGIN_X: 10,  // Padding on each side of the row of control buttons (larger the number, more condensed they will be)
 
+    VG_CENTER_PADDING: 50,  // Padding between the PVA graphs and the center of the screen- leaves room for the falling objects
     VG_TOP_LEFT_BOUND: new Vector2( 50, 30 ),  // Top left bound of the ValueGraphs, determined empirically, relative to the top left corner of background.
     VG_TIME_INTERVAL: 10,  // Interval of seconds that the maximum plottable time is incremented by when needed
     VG_VALUE_INTERVAL: 30,  // Interval 'number' of the value property that is used to increase the min and max plotable values
@@ -101,7 +105,7 @@ define( function( require ) {
     VG_VELOCITY_COLOR: 'green',  // Color of the velocity graph
     VG_POSITION_COLOR: 'blue',  // Color of the position graph
     VG_VERTICAL_SPACING: 15,  // Vertical spacing between each graph
-    VG_LABEL_SIG_FIGS: 4,  // Number of sig figs to round displayed values to on the graphs
+    VG_NUM_LABEL_DIGITS: 2,  // Number of digits to round displayed values to on the graphs
 
     MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates
 
