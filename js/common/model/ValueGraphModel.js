@@ -52,10 +52,10 @@ define( function( require) {
     this._valueMinScalePowerProperty = new NumberProperty( 0 );
 
     // @public {Property.<number>} scalar that maps model values to view coordinates
-    this.valueScaleProperty = new NumberProperty( 0 );
+    this.valueScaleProperty = new NumberProperty( this.getValueScale() );
 
     // @public {Property.<number>} scalar that maps time to view coordinates
-    this.timeScaleProperty = new NumberProperty( 0 );
+    this.timeScaleProperty = new NumberProperty( this.getTimeScale() );
 
     // @public {Property.<array>} data points that have been plotted on the graph
     this.dataPointsProperty = new Property( [] );
@@ -76,11 +76,11 @@ define( function( require) {
     // onto that length
 
     this.valueLengthProperty.link( function( valueLength ) {
-      self.valueScaleProperty.set( self.maxPlotHeight / Math.abs( valueLength.getLength() ) );
+      self.valueScaleProperty.set( self.getValueScale() );
     } );
 
     this.timeLengthProperty.link( function( timeLength ) {
-      self.timeScaleProperty.set( self.maxPlotWidth / Math.abs( timeLength.getLength() ) );
+      self.timeScaleProperty.set( self.getTimeScale() );
     } );
 
     // Create a link to update the origin loc percentage on a value length
@@ -100,12 +100,12 @@ define( function( require) {
      */
     reset: function() {
       this.lastUpdateTimeProperty.reset();
+      this.valueScaleProperty.reset();
+      this.timeScaleProperty.reset();
       this.valueLengthProperty.reset();
       this.timeLengthProperty.reset();
       this._valueMaxScalePowerProperty.reset();
       this._valueMinScalePowerProperty.reset();
-      this.valueScaleProperty.reset();
-      this.timeScaleProperty.reset();
       this.dataPointsProperty.reset();
       this.replotGraphProperty.reset();
     },
@@ -151,6 +151,29 @@ define( function( require) {
     incrementMaxTime: function() {
       // Just tack another interval onto our maxTime
       this.timeLengthProperty.set( new Range( 0, this.timeLengthProperty.get().max + this.timeInterval ) );
+    },
+
+    /**
+     * Return the scale along the value/Y axis, which can be used to translate model coordinates onto view
+     * coordinates. Scale is calculated by taking the length for plotting (length of the value axis in view
+     * coordinates) and dividing by the range of model values that needs to fit that plot length. For instance,
+     * if our maxPlotHeight is 100 in view coordinates and the range we want to plot onto that height is
+     * -30 Newtons to 0 Newtons, then our scale would be 100 / 30 = 3.33 (one Newton is equal to 3.33 in view
+     * coordinates)
+     */
+    getValueScale: function() {
+      return this.maxPlotHeight / Math.abs( this.valueLengthProperty.get().getLength() )
+    },
+
+    /**
+     * Return the scale along the time/X axis, which can be used to translate time onto view coordinates.
+     * Scale is calculated by taking the length of plotting (length of the time axis in view coordinates) and
+     * dividing by the length of the time that needs to fit that plot length. For instance, if our
+     * maxPlotWidth is 100 in view coordinates and we want to plot 30 seconds on the graph at a time, then
+     * our scale would be 100 / 30 = 3.33 (one second is equal to 3.33 in view coordinates).
+     */
+    getTimeScale: function() {
+      return this.maxPlotWidth / Math.abs( this.timeLengthProperty.get().getLength() );
     },
 
     /**

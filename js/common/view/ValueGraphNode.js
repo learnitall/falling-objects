@@ -70,25 +70,30 @@ define( function( require ) {
     var maxPlotWidth = backgroundRectangle.getWidth() - FallingObjectsConstants.VG_PLOT_EDGE_PADDING.x - this.graphTopLeftBound.x;
 
     // Create a ValueGraphModel that will be used to hold our data
-    this.valueGraphModel = new ValueGraphModel( maxPlotWidth, maxPlotHeight );
+    this.valueGraphModel = new ValueGraphModel( maxPlotWidth, maxPlotHeight, this );
 
     // Construct the model-view transform which will translate between the valueProperty and time to the graph on screen
-    this.modelViewTransform = null;  // will be set below
-    // Have it update with the origin's location percentage
+    this.modelViewTransform = ModelViewTransform2.createOffsetXYScaleMapping(
+      new Vector2(
+        self.graphTopLeftBound.x,
+        // See the below property link for explanation on how this is calculated
+        self.graphTopLeftBound.y + ( maxPlotHeight - ( maxPlotHeight * this.valueGraphModel.originLocPercentProperty.get() ) )
+      ),
+      self.valueGraphModel.timeScaleProperty.get(),
+      self.valueGraphModel.valueScaleProperty.get()
+    );
+    // Have the y offset update with the origin's location percentage
     this.valueGraphModel.originLocPercentProperty.link( function( locPercent ) {
-      self.modelViewTransform = ModelViewTransform2.createOffsetXYScaleMapping(
-        new Vector2(
-          self.graphTopLeftBound.x,
-          // Starting at the top left bound, then translate depending on our locPercent
-          // locPercent is relative to the bottom of the graph
-          // MIN -------------ORIGIN ------------- MAX
-          // <----------------locPercent * maxPlotHeight
-          // <-----------------maxPlotHeight--------->
-          self.graphTopLeftBound.y + ( maxPlotHeight - ( maxPlotHeight * locPercent ) )
-        ),
-        self.valueGraphModel.timeScaleProperty.get(),
-        self.valueGraphModel.valueScaleProperty.get()
-      );
+      // Starting at the top left bound, then translate depending on our locPercent
+      // locPercent is relative to the bottom of the graph
+      // MIN -------------ORIGIN ------------- MAX
+      // <----------------locPercent * maxPlotHeight
+      // <-----------------maxPlotHeight--------->
+      //                   <------------ yOffset->
+      // m12 holds the y offset- see Matrix3.affine and ModelViewTransform2.createOffsetXYScaleMapping
+      self.modelViewTransform.matrix.set12(
+        self.graphTopLeftBound.y + ( maxPlotHeight - ( maxPlotHeight * locPercent ) )
+      )
     } );
 
     // Construct labels for our axis
