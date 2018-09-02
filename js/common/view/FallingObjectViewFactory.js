@@ -19,6 +19,7 @@ define( function ( require ) {
   // images
   var badmintonShuttlecockImage = require( 'image!FALLING_OBJECTS/badminton_shuttlecock.svg' );
   var baseballImage = require( 'image!FALLING_OBJECTS/baseball.png' );
+  var combustedImage = require( 'image!FALLING_OBJECTS/combusted.png' );
   var footballImage = require( 'image!FALLING_OBJECTS/football.png' );
   var modelRocketImage = require( 'image!FALLING_OBJECTS/model_rocket.svg' );
   var sportsCarImage = require( 'image!FALLING_OBJECTS/sports_car.svg' );
@@ -29,11 +30,11 @@ define( function ( require ) {
   function FallingObjectViewFactory( ) {
 
     /**
-    * Functions to create Circle nodes that look like the given falling objects.
+    * Functions to create nodes that look like the given falling objects.
     * @public
     *
     * @param {number} diameter - diameter of the object in model coordinates
-    * @returns {Circle}
+    * @returns {Node}
     */
 
     this.createBowlingBall = function( diameter, options ) {
@@ -45,6 +46,15 @@ define( function ( require ) {
 
       return new Circle( diameter / 2, options );
     };
+
+    this.createCombusted = function( diameter, options ) {
+      // Need to apply a 180 degree rotation to the image so it stands vertical
+      options = _.extend( {
+        rotation: -Math.PI / 2
+      }, options );
+
+      return new Image( combustedImage, options );
+    }
 
     this.createFootball = function( diameter, options ) {
       // We just need to apply a 90 degree rotation to the image so it stands vertical
@@ -104,6 +114,7 @@ define( function ( require ) {
       'BASEBALL': baseballImage,
       // constructed nodes
       'BOWLING_BALL': this.createBowlingBall,
+      'COMBUSTED': this.createCombusted,
       'FOOTBALL': this.createFootball,
       'GOLF_BALL': this.createGolfBall,
       'MODEL_ROCKET': this.createModelRocket,

@@ -11,6 +11,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -31,8 +32,11 @@ define( function( require ) {
     // Construct options dictionary from the named entry in FallingObjectsConstants, overriding values using the given options param
     var objectAttributes = FallingObjectsConstants[ FallingObjectsConstants.stringToConstantsName( fallingObjectName ) ];
 
+    // Grab a reference to self
+    var self = this;
+
     // @public
-    this.FallingObjectsModel = FallingObjectsModel;
+    this.fallingObjectsModel = FallingObjectsModel;
     this.name = fallingObjectName;
 
     // @public {Property.<number>} - the mass of the FallingObject
@@ -64,6 +68,20 @@ define( function( require ) {
 
     // @public {Property.<number>} total net force acting on the projectile
     this.netForceProperty = new NumberProperty( 0 );  // newtons
+
+    // @public {Property.<boolean>} whether or not the falling object has combusted due to drag forces
+    this.combustedProperty = new BooleanProperty( false );
+
+    // If an object has a small mass and it is pushed passed its terminal velocity, there is the
+    // possibility that enabling drag could cause its velocity to become positive and tend to infinity
+    this.velocityProperty.link( function( velocityValue ) {
+      if ( velocityValue > 0 && self.fallingObjectsModel.simEnabledProperty.get() ) {
+        // Disable the sim and force the user to reset
+        self.fallingObjectsModel.simEnabledProperty.set( false );
+        // Also set a combusted state so the node will update to the appropriate image
+        self.combustedProperty.set( true );
+      }
+    } );
 
   }
 
@@ -100,7 +118,7 @@ define( function( require ) {
      * @public
      */
     updateWeightForce: function() {
-      this.weightForceProperty.set( this.FallingObjectsModel.accelerationGravityProperty.get() * this.massProperty.get() );
+      this.weightForceProperty.set( this.fallingObjectsModel.accelerationGravityProperty.get() * this.massProperty.get() );
     },
 
     /**
@@ -109,7 +127,7 @@ define( function( require ) {
      */
     updateDragForce: function() {
       this.dragForceProperty.set(
-        0.5 * ( this.dragCoefficientProperty.get() * this.FallingObjectsModel.airDensityProperty.get() * Math.pow( this.velocityProperty.get(), 2 ) * this.referenceAreaProperty.get() )
+        0.5 * ( this.dragCoefficientProperty.get() * this.fallingObjectsModel.airDensityProperty.get() * Math.pow( this.velocityProperty.get(), 2 ) * this.referenceAreaProperty.get() )
       );
     },
 
@@ -124,7 +142,7 @@ define( function( require ) {
 
       // Set net force using drag if toggled
       var newNetForce;
-      if ( this.FallingObjectsModel.dragForceEnabledProperty.get() ) {
+      if ( this.fallingObjectsModel.dragForceEnabledProperty.get() ) {
         this.updateDragForce();
         newNetForce = this.weightForceProperty.get() + this.dragForceProperty.get();
       }
@@ -196,6 +214,7 @@ define( function( require ) {
       this.weightForceProperty.reset();
       this.dragForceProperty.reset();
       this.netForceProperty.reset();
+      this.combustedProperty.reset();
     },
 
     /**

@@ -89,6 +89,9 @@
   "sportsCar": {
     "value": "Sports Car"
   },
+  "combusted": {
+    "value": "Combusted"
+  },
   "acceleration": {
     "value": "Acceleration"
   },

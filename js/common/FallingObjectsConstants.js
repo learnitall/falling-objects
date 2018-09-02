@@ -169,6 +169,10 @@ define( function( require ) {
       'diameter': [ 1.82, 4.37 ]  // width of car in m, length of car in m (view height)
     },
 
+    COMBUSTED: {
+      'diameter': null  // Will be set to the diameter of the object that is combusted
+    },
+
     // TODO: Define initial values for a ball that has its attributes change with a slider
     DYNAMIC_BALL: {
 
