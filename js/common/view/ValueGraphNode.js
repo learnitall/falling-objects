@@ -375,9 +375,8 @@ define( function( require ) {
       self.valueLabelNode.setText(
         StringUtils.fillIn( pattern0Label1Value2UnitsString, {
           label: self.name,
-          // Multiply by 10 * numLabelDigits so all of the wanted digits are to the left of the decimal, then cast
-          // to an int and divide by the same value
-          value: parseInt( targetValue * Math.pow( 10, numLabelDigits ), 10 ) / Math.pow( 10, numLabelDigits ),
+          // Round the force value to limit how many digits are displayed- saves space and increases readability
+          value: self.fallingObjectsModel.roundValue( targetValue, numLabelDigits ),
           units: self.unitString
         } )
       );

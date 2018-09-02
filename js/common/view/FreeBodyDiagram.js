@@ -185,9 +185,7 @@ define( function( require ) {
         ) {
 
           // Round the forceValue to remove super tiny values that could create weird arrows
-          // Multiply by 10 * numForceDigits so all of the wanted digits are to the left of the decimal, then cast
-          // to an int and divide by the same value
-          var roundedForceValue = parseInt( forceValue * Math.pow( 10, numForceDigits ), 10 ) / Math.pow( 10, numForceDigits );
+          var roundedForceValue = fallingObjectsModel.roundValue( forceValue, numForceDigits );
 
           // The length of the arrow is set to the property's value times the arrow scale
           var forceRatio;

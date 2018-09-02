@@ -38,6 +38,7 @@ define( function( require ) {
     // @public
     this.fallingObjectsModel = FallingObjectsModel;
     this.name = fallingObjectName;
+    this.numDigits = FallingObjectsConstants.FO_NUM_DIGITS;
 
     // @public {Property.<number>} - the mass of the FallingObject
     this.massProperty = new NumberProperty( objectAttributes.mass );
@@ -113,12 +114,21 @@ define( function( require ) {
       }  // otherwise don't do anything
     },
 
+    // NOTE: In all of these updateVALUE functions below, all calculated values will be rounded to
+    // FallingObjectConstants.FO_NUM_DIGITS to prevent issues arising from handling super duper small values in
+    // view modules (i.e. in the FBD and ValueGraphs)
+
     /**
      * Calculate weight of the object in Newtons and set the weightForceProperty to the calculated value.
      * @public
      */
     updateWeightForce: function() {
-      this.weightForceProperty.set( this.fallingObjectsModel.accelerationGravityProperty.get() * this.massProperty.get() );
+      this.weightForceProperty.set(
+        this.fallingObjectsModel.roundValue(
+          this.fallingObjectsModel.accelerationGravityProperty.get() * this.massProperty.get(),
+          this.numDigits
+        )
+      );
     },
 
     /**
@@ -127,7 +137,10 @@ define( function( require ) {
      */
     updateDragForce: function() {
       this.dragForceProperty.set(
-        0.5 * ( this.dragCoefficientProperty.get() * this.fallingObjectsModel.airDensityProperty.get() * Math.pow( this.velocityProperty.get(), 2 ) * this.referenceAreaProperty.get() )
+        this.fallingObjectsModel.roundValue(
+          0.5 * ( this.dragCoefficientProperty.get() * this.fallingObjectsModel.airDensityProperty.get() * Math.pow( this.velocityProperty.get(), 2 ) * this.referenceAreaProperty.get() ),
+          this.numDigits
+        )
       );
     },
 
@@ -151,7 +164,11 @@ define( function( require ) {
         newNetForce = this.weightForceProperty.get();
       }
 
-      this.netForceProperty.set( newNetForce );
+      this.netForceProperty.set(
+        this.fallingObjectsModel.roundValue(
+          newNetForce, this.numDigits
+        )
+      );
     },
 
     /**
@@ -163,7 +180,11 @@ define( function( require ) {
       // Update value that will be use to calculate acceleration
       this.updateNetForce();
 
-      this.accelerationProperty.set( this.netForceProperty.get() / this.massProperty.get() );
+      this.accelerationProperty.set(
+        this.fallingObjectsModel.roundValue(
+          this.netForceProperty.get() / this.massProperty.get(),
+          this.numDigits
+       ) );
     },
 
     /**
@@ -178,7 +199,12 @@ define( function( require ) {
       // Update value that will be used to calculate velocity
       this.updateAcceleration();
 
-      this.velocityProperty.set( this.velocityProperty.get() + ( this.accelerationProperty.get() * dt ) );
+      this.velocityProperty.set(
+        this.fallingObjectsModel.roundValue(
+          this.velocityProperty.get() + ( this.accelerationProperty.get() * dt ),
+          this.numDigits
+        )
+      );
     },
 
     /**
@@ -195,7 +221,13 @@ define( function( require ) {
 
       // The property is set to a new vector- modifying the positionProperty vector will also modify the internal
       // _initialValue vector (they are a reference to one another)
-      var newPositionVector = new Vector2( 0, this.positionProperty.get().y + ( this.velocityProperty.get() * dt ) );
+      var newPositionVector = new Vector2(
+        0,
+        this.fallingObjectsModel.roundValue(
+          this.positionProperty.get().y + ( this.velocityProperty.get() * dt ),
+          this.numDigits
+        )
+      );
       this.positionProperty.set( newPositionVector );
     },
 

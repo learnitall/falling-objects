@@ -33,6 +33,8 @@ define( function( require ) {
 
     DEFAULT_FALLING_OBJECT_NAME: baseballString,  // Default FallingObject name that will be selected upon entering the sim
 
+    FO_NUM_DIGITS: 5,  // Number of digits that all values in the FallingObject will be rounded to
+
     // This is modified from projectile motion
     CONTROL_PANEL_OPTIONS: {  // Options for each of the control panels (i.e. the FallingObjectSelector and TogglePanel)
       align: 'left',
