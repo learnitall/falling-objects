@@ -174,6 +174,7 @@ define( function( require ) {
       this.airDensityProperty.reset();
       this.dragForceEnabledProperty.reset();
       this.totalFallTimeProperty.reset();
+      this.playEnabledProperty.reset();
       this.simEnabledProperty.reset();
 
       // Reset FallingObject
