@@ -116,7 +116,7 @@ define( function( require ) {
     roundValue: function( valueToRound, numDigits ) {
       // Multiply by 10 * numDigits so all of the wanted digits are to the left of the decimal, then cast
       // to an int and divide by numDigits
-      return parseInt( valueToRound * Math.pow( 10, numDigits ), 10 ) / Math.pow( 10, numDigits )
+      return parseInt( valueToRound * Math.pow( 10, numDigits ), 10 ) / Math.pow( 10, numDigits );
     },
 
     /**
