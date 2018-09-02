@@ -48,6 +48,9 @@ define( function( require ) {
     // @public {Property.<boolean>} whether or not the simulation is paused
     this.playEnabledProperty = new BooleanProperty( false );
 
+    // @public {Property.<boolean>} whether or not the simulation is disabled
+    this.simEnabledProperty = new BooleanProperty( true );
+
     // @public {Property.<boolean>} whether or not to display data values on the screen (object properties, force values, etc.)
     this.showValuesProperty = new BooleanProperty( false );
 
@@ -87,9 +90,15 @@ define( function( require ) {
     // Construct an object to fall
     this.selectedFallingObject = new FallingObject( this, this.selectedFallingObjectNameProperty.get(), new Vector2( 0, 0 ) );
 
-    // When the selected name is updated, then have the FallingObject instance update too
+    // When the selected name is updated, then have the FallingObject instance update too and call a reset
     this.selectedFallingObjectNameProperty.lazyLink( function ( selectedFallingObjectName ) {
       self.selectedFallingObject.resetName( selectedFallingObjectName );
+      self.reset();
+    } );
+
+    // When the sim is disabled, stop the sim
+    this.simEnabledProperty.link( function( simEnabledValue ) {
+      self.playEnabledProperty.set( false );
     } );
   }
 
@@ -152,6 +161,7 @@ define( function( require ) {
       this.airDensityProperty.reset();
       this.dragForceEnabledProperty.reset();
       this.totalFallTimeProperty.reset();
+      this.simEnabledProperty.reset();
 
       // Reset FallingObject
       this.selectedFallingObject.reset();

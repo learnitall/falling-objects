@@ -41,6 +41,7 @@ define( function( require ) {
 
     // Call super constructor
     ScreenView.call( this );
+    var self = this;
 
     // Variables for this constructor and for the layout method, for convenience
     // @private
@@ -77,6 +78,12 @@ define( function( require ) {
     // Control Buttons (Play/Pause, Reset, Step)
     this.controlButtons = new ControlButtons( fallingObjectsModel, this, controlPanelsMaxWidth );
 
+    // When the sim is disabled, also disable the play/step buttons
+    this.fallingObjectsModel.simEnabledProperty.link( function( simEnabledValue ) {
+      self.controlButtons.playPauseButton.enabled = simEnabledValue;
+      self.controlButtons.stepForwardButton.enabled = simEnabledValue;
+    } );
+
     // Falling Object Selector Node
     // The parent holds the comboBox
     this.fallingObjectSelectorParent = new Node();
@@ -103,6 +110,11 @@ define( function( require ) {
 
     // Create the PVAGraphs
     this.pvaGraphs = new PVAGraphs( this.fallingObjectsModel, pvaGraphsWidth, pvaGraphsHeight );
+
+    // Create a link that will reset the screen view when the selected falling object changes
+    this.fallingObjectsModel.selectedFallingObjectNameProperty.lazyLink( function( selectedFallingObjectName ) {
+      self.reset();
+    } );
 
     // Add all of the children
     this.addChild( this.movingBackground );
