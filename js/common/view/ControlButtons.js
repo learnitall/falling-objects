@@ -51,7 +51,7 @@ define( function( require ) {
     } );
 
     // Play-Pause Button
-    var playPauseButton = new PlayPauseButton( fallingObjectsModel.playEnabledProperty, {
+    this.playPauseButton = new PlayPauseButton( fallingObjectsModel.playEnabledProperty, {
       radius: controlButtonRadius
     } );
 
@@ -61,7 +61,7 @@ define( function( require ) {
     } );
 
     // Manual Step Forward Button
-    var stepForwardButton = new StepForwardButton( {
+    this.stepForwardButton = new StepForwardButton( {
       radius: controlButtonRadius,
       playingProperty: fallingObjectsModel.playEnabledProperty,
       listener: function() { fallingObjectsModel.stepModel( controlButtonStepDT ); }
@@ -69,7 +69,7 @@ define( function( require ) {
 
     // Add the three buttons into an HBox
     var controlButtonHBox = new HBox( {
-      children: [ resetAllButton, playPauseButton, stepForwardButton ],
+      children: [ resetAllButton, this.playPauseButton, this.stepForwardButton ],
       spacing: controlButtonSpacing
     } );
     this.addChild( controlButtonHBox );
