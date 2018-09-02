@@ -54,7 +54,7 @@ define( function ( require ) {
       }, options );
 
       return new Image( combustedImage, options );
-    }
+    };
 
     this.createFootball = function( diameter, options ) {
       // We just need to apply a 90 degree rotation to the image so it stands vertical
