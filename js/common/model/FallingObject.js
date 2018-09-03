@@ -110,7 +110,7 @@ define( function( require ) {
         var objectAttributes = FallingObjectsConstants[ FallingObjectsConstants.stringToConstantsName( fallingObjectName ) ];
         this.massProperty = new NumberProperty( objectAttributes.mass );
         this.dragCoefficientProperty = new NumberProperty( objectAttributes.dragCoefficient );
-        this.referenceArea = new NumberProperty( objectAttributes.referenceArea );
+        this.referenceAreaProperty = new NumberProperty( objectAttributes.referenceArea );
       }  // otherwise don't do anything
     },
 
