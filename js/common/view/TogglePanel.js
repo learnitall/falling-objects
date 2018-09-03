@@ -16,6 +16,7 @@ define( function ( require ) {
   var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
   var HStrut = require( 'SCENERY/nodes/HStrut' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
@@ -55,22 +56,28 @@ define( function ( require ) {
 
     // Construct the Checkboxes from the given toggleList
     var toggleNodes = [];
+    var toggleNode;
     toggleList.forEach( function( toggleItem ) {
+      // If we are given a line separator, then create a new Line Node, otherwise create a new label
+      if ( toggleItem === FallingObjectsConstants.TP_LINE_SEP ) {
+        toggleNode = new Line( 0, 0, maxWidth - ( 2 * controlPanelOptions.xMargin ), 0, { stroke: 'gray' } );
+      } else {
+        // Create a Text node to act as the check box label
+        var labelText = new Text( toggleItem.label, labelNodeOptions );
 
-      // Create a Text node to act as the check box label
-      var labelText = new Text( toggleItem.label, labelNodeOptions );
+        // Construct the check box
+        var checkbox = new Checkbox( labelText, toggleItem.property, checkboxOptions );
 
-      // Construct the check box
-      var checkbox = new Checkbox( labelText, toggleItem.property, checkboxOptions );
+        // Place the check box alongside an HStrut that sets the width
+        toggleNode = new VBox( {
+          align: controlPanelsAlignment,
+          children: [
+            checkbox,
+            new HStrut( maxWidth - 2 * controlPanelOptions.xMargin )
+          ]
+        } );
+      }
 
-      // Place the check box alongside an HStrut that sets the width
-      var toggleNode = new VBox( {
-        align: controlPanelsAlignment,
-        children: [
-          checkbox,
-          new HStrut( maxWidth - 2 * controlPanelOptions.xMargin )
-        ]
-      } );
       toggleNodes.push( toggleNode );
     } );
 

@@ -99,10 +99,11 @@ define( function( require ) {
     // Toggle Panel
     this.togglePanel = new TogglePanel(
       [
-        { label: enableDragString, property: this.fallingObjectsModel.dragForceEnabledProperty },
         { label: showValuesString, property: this.fallingObjectsModel.showValuesProperty },
         { label: showFreeBodyDiagramString, property: this.fallingObjectsModel.showFreeBodyDiagramProperty },
-        { label: showPVAGraphsString, property: this.fallingObjectsModel.showPVAGraphsProperty }
+        { label: showPVAGraphsString, property: this.fallingObjectsModel.showPVAGraphsProperty },
+        FallingObjectsConstants.TP_LINE_SEP,
+        { label: enableDragString, property: this.fallingObjectsModel.dragForceEnabledProperty },
       ],
       controlPanelsMaxWidth
     );

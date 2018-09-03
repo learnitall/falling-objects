@@ -49,6 +49,8 @@ define( function( require ) {
 
     VP_NUM_DIGITS: 4,  // Number of digits to round displayed values to in the value panel
 
+    TP_LINE_SEP: "TP_LINE_SEP",  // Identifier that tells the Toggle Panel to create a line separator
+
     FBD_BACKGROUND_OPTIONS: {  // Options for the background of the FreeBodyDiagram
       fill: 'rgb( 255, 255, 255 )',
       lineWidth: 1,
