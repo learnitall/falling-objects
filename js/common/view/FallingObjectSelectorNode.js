@@ -120,24 +120,31 @@ define( function( require ) {
         labelText.setFill( color );
       }
 
-      // Pull the attribute
-      var attributeProperty = fallingObjectModel.selectedFallingObject[ attributeName ];
-      // Link so the label gets updated on changes
-      attributeProperty.link( function( attributeValue ) {
+      // Using a nested link here- first pull the appropriate attribute property from the selected falling object
+      // Then create a link on that attribute property so that whenever its value is updated, the label is updated
+      // as well
+      fallingObjectModel.selectedFallingObjectNameProperty.link( function( selectedFallingObjectName ) {
 
-        // Deal with special cases that don't fit the generic label builder
-        if ( attributeName === 'positionProperty' ) {
-          // Pull the y component of the vector
-          attributeValue = attributeValue.y;
-        }
+        // Pull the attribute
+        var attributeProperty = fallingObjectModel.selectedFallingObject[ attributeName ];
+        // Link so the label gets updated on changes
+        attributeProperty.link( function( attributeValue ) {
 
-        labelText.setText(
-          StringUtils.fillIn( patternString, {
-            label: labelString,
-            value: fallingObjectModel.roundValue( attributeValue, FallingObjectsConstants.SELECTOR_LABEL_NUM_DIGITS ),
-            units: unitsString
-          } )
-        );
+          // Deal with special cases that don't fit the generic label builder
+          if ( attributeName === 'positionProperty' ) {
+            // Pull the y component of the vector
+            attributeValue = attributeValue.y;
+          }
+          labelText.setText(
+            StringUtils.fillIn( patternString, {
+              label: labelString,
+              value: fallingObjectModel.roundValue( attributeValue, FallingObjectsConstants.SELECTOR_LABEL_NUM_DIGITS ),
+              units: unitsString
+            } )
+          );
+
+        } );
+
       } );
 
       var labelNode = new VBox( {
