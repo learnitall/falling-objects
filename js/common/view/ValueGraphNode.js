@@ -263,7 +263,7 @@ define( function( require ) {
      * @param {number} propertyValue - value of the target property to display in the label
      */
     var updateValueLabelNode = function( propertyValue ) {
-      if ( typeof propertyValue === "object" && propertyValue.y !== undefined ) {
+      if ( typeof propertyValue === 'object' && propertyValue.y !== undefined ) {
         propertyValue = propertyValue.y;
       }
       self.valueLabelNode.setText(
@@ -273,7 +273,7 @@ define( function( require ) {
           units: self.unitString
         } )
       );
-    }
+    };
 
     // Link the showValuesProperty with the valueLabelNode so the label only displays values if toggled
     this.fallingObjectsModel.showValuesProperty.link( function( showValues ) {
