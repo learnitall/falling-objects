@@ -19,7 +19,13 @@ define( function( require ) {
   function TerminalScreenView( fallingObjectsModel ) {
 
     // Call the screenView, passing in our given model
-    FallingObjectsScreenView.call( this, fallingObjectsModel );
+    FallingObjectsScreenView.call(
+      this,
+      fallingObjectsModel,
+      {
+        addDragToggle: false
+      }
+    );
 
   }
 

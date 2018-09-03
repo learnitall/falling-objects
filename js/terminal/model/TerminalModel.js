@@ -16,8 +16,15 @@ define( function( require ) {
    */
   function TerminalModel() {
 
-    // Call our parent, passing in that we don't want a constant altitude
-    FallingObjectsModel.call( this, false );
+    // Call our parent, passing in that we don't want a constant altitude and we want drag
+    // to always be enabled
+    FallingObjectsModel.call(
+      this,
+      {
+        constantAltitude: false,
+        initialDragForceEnabledValue: true
+      }
+    );
 
   }
 
