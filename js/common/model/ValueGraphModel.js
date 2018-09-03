@@ -162,7 +162,7 @@ define( function( require) {
      * coordinates)
      */
     getValueScale: function() {
-      return this.maxPlotHeight / Math.abs( this.valueLengthProperty.get().getLength() )
+      return this.maxPlotHeight / Math.abs( this.valueLengthProperty.get().getLength() );
     },
 
     /**
