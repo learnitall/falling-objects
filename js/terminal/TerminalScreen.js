@@ -10,12 +10,12 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Property = require( 'AXON/Property' );
   var Screen = require( 'JOIST/Screen' );
-  var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
-  var FallingObjectsModel = require( 'FALLING_OBJECTS/common/model/FallingObjectsModel' );
-  var FallingObjectsScreenView = require( 'FALLING_OBJECTS/common/view/FallingObjectsScreenView' );
+  var TerminalModel = require( 'FALLING_OBJECTS/terminal/model/TerminalModel' );
+  var TerminalScreenView = require( 'FALLING_OBJECTS/terminal/view/TerminalScreenView' );
 
   // string
   var screenTerminalString = require( 'string!FALLING_OBJECTS/screen.terminal' );
@@ -23,7 +23,7 @@ define( function( require ) {
   /**
    * @constructor
    */
-  function FallingObjectsScreen() {
+  function TerminalScreen() {
 
     var options = {
       name: screenTerminalString,
@@ -32,13 +32,13 @@ define( function( require ) {
     };
 
     Screen.call( this,
-      function() { return new FallingObjectsModel( false ); },
-      function( model ) { return new FallingObjectsScreenView( model ); },
+      function() { return new TerminalModel(); },
+      function( model ) { return new TerminalScreenView( model ); },
       options
     );
   }
 
-  fallingObjects.register( 'FallingObjectsScreen', FallingObjectsScreen );
+  fallingObjects.register( 'TerminalScreen', TerminalScreen );
 
-  return inherit( Screen, FallingObjectsScreen );
+  return inherit( Screen, TerminalScreen );
 } );
