@@ -22,6 +22,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var PVAGraphs = require( 'FALLING_OBJECTS/common/view/PVAGraphs' );
   var ScreenView = require( 'JOIST/ScreenView' );
+  var ValuePanel = require( 'FALLING_OBJECTS/common/view/ValuePanel' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // strings
@@ -53,6 +54,7 @@ define( function( require ) {
     this.screenMarginY = FallingObjectsConstants.SCREEN_MARGIN_Y;
     var controlPanelsMaxWidth = screenWidth / 4;
     this.controlPanelsVerticalSpacing = FallingObjectsConstants.CONTROL_PANELS_VERTICAL_SPACING;
+    this.controlPanelsHorizontalSpacing = FallingObjectsConstants.CONTROL_PANELS_HORIZONTAL_SPACING;
     var freeBodyDiagramHeight = screenHeight - ( 2 * this.screenMarginY );
     var freeBodyDiagramWidth = controlPanelsMaxWidth / 1.5;
     this.graphsHorizontalSpacing = FallingObjectsConstants.GRAPHS_HORIZONTAL_SPACING;
@@ -105,6 +107,9 @@ define( function( require ) {
       controlPanelsMaxWidth
     );
 
+    // Value panel
+    this.valuePanel = new ValuePanel( fallingObjectsModel, controlPanelsMaxWidth );
+
     // Create the Free Body Diagram
     this.freeBodyDiagram = new FreeBodyDiagram( this.fallingObjectsModel, freeBodyDiagramWidth, freeBodyDiagramHeight );
 
@@ -121,6 +126,7 @@ define( function( require ) {
     this.addChild( this.fallingObjectNode );
     this.addChild( this.fallingObjectSelectorNode );
     this.addChild( this.togglePanel );
+    this.addChild( this.valuePanel );
     this.addChild( this.controlButtons );
     this.addChild( this.freeBodyDiagram );
     this.addChild( this.pvaGraphs );
@@ -177,6 +183,10 @@ define( function( require ) {
 
       // Move the toggle panel to the top right (it's the control panel highest on screen)
       this.togglePanel.setRightTop( new Vector2( width / scale - offsetX - this.screenMarginX, this.screenMarginY - offsetY ) );
+
+      // Place the value panel to the right of the toggle panel
+      this.valuePanel.top = this.togglePanel.top;
+      this.valuePanel.right = this.togglePanel.left - this.controlPanelsHorizontalSpacing;
 
       // Use relative position of the toggle panel to place the selector
       this.fallingObjectSelectorNode.top = this.togglePanel.bottom + this.controlPanelsVerticalSpacing;

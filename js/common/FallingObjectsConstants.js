@@ -47,7 +47,7 @@ define( function( require ) {
     },
     CONTROL_PANEL_VERTICAL_SPACING: 10,  // Vertical spacing of labels inside control panels
 
-    SELECTOR_LABEL_NUM_DIGITS: 4,  // Number of digits to round displayed values to in the selector
+    VP_NUM_DIGITS: 4,  // Number of digits to round displayed values to in the value panel
 
     FBD_BACKGROUND_OPTIONS: {  // Options for the background of the FreeBodyDiagram
       fill: 'rgb( 255, 255, 255 )',
@@ -77,6 +77,7 @@ define( function( require ) {
     SCREEN_MARGIN_Y: 10,  // Distance between any visible component and the top or bottom edge of the screen
 
     CONTROL_PANELS_VERTICAL_SPACING: 18,  // Vertical spacing all of the control panels
+    CONTROL_PANELS_HORIZONTAL_SPACING: 10,  // Horizontal spacing of all the control panels
     CONTROL_PANELS_FONT_SIZE: 18,  // Font size of text used in the Control Panels
     CONTROL_PANELS_ALIGNMENT: 'left',  // Alignment of Nodes inside control panels
 

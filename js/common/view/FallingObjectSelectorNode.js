@@ -18,19 +18,9 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var VStrut = require( 'SCENERY/nodes/VStrut' );
-
-  // strings
-  var pattern0Label1Value2UnitsString = require( 'string!FALLING_OBJECTS/pattern.0Label.1Value.2Units' );
-  var pattern0Label1ValueString = require( 'string!FALLING_OBJECTS/pattern.0Label.1Value' );
-  var massString = require( 'string!FALLING_OBJECTS/mass' );
-  var referenceAreaString = require( 'string!FALLING_OBJECTS/referenceArea' );
-  var dragCoefficientString = require( 'string!FALLING_OBJECTS/dragCoefficient' );
-  var kgString = require( 'string!FALLING_OBJECTS/kg' );
-  var m2String = require( 'string!FALLING_OBJECTS/m2' );
 
   /**
    * Construct the ComboBox
@@ -95,88 +85,11 @@ define( function( require ) {
     var comboBox = new ComboBox( comboBoxItems, fallingObjectModel.selectedFallingObjectNameProperty, comboBoxParentNode, comboBoxOptions );
     comboBoxParentNode.addChild( comboBox );
 
-    // Create object property labels that update when the object changes
-    var objectLabelOptions = {
-      font: itemNodeFont,
-      maxWidth: maxWidth - 2 * FallingObjectsConstants.CONTROL_PANEL_OPTIONS.xMargin
-    };
-
-    /**
-     * Function to automate the process of creating a label
-     *
-     * @param {string} attributeName - key name of the attribute for the FallingObject to set the label to (i.e. 'mass', 'referenceArea')
-     * @param {string} patternString - pattern string that will be used with StringUtils to construct the label's text
-     * @param {string} labelString - will be subbed into the 'label' key in the patternString
-     * @param {string} unitsString - will be subbed into the 'units' key in the patternString
-     * @param {string} color - color of the label text to use (hex string)
-     */
-    var createNewLabel = function( attributeName, patternString, labelString, unitsString, color ) {
-
-      // Create a blank text for the label
-      var labelText = new Text( '', objectLabelOptions );
-
-      // Set the color if given
-      if ( color ) {
-        labelText.setFill( color );
-      }
-
-      // Using a nested link here- first pull the appropriate attribute property from the selected falling object
-      // Then create a link on that attribute property so that whenever its value is updated, the label is updated
-      // as well
-      fallingObjectModel.selectedFallingObjectNameProperty.link( function( selectedFallingObjectName ) {
-
-        // Pull the attribute
-        var attributeProperty = fallingObjectModel.selectedFallingObject[ attributeName ];
-        // Link so the label gets updated on changes
-        attributeProperty.link( function( attributeValue ) {
-
-          // Deal with special cases that don't fit the generic label builder
-          if ( attributeName === 'positionProperty' ) {
-            // Pull the y component of the vector
-            attributeValue = attributeValue.y;
-          }
-          labelText.setText(
-            StringUtils.fillIn( patternString, {
-              label: labelString,
-              value: fallingObjectModel.roundValue( attributeValue, FallingObjectsConstants.SELECTOR_LABEL_NUM_DIGITS ),
-              units: unitsString
-            } )
-          );
-
-        } );
-
-      } );
-
-      var labelNode = new VBox( {
-        align: FallingObjectsConstants.CONTROL_PANELS_ALIGNMENT,
-        children: [
-          labelText,
-          new HStrut( objectLabelOptions.maxWidth )
-        ]
-      } );
-
-      // Create a link to hide the label node if "Show Values" is not toggled on the toggle panel
-      fallingObjectModel.showValuesProperty.link( function( showValues ) {
-        labelNode.setVisible( showValues );
-      } );
-
-      return labelNode;
-    };
-
-    var massLabel = createNewLabel( 'massProperty', pattern0Label1Value2UnitsString, massString, kgString );
-    var referenceAreaLabel = createNewLabel( 'referenceAreaProperty', pattern0Label1Value2UnitsString, referenceAreaString, m2String );
-    var dragCoefficientLabel = createNewLabel( 'dragCoefficientProperty', pattern0Label1ValueString, dragCoefficientString );
-
-    // Create a VBox to add all the elements
+    // Create a VBox to give some space for the comboBox
     var selectorControlVBox = new VBox( {
       resize: true,
-      alignment: FallingObjectsConstants.CONTROL_PANELS_ALIGNMENT,
-      spacing: FallingObjectsConstants.CONTROL_PANELS_VERTICAL_SPACING,
       children: [
-        new VStrut( comboBox.height ),  // Gives some space for the comboBox
-        massLabel,
-        referenceAreaLabel,
-        dragCoefficientLabel
+        new VStrut( comboBox.height )
       ]
     } );
 
