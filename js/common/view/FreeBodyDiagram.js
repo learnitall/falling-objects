@@ -55,10 +55,10 @@ define( function( require ) {
     // Font of force arrow labels
     var forceLabelFont = new PhetFont( { size: FallingObjectsConstants.FBD_FORCE_LABEL_FONT_SIZE } );
     // Calculate the max arrow length
-    var maxArrowLength = ( maxHeight / 2 ) -
-                         FallingObjectsConstants.FBD_VERTICAL_MARGIN -
-                         FallingObjectsConstants.FBD_FORCE_LABEL_ARROW_PADDING -
-                         new Text( 'SAMPLE', { font: forceLabelFont } ).getHeight();
+    this.maxArrowLength = ( maxHeight / 2 ) -
+                          FallingObjectsConstants.FBD_VERTICAL_MARGIN -
+                          FallingObjectsConstants.FBD_FORCE_LABEL_ARROW_PADDING -
+                          new Text( 'SAMPLE', { font: forceLabelFont } ).getHeight();
 
     // Loop through each of the objects the selector will display and determine the largest mass
     var objectMasses = [];
@@ -94,7 +94,7 @@ define( function( require ) {
      *
      * @param {number} forceValue - force value in Newtons to return an arrow length for
      */
-    var arrowLengths = [ 0, maxArrowLength / 8, maxArrowLength / 6, maxArrowLength / 4, maxArrowLength / 2 ];
+    var arrowLengths = [ 0, this.maxArrowLength / 8, this.maxArrowLength / 6, this.maxArrowLength / 4, this.maxArrowLength / 2 ];
     var massSegmentCutoffs = [ 0, 0.01, 0.1, 1, 10 ];
     this.getScaledMaxArrowLength = function ( mass ) {
 
@@ -111,7 +111,7 @@ define( function( require ) {
       // If the mass doesn't fit in a segment, then it is just scaled to match the second half
       var lastArrowLengthSegment = arrowLengths[ arrowLengths.length - 1 ];
       // Again, just scale the piece of the arrow that is in the second half
-      return ( ( maxArrowLength - ( lastArrowLengthSegment ) ) * ( mass / maxMass ) ) + lastArrowLengthSegment;
+      return ( ( this.maxArrowLength - ( lastArrowLengthSegment ) ) * ( mass / maxMass ) ) + lastArrowLengthSegment;
 
       /**
       Here's what this looks like without a for loop:
@@ -187,15 +187,19 @@ define( function( require ) {
           // Round the forceValue to remove super tiny values that could create weird arrows
           var roundedForceValue = fallingObjectsModel.roundValue( forceValue, numForceDigits );
 
-          // The length of the arrow is set to the property's value times the arrow scale
-          var forceRatio;
-          if ( Math.abs( forceValue ) > Math.abs( self.maxForce ) )  {  // this happens when one enables drag after dropping an object for too long
-            forceRatio = 1 * ( ( roundedForceValue / self.maxForce ) < 1 ? -1 : 1 );
+          // arrowLength lies on the range between -scaledMaxArrowLength to scaledMaxArrowLength and is calculated
+          // based on the ratio between the forceValue to plot and the maxForce value
+          // For instance, if the forceValue is equal to half of self.maxForce, then the arrowLength will be
+          // self.scaledMaxArrowLength / 2 since (forceValue / self.maxForce) = 0.5
+          var arrowLength = self.scaledMaxArrowLength * ( forceValue / self.maxForce );
+          // If the forceValue exceeds the maxForce (in the case that the object has surpassed terminal velocity)
+          // then just trim the arrowLength to always be less than the maxArrowLength supported by the diagram
+          // This way the arrows will still scale normally, but won't go off the screen
+          if ( Math.abs( arrowLength ) > self.maxArrowLength ) {
+            // Make sure the maxArrowLength's polarity matches that of arrowLength
+            arrowLength = arrowLength < 1 ? self.maxArrowLength * -1 : self.maxArrowLength;
           }
-          else {
-            forceRatio = forceValue / self.maxForce;
-          }
-          var arrowLength = self.scaledMaxArrowLength * forceRatio;
+
           // Create the arrow shape
           arrowNode.shape = new ArrowShape(
             center.x,
