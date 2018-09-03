@@ -103,7 +103,7 @@ define( function( require ) {
         { label: showFreeBodyDiagramString, property: this.fallingObjectsModel.showFreeBodyDiagramProperty },
         { label: showPVAGraphsString, property: this.fallingObjectsModel.showPVAGraphsProperty },
         FallingObjectsConstants.TP_LINE_SEP,
-        { label: enableDragString, property: this.fallingObjectsModel.dragForceEnabledProperty },
+        { label: enableDragString, property: this.fallingObjectsModel.dragForceEnabledProperty }
       ],
       controlPanelsMaxWidth
     );
