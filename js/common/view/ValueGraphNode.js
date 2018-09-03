@@ -83,7 +83,7 @@ define( function( require ) {
       self.valueGraphModel.valueScaleProperty.get()
     );
     // Have the y offset update with the origin's location percentage
-    this.valueGraphModel.originLocPercentProperty.link( function( locPercent ) {
+    this.valueGraphModel.originLocPercentProperty.lazyLink( function( locPercent ) {
       // Starting at the top left bound, then translate depending on our locPercent
       // locPercent is relative to the bottom of the graph
       // MIN -------------ORIGIN ------------- MAX
@@ -93,7 +93,17 @@ define( function( require ) {
       // m12 holds the y offset- see Matrix3.affine and ModelViewTransform2.createOffsetXYScaleMapping
       self.modelViewTransform.matrix.set12(
         self.graphTopLeftBound.y + ( maxPlotHeight - ( maxPlotHeight * locPercent ) )
-      )
+      );
+    } );
+    // Have the x and y scales of the model view transform update with the time and value scales
+    this.valueGraphModel.timeScaleProperty.lazyLink( function( timeScale ) {
+      // The xScale is stored in m00
+      // See ModelViewTransform2.createOffsetXYScaleMapping and Matrix3.affine
+      self.modelViewTransform.matrix.set00( timeScale );
+    } );
+    this.valueGraphModel.valueScaleProperty.lazyLink( function( valueScale ) {
+      // the yScale is stored in m11
+      self.modelViewTransform.matrix.set11( valueScale );
     } );
 
     // Construct labels for our axis
@@ -280,47 +290,34 @@ define( function( require ) {
         var newDataPoint = new Vector2( totalFallTime, newVal * -1 );
 
         // If our new value is greater than the bounds of the graph, then change the scale and redraw
-        var updateScale;
+        // Only want to replot after we have fully finished adjusting our value scale, which is why
+        // we are using setReplot to signal a replot rather than setting the replotGraphProperty to true
+        // directly
+        var setReplot;
         // Increment until our new value will fit
         while ( newVal > self.valueGraphModel.valueLengthProperty.get().max ) {
-
           // Incrementing the max value will also propagate a change onto the scale
           self.valueGraphModel.incrementMaxValue( newVal );
-          // Signal to update the scale
-          updateScale = true;
-
+          // Signal to replot the graph
+          setReplot = true;
         }
-
+        // Decrement until our new value will fit
         while ( newVal < self.valueGraphModel.valueLengthProperty.get().min ) {
-
           // Incrementing the min value will also propagate a change onto the scale
           self.valueGraphModel.incrementMinValue();
-          // Signal to update the scale
-          updateScale = true;
-
+          // Signal to replot the graph
+          setReplot = true;
         }
-
-        // Update the scale if needed
-        if ( updateScale ) {
-          // Modify our transform to use the new scale
-          // In a offsetXYScale mapping transform, the yScale is stored in m11 in the transformation matrix
-          // See ModelViewTransform2.createOffsetXYScaleMapping and Matrix3.affine
-          self.modelViewTransform.matrix.set11( self.valueGraphModel.valueScaleProperty.get() );
-
-          // Signal a replot
-          self.valueGraphModel.replotGraphProperty.set( true );
-        }
-
-        // If we have run out of space on the X Axis, then change scale and redraw
+        // Check if we have run out of space on the X Axis
         if ( totalFallTime > self.valueGraphModel.timeLengthProperty.get().max ) {
           // Incrementing the max time will also propagate a change onto the scale
           self.valueGraphModel.incrementMaxTime();
-
-          // Modify our transform to use the new scale
-          // The xScale is stored in m00
-          self.modelViewTransform.matrix.set00( self.valueGraphModel.timeScaleProperty.get() );
-
           // Signal a replot
+          setReplot = true;
+        }
+
+        // Signal a replot if needed
+        if ( setReplot ) {
           self.valueGraphModel.replotGraphProperty.set( true );
         }
 
