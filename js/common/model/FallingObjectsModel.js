@@ -31,13 +31,19 @@ define( function( require ) {
   /**
    * Construct the FallingObjectsModel
    *
-   * @param {boolean} constantAltitude - if false, air density and accel. gravity will be calculated based on the FallingObject's altitude
+   * @param {Object} options
    * @constructor
    */
-  function FallingObjectsModel( constantAltitude ) {
+  function FallingObjectsModel( options ) {
+
+    // Add in defaults for options in case all is not given
+    options = _.extend( {
+      constantAltitude: true,  // if false, then air density and accel. gravity will be calculated based on the FallingObject's altitude
+      initialDragForceEnabledValue: false  // Sets the initial value for dragForceEnabledProperty
+    }, options );
 
     // @private (read-only)
-    this.constantAltitude = constantAltitude;
+    this.constantAltitude = options.constantAltitude;
 
     // Variables defined here for convenience
     var self = this;
@@ -67,7 +73,7 @@ define( function( require ) {
     this.airDensityProperty = new NumberProperty( this.getAirDensity( 0 ) );
 
     // @public {Property.<boolean>} whether or not drag force will affect the FallingObject's fall
-    this.dragForceEnabledProperty = new BooleanProperty( false );
+    this.dragForceEnabledProperty = new BooleanProperty( options.initialDragForceEnabledValue );
 
     // @public {Property.<number>} holds total amount of time in seconds that an object has been in free fall
     this.totalFallTimeProperty = new NumberProperty( 0 );

@@ -33,9 +33,15 @@ define( function( require ) {
 
   /**
    * @param {FallingObjectsModel} fallingObjectsModel
+   * @param {Object} options - Options that other screenViews will use to customize the screen
    * @constructor
    */
-  function FallingObjectsScreenView( fallingObjectsModel ) {
+  function FallingObjectsScreenView( fallingObjectsModel, options ) {
+
+    // Add in default values for the options Object, just in case all is not given
+    options = _.extend( {
+      addDragToggle: true  // Will add an Enable Drag toggle into the TogglePanel
+    }, options );
 
     // Hold onto a reference of the model
     this.fallingObjectsModel = fallingObjectsModel;
@@ -97,16 +103,17 @@ define( function( require ) {
     );
 
     // Toggle Panel
-    this.togglePanel = new TogglePanel(
-      [
-        { label: showValuesString, property: this.fallingObjectsModel.showValuesProperty },
-        { label: showFreeBodyDiagramString, property: this.fallingObjectsModel.showFreeBodyDiagramProperty },
-        { label: showPVAGraphsString, property: this.fallingObjectsModel.showPVAGraphsProperty },
-        FallingObjectsConstants.TP_LINE_SEP,
-        { label: enableDragString, property: this.fallingObjectsModel.dragForceEnabledProperty }
-      ],
-      controlPanelsMaxWidth
-    );
+    var toggleList = [
+      { label: showValuesString, property: this.fallingObjectsModel.showValuesProperty },
+      { label: showFreeBodyDiagramString, property: this.fallingObjectsModel.showFreeBodyDiagramProperty },
+      { label: showPVAGraphsString, property: this.fallingObjectsModel.showPVAGraphsProperty }
+    ];
+
+    if ( options.addDragToggle ) {
+      toggleList.push( FallingObjectsConstants.TP_LINE_SEP );
+      toggleList.push( { label: enableDragString, property: this.fallingObjectsModel.dragForceEnabledProperty } );
+    }
+    this.togglePanel = new TogglePanel( toggleList, controlPanelsMaxWidth );
 
     // Value panel
     this.valuePanel = new ValuePanel( fallingObjectsModel, controlPanelsMaxWidth );
