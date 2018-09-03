@@ -178,12 +178,7 @@ define( function( require ) {
        */
       var updateArrow = function( forceValue ) {
         // If the free body diagram is shown, then do calculations
-        if (
-          fallingObjectsModel.showFreeBodyDiagramProperty.get() && (  // Show FBD must be enabled
-            ( labelName === dragForceString && fallingObjectsModel.dragForceEnabledProperty.get() ) ||  // If working with the drag arrow, then Fd must be enabled
-            ( labelName !== dragForceString )  // If not working with the drag arrow and FBD is enabled, then update
-          )
-        ) {
+        if ( fallingObjectsModel.showFreeBodyDiagramProperty.get() ) {
 
           // Round the forceValue to remove super tiny values that could create weird arrows
           var roundedForceValue = fallingObjectsModel.roundValue( forceValue, numForceDigits );
@@ -235,7 +230,7 @@ define( function( require ) {
 
           // Position the label
           // If the roundedForceValue is 0, then the arrowNode will not have values for its center, top and bottom, so
-          // instead we will just use the center
+          // to position the label will instead use the center circle nodes of the free body diagram
           var arrowTop;
           var arrowBottom;
           var arrowCenterX;
@@ -253,11 +248,11 @@ define( function( require ) {
           forceLabel.setCenterX( arrowCenterX );
 
           // Set y
-          // If the arrow is positive (i.e. facing up) then position the label just above the head
-          if ( roundedForceValue >= 0 ) {
+          // Fg should always be set below the arrow's head
+          // Fd should always be set above the arrow's head
+          // Fn should be set based on its value (if positive, then position the label just above the head)
+          if ( labelName === dragForceString || ( labelName === netForceString && roundedForceValue >= 0 ) ) {
             forceLabel.setBottom( arrowTop - forceLabelArrowPadding );
-
-          // If the arrow is negative (i.e. facing down) then position the label just below the head
           } else {
             forceLabel.setTop( arrowBottom + forceLabelArrowPadding );
           }
