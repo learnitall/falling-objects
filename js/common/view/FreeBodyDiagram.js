@@ -45,6 +45,7 @@ define( function( require ) {
 
     // Define values here for convenience
     var self = this;
+    this.fallingObjectsModel = fallingObjectsModel;
     var centerCircleRadius = FallingObjectsConstants.FBD_CENTER_CIRCLE_RADIUS;
     var arrowCenterSpacing = FallingObjectsConstants.FBD_ARROW_CENTER_SPACING;
     var horizontalMargin = FallingObjectsConstants.FBD_HORIZONTAL_MARGIN;
@@ -218,6 +219,19 @@ define( function( require ) {
               units: nString  // Newton string
             } )
           );
+
+          // Create a link that will hide/show the label with the showValuesProperty
+          self.fallingObjectsModel.showValuesProperty.link( function( showValues ) {
+            // If we are updating the label for drag, then we also need to take into account as to whether or
+            // not drag force has been enabled when deciding to display the label
+            if ( showValues ) {
+              if ( labelName !== dragForceString || ( labelName === dragForceString && self.fallingObjectsModel.dragForceEnabledProperty.get() ) ) {
+                forceLabel.setVisible( true );
+                return;
+              }
+            }
+            forceLabel.setVisible( false );
+          } );
 
           // Position the label
           // If the roundedForceValue is 0, then the arrowNode will not have values for its center, top and bottom, so

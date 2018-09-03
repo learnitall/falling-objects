@@ -57,7 +57,7 @@ define( function( require ) {
     this.targetPropertyName = targetPropertyName;
 
     // Get the number of digits labels will be rounded to when displayed
-    var numLabelDigits = FallingObjectsConstants.VG_NUM_LABEL_DIGITS;
+    this.numLabelDigits = FallingObjectsConstants.VG_NUM_LABEL_DIGITS;
 
     // Define where the top left bound of the graph lies (VG_TOP_LEFT_BOUND is relative to the top left corner of the background rectangle)
     this.graphTopLeftBound = FallingObjectsConstants.VG_TOP_LEFT_BOUND;
@@ -254,7 +254,44 @@ define( function( require ) {
     this.timeGraphLinesNode = timeAxisStuff[ 1 ];
 
     // Create a label for the graph that shows the last plotted value
-    this.valueLabelNode = new Text( self.name, { font: axisLabelFont, fill: lineColor } );
+    this.valueLabelNode = new Text( '', { font: axisLabelFont, fill: lineColor } );
+
+    /**
+     * Small auxiliary function to update the valueLabelNode with graph's target property current value
+     * @private
+     *
+     * @param {number} propertyValue - value of the target property to display in the label
+     */
+    var updateValueLabelNode = function( propertyValue ) {
+      if ( typeof propertyValue === "object" && propertyValue.y !== undefined ) {
+        propertyValue = propertyValue.y;
+      }
+      self.valueLabelNode.setText(
+        StringUtils.fillIn( pattern0Label1Value2UnitsString, {
+          label: self.name,
+          value: self.fallingObjectsModel.roundValue( propertyValue, self.numLabelDigits ),
+          units: self.unitString
+        } )
+      );
+    }
+
+    // Link the showValuesProperty with the valueLabelNode so the label only displays values if toggled
+    this.fallingObjectsModel.showValuesProperty.link( function( showValues ) {
+      if ( !showValues ) {
+        self.valueLabelNode.setText( self.name );
+      } else {
+        updateValueLabelNode( self.fallingObjectsModel.selectedFallingObject[ self.targetPropertyName ].get() );
+      }
+    } );
+
+    // Link the targetProperty with the valueLabelNode so the label is continually updated
+    this.fallingObjectsModel.selectedFallingObject[ self.targetPropertyName ].lazyLink( function( targetPropertyValue ) {
+      // Only update the label if showValues is enabled
+      if ( self.fallingObjectsModel.showValuesProperty.get() ) {
+        updateValueLabelNode( targetPropertyValue );
+      }
+    } );
+
 
     // Lay it all out- this is defined in the call to inherit
     this.layoutAxes();
@@ -364,24 +401,6 @@ define( function( require ) {
       if ( dataPoint && self.fallingObjectsModel.showPVAGraphsProperty.get() ) {
         self.plotPoint( dataPoint );
       }
-    } );
-
-    // Create a property link to update the valueLabelNode
-    this.fallingObjectsModel.selectedFallingObject[ this.targetPropertyName ].link( function( targetValue ) {
-      // Check for vectors
-      if ( typeof targetValue === 'object' && targetValue.y !== undefined ) {
-        targetValue = targetValue.y;
-      }
-
-      // Use string utils to fill in the pattern
-      self.valueLabelNode.setText(
-        StringUtils.fillIn( pattern0Label1Value2UnitsString, {
-          label: self.name,
-          // Round the force value to limit how many digits are displayed- saves space and increases readability
-          value: self.fallingObjectsModel.roundValue( targetValue, numLabelDigits ),
-          units: self.unitString
-        } )
-      );
     } );
 
     // Set children
