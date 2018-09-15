@@ -12,7 +12,9 @@ define( function( require ) {
   // modules
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
+  var HSlider = require( 'SUN/HSlider' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Node = require( 'SCENERY/nodes/Node' );
   var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -25,6 +27,21 @@ define( function( require ) {
    */
   function AltitudePanel( fallingObjectsModel, maxWidth ) {
 
+    // Call the super
+    Node.call( this );
+
+    // Define below for convenience
+    var controlPanelOptions = FallingObjectsConstants.CONTROL_PANEL_OPTIONS;
+    var controlPanelsAlignment = FallingObjectsConstants.CONTROL_PANELS_ALIGNMENT;
+    var controlPanelsVerticalSpacing = FallingObjectsConstants.CONTROL_PANELS_VERTICAL_SPACING;
+
+    // Create a slider
+    var altitudeSlider = new HSlider( fallingObjectsModel.selectedFallingObject.initialAltitudeProperty, { min: 0, max: 100 } );
+
+    // Create the panel
+    var altitudePanel = new Panel( altitudeSlider, controlPanelOptions );
+
+    this.addChild( altitudePanel );
 
   }
 

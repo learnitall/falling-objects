@@ -58,11 +58,11 @@ define( function( require ) {
     var scale = FallingObjectsConstants.MODEL_VIEW_TRANSFORM_SCALE;
     this.screenMarginX = FallingObjectsConstants.SCREEN_MARGIN_X;
     this.screenMarginY = FallingObjectsConstants.SCREEN_MARGIN_Y;
-    var controlPanelsMaxWidth = screenWidth / 4;
+    this.controlPanelsMaxWidth = screenWidth / 4;
     this.controlPanelsVerticalSpacing = FallingObjectsConstants.CONTROL_PANELS_VERTICAL_SPACING;
     this.controlPanelsHorizontalSpacing = FallingObjectsConstants.CONTROL_PANELS_HORIZONTAL_SPACING;
     var freeBodyDiagramHeight = screenHeight - ( 2 * this.screenMarginY );
-    var freeBodyDiagramWidth = controlPanelsMaxWidth / 1.5;
+    var freeBodyDiagramWidth = this.controlPanelsMaxWidth / 1.5;
     this.graphsHorizontalSpacing = FallingObjectsConstants.GRAPHS_HORIZONTAL_SPACING;
     var pvaGraphsHeight = freeBodyDiagramHeight;
     var pvaGraphsWidth = center.x - freeBodyDiagramWidth - this.graphsHorizontalSpacing - FallingObjectsConstants.VG_CENTER_PADDING;
@@ -84,7 +84,7 @@ define( function( require ) {
     );
 
     // Control Buttons (Play/Pause, Reset, Step)
-    this.controlButtons = new ControlButtons( fallingObjectsModel, this, controlPanelsMaxWidth );
+    this.controlButtons = new ControlButtons( fallingObjectsModel, this, this.controlPanelsMaxWidth );
 
     // When the sim is disabled, also disable the play/step buttons
     this.fallingObjectsModel.simEnabledProperty.link( function( simEnabledValue ) {
@@ -98,7 +98,7 @@ define( function( require ) {
     this.fallingObjectSelectorNode = new FallingObjectSelectorNode(
       this.fallingObjectsModel,
       this.fallingObjectsModel.fallingObjectNames,
-      controlPanelsMaxWidth,
+      this.controlPanelsMaxWidth,
       this.fallingObjectSelectorParent
     );
 
@@ -113,10 +113,10 @@ define( function( require ) {
       toggleList.push( FallingObjectsConstants.TP_LINE_SEP );
       toggleList.push( { label: enableDragString, property: this.fallingObjectsModel.dragForceEnabledProperty } );
     }
-    this.togglePanel = new TogglePanel( toggleList, controlPanelsMaxWidth );
+    this.togglePanel = new TogglePanel( toggleList, this.controlPanelsMaxWidth );
 
     // Value panel
-    this.valuePanel = new ValuePanel( fallingObjectsModel, controlPanelsMaxWidth );
+    this.valuePanel = new ValuePanel( fallingObjectsModel, this.controlPanelsMaxWidth );
 
     // Create the Free Body Diagram
     this.freeBodyDiagram = new FreeBodyDiagram( this.fallingObjectsModel, freeBodyDiagramWidth, freeBodyDiagramHeight );
