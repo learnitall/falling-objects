@@ -34,9 +34,15 @@ define( function( require ) {
     var controlPanelOptions = FallingObjectsConstants.CONTROL_PANEL_OPTIONS;
     var controlPanelsAlignment = FallingObjectsConstants.CONTROL_PANELS_ALIGNMENT;
     var controlPanelsVerticalSpacing = FallingObjectsConstants.CONTROL_PANELS_VERTICAL_SPACING;
+    var altitudeSliderRange = FallingObjectsConstants.AP_SLIDER_RANGE;
+    var altitudeSliderOptions = FallingObjectsConstants.AP_SLIDER_OPTIONS;
 
     // Create a slider
-    var altitudeSlider = new HSlider( fallingObjectsModel.selectedFallingObject.initialAltitudeProperty, { min: 0, max: 100 } );
+    var altitudeSlider = new HSlider(
+      fallingObjectsModel.selectedFallingObject.initialAltitudeProperty,
+      altitudeSliderRange,
+      altitudeSliderOptions
+    );
 
     // Create the panel
     var altitudePanel = new Panel( altitudeSlider, controlPanelOptions );
