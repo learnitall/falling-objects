@@ -16,8 +16,9 @@ define( function( require ) {
   // strings
   var baseballString = require( 'string!FALLING_OBJECTS/baseball' );
 
-  // This variable is used more than once in the dictionary below, define it outside thereofre
-  var _max_altitude = 100000;  // Max altitude is set to the Karman line (i.e. 100 km)
+  // This variable is used more than once in the dictionary below, define it outside therefore
+  // The highest this value should be set to is the Karman line (i.e. 100 km)
+  var _max_altitude = 1000;
 
   var FallingObjectsConstants = {
 
