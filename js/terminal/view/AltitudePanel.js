@@ -18,7 +18,12 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
+
+  // strings
+  var pattern0Value1UnitsString = require( 'string!FALLING_OBJECTS/pattern.0Value.1Units' );
+  var kmString = require( 'string!FALLING_OBJECTS/km' );
 
   /**
    * Construct the altitude panel
@@ -35,6 +40,7 @@ define( function( require ) {
     var controlPanelOptions = FallingObjectsConstants.CONTROL_PANEL_OPTIONS;
     var controlPanelsAlignment = FallingObjectsConstants.CONTROL_PANELS_ALIGNMENT;
     var controlPanelsVerticalSpacing = FallingObjectsConstants.CONTROL_PANELS_VERTICAL_SPACING;
+    var controlPanelsFontSize = FallingObjectsConstants.CONTROL_PANELS_FONT_SIZE;
     var altitudeSliderRange = FallingObjectsConstants.AP_SLIDER_RANGE;
     var altitudeSliderOptions = _.extend( {
       thumbSize: new Dimension2( 22, 45 ),  // Default values set for thumbSize, put here for reference
@@ -45,7 +51,8 @@ define( function( require ) {
       // will lie right in the center of the thumb (same for the right side)
       // Need to therefore subtract the (half of the width of the thumb) * 2 from the track size
       // so everything will fit properly
-      trackSize: new Dimension2( maxWidth - ( controlPanelOptions.xMargin * 2 ) - 22, 5 ),  // 5 is the default value here for trackSize height
+      // Double value of xMargins in order to leave room for labels (two x margins doubled = xMargin * 4)
+      trackSize: new Dimension2( maxWidth - ( controlPanelOptions.xMargin * 4 ) - 22, 5 )  // 5 is the default value here for trackSize height
     }, FallingObjectsConstants.AP_SLIDER_OPTIONS );
 
     // Create a slider
@@ -53,6 +60,43 @@ define( function( require ) {
       fallingObjectsModel.selectedFallingObject.initialAltitudeProperty,
       altitudeSliderRange,
       altitudeSliderOptions
+    );
+
+    // Add tick marks
+    var tickLabelOptions = {
+        font: new PhetFont( { size: controlPanelsFontSize } ),
+        /*
+         ( ( maxWidth - altitudeSliderOptions.trackSizse.width ) / 2 ) - controlPanelOptions.xMargin gets the length
+         between the edge of the track to the edge of the panel (symmetrical to both sides)
+         We then multiply by two, since this distance represents just half of the room available to the label
+
+         | -------------maxWidth-------------- |
+         |         -----trackSize-----         |
+         |         |                  |        |
+         |       majorTick         majorTick   |
+         | --xMargin                 xMargin-- |
+         |    -----tickLabelWidth / 2          |
+         |    ----------tickLabelWidth         |
+        */
+        maxWidth: ( ( ( maxWidth - altitudeSliderOptions.trackSize.width ) / 2 ) - controlPanelOptions.xMargin ) * 2
+    };
+    // Going to convert these values to km in order to save space
+    altitudeSlider.addMajorTick( altitudeSliderRange.min,
+      new Text(
+        StringUtils.fillIn( pattern0Value1UnitsString, {
+            value: altitudeSliderRange.min / 1000,
+            units: kmString
+        } ), tickLabelOptions
+      )
+    );
+    altitudeSlider.addMajorTick( altitudeSliderRange.max,
+      new Text(
+        StringUtils.fillIn( pattern0Value1UnitsString, {
+            value: altitudeSliderRange.max / 1000,
+            units: kmString
+        } ),
+        tickLabelOptions
+      )
     );
 
     // Create the panel

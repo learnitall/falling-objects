@@ -17,6 +17,9 @@
   "pattern.0Label": {
     "value": "{{label}}"
   },
+  "pattern.0Value.1Units": {
+    "value": "{{value}}{{units}}"
+  },
   "showValues": {
     "value": "Show Values"
   },
@@ -52,6 +55,9 @@
   },
   "m": {
     "value": "m"
+  },
+  "km": {
+    "value": "km"
   },
   "m2": {
     "value": "m²"
