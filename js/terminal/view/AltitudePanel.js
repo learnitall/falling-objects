@@ -42,6 +42,7 @@ define( function( require ) {
     var controlPanelsVerticalSpacing = FallingObjectsConstants.CONTROL_PANELS_VERTICAL_SPACING;
     var controlPanelsFontSize = FallingObjectsConstants.CONTROL_PANELS_FONT_SIZE;
     var altitudeSliderRange = FallingObjectsConstants.AP_SLIDER_RANGE;
+    var altitudeSliderNumMinorTicks = FallingObjectsConstants.AP_NUM_MINOR_TICKS;
     var altitudeSliderOptions = _.extend( {
       thumbSize: new Dimension2( 22, 45 ),  // Default values set for thumbSize, put here for reference
       //            | ----------maxWidth - xmargins---------- |
@@ -84,20 +85,32 @@ define( function( require ) {
     altitudeSlider.addMajorTick( altitudeSliderRange.min,
       new Text(
         StringUtils.fillIn( pattern0Value1UnitsString, {
-            value: altitudeSliderRange.min / 1000,
-            units: kmString
-        } ), tickLabelOptions
+          value: altitudeSliderRange.min / 1000,
+          units: kmString
+        } ),
+        tickLabelOptions
       )
     );
     altitudeSlider.addMajorTick( altitudeSliderRange.max,
       new Text(
         StringUtils.fillIn( pattern0Value1UnitsString, {
-            value: altitudeSliderRange.max / 1000,
-            units: kmString
+          value: altitudeSliderRange.max / 1000,
+          units: kmString
         } ),
         tickLabelOptions
       )
     );
+
+    // Add in our minor ticks
+    // Take our range and divide by the number of ticks we want
+    // Increase the number of ticks by one to account for the fact that all of our minor ticks are inbetween the major ticks
+    // ex: if we want four minor ticks in-between the two major ticks:
+    // 0  1  2  3  4  5
+    // 0 2k 4k 6k 8k 10k
+    var interval = ( altitudeSliderRange.max - altitudeSliderRange.min ) / ( altitudeSliderNumMinorTicks + 1 );
+    for ( var i = 1; i <= altitudeSliderNumMinorTicks; i++ ) {
+      altitudeSlider.addMinorTick( interval * i );
+    }
 
     // Create the panel
     var altitudePanel = new Panel( altitudeSlider, controlPanelOptions );

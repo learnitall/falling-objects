@@ -122,6 +122,7 @@ define( function( require ) {
       majorTickLength: 12,  // Height of major ticks on the slider
       minorTickLength: 5  // Height of minor ticks on the slider
     },
+    AP_NUM_MINOR_TICKS: 7,  // Number of minor ticks to add onto the altitude slider
 
     MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates
 
