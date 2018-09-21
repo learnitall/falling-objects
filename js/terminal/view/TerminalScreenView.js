@@ -32,7 +32,8 @@ define( function( require ) {
     this.altitudePanel = new AltitudePanel( fallingObjectsModel, this.controlPanelsMaxWidth );
 
     // Add children
-    this.addChild( this.altitudePanel );
+    // Make sure the altitude panel is behind the selector, yet in front of the moving background
+    this.insertChild( 1, this.altitudePanel );
 
   }
 
