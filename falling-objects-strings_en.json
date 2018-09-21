@@ -41,6 +41,9 @@
   "dragCoefficient": {
     "value": "Drag Coefficient"
   },
+  "initialAltitude": {
+    "value": "Initial Altitude"
+  },
   "weightForce": {
     "value": "Fg"
   },

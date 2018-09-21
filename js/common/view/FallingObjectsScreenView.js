@@ -40,7 +40,8 @@ define( function( require ) {
 
     // Add in default values for the options Object, just in case all is not given
     options = _.extend( {
-      addDragToggle: true  // Will add an Enable Drag toggle into the TogglePanel
+      addDragToggle: true,  // Will add an Enable Drag toggle into the TogglePanel
+      addAltitudeValue: false  // Will add a label for Altitude in the ValuePanel
     }, options );
 
     // Hold onto a reference of the model
@@ -116,7 +117,7 @@ define( function( require ) {
     this.togglePanel = new TogglePanel( toggleList, this.controlPanelsMaxWidth );
 
     // Value panel
-    this.valuePanel = new ValuePanel( fallingObjectsModel, this.controlPanelsMaxWidth );
+    this.valuePanel = new ValuePanel( fallingObjectsModel, this.controlPanelsMaxWidth, options.addAltitudeValue );
 
     // Create the Free Body Diagram
     this.freeBodyDiagram = new FreeBodyDiagram( this.fallingObjectsModel, freeBodyDiagramWidth, freeBodyDiagramHeight );

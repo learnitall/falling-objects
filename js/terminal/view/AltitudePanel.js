@@ -38,8 +38,6 @@ define( function( require ) {
 
     // Define below for convenience
     var controlPanelOptions = FallingObjectsConstants.CONTROL_PANEL_OPTIONS;
-    var controlPanelsAlignment = FallingObjectsConstants.CONTROL_PANELS_ALIGNMENT;
-    var controlPanelsVerticalSpacing = FallingObjectsConstants.CONTROL_PANELS_VERTICAL_SPACING;
     var controlPanelsFontSize = FallingObjectsConstants.CONTROL_PANELS_FONT_SIZE;
     var altitudeSliderRange = FallingObjectsConstants.AP_SLIDER_RANGE;
     var altitudeSliderNumMinorTicks = FallingObjectsConstants.AP_NUM_MINOR_TICKS;
@@ -53,7 +51,9 @@ define( function( require ) {
       // Need to therefore subtract the (half of the width of the thumb) * 2 from the track size
       // so everything will fit properly
       // Double value of xMargins in order to leave room for labels (two x margins doubled = xMargin * 4)
-      trackSize: new Dimension2( maxWidth - ( controlPanelOptions.xMargin * 4 ) - 22, 5 )  // 5 is the default value here for trackSize height
+      trackSize: new Dimension2( maxWidth - ( controlPanelOptions.xMargin * 4 ) - 22, 5 ),  // 5 is the default value here for trackSize height
+      // Round all values to having no decimals
+      constrainValue: function( value ) { return fallingObjectsModel.roundValue( value, 0 ); }
     }, FallingObjectsConstants.AP_SLIDER_OPTIONS );
 
     // Create a slider
