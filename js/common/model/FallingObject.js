@@ -25,7 +25,7 @@ define( function( require ) {
    *
    * @param {FallingObjectsModel} FallingObjectsModel - used to pull environmental values
    * @param {string} fallingObjectName - the name of the FallingObject to create (should be from string! plugin, see FallingObjectsConstants)
-   * @param {Vector2} initialAltitude - initial altitude of the object (give -1 for infinite falling)
+   * @param {number} initialAltitude - initial altitude of the object
    */
   function FallingObject( FallingObjectsModel, fallingObjectName, initialAltitude ) {
 
@@ -50,7 +50,7 @@ define( function( require ) {
     this.initialAltitudeProperty = new Property( initialAltitude );
 
     // @public {Property.<Vector2>} - the position of the FallingObject
-    this.positionProperty = new Property( this.initialAltitudeProperty.get() );
+    this.positionProperty = new Property( new Vector2( 0, this.initialAltitudeProperty.get() ) );
 
     // @public {Property.<number>} reference area of the projectile
     this.referenceAreaProperty = new NumberProperty( objectAttributes.referenceArea );
@@ -82,6 +82,11 @@ define( function( require ) {
         // Also set a combusted state so the node will update to the appropriate image
         self.combustedProperty.set( true );
       }
+    } );
+
+    // When the initial altitude is update, then update the position property
+    this.initialAltitudeProperty.lazyLink( function( initialAltitude ) {
+      self.positionProperty.set( new Vector2( self.positionProperty.get().x, initialAltitude ) );
     } );
 
   }

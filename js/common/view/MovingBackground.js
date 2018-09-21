@@ -136,15 +136,18 @@ define( function( require ) {
       // Link the cloudNode's position with the selected falling object's position property
       this.fallingObjectsModel.selectedFallingObject.positionProperty.lazyLink( function( newPosition, oldPosition ) {
 
-        // Animate the cloud to move upwards so the selected falling object appears to fall downwards
-        var dy = ( ( newPosition.y - oldPosition.y ) * cloudNode.getScaleVector().y );
-        cloudNode.setCenterY( cloudNode.getCenterY() + dy );
+        if ( self.fallingObjectsModel.playEnabledProperty.get() ) {
 
-        // If we hit the top, then reset
-        if ( cloudNode.bottom < self.sky.top ) {
-          cloudNode.setScaleMagnitude( self.genCloudNodeScale() );
-          cloudNode.setCenterX( self.genCloudNodeXPos() );
-          cloudNode.setTop( self.sky.bottom );
+          // Animate the cloud to move upwards so the selected falling object appears to fall downwards
+          var dy = ( ( newPosition.y - oldPosition.y ) * cloudNode.getScaleVector().y );
+          cloudNode.setCenterY( cloudNode.getCenterY() + dy );
+
+          // If we hit the top, then reset
+          if ( cloudNode.bottom < self.sky.top ) {
+            cloudNode.setScaleMagnitude( self.genCloudNodeScale() );
+            cloudNode.setCenterX( self.genCloudNodeXPos() );
+            cloudNode.setTop( self.sky.bottom );
+          }
         }
 
       } );
