@@ -39,11 +39,13 @@ define( function( require ) {
     // Add in defaults for options in case all is not given
     options = _.extend( {
       constantAltitude: true,  // if false, then air density and accel. gravity will be calculated based on the FallingObject's altitude
-      initialDragForceEnabledValue: false  // Sets the initial value for dragForceEnabledProperty
+      initialDragForceEnabledValue: false,  // Sets the initial value for dragForceEnabledProperty
+      disableOnGroundZero: true  // Disable the simulation (requiring a reset) when the object hits the ground
     }, options );
 
     // @private (read-only)
     this.constantAltitude = options.constantAltitude;
+    this.disableOnGroundZero = options.disableOnGroundZero;
 
     // Variables defined here for convenience
     var self = this;
@@ -202,6 +204,24 @@ define( function( require ) {
 
       // Now just step the selectedFallingObject
       this.selectedFallingObject.step( dt );
+
+      // Check if we need to disable
+      if ( this.disableOnGroundZero ) {  // Only disable if that feature has been enabled (depending on the screen)
+
+        // Check if we are at the ground
+        if ( this.selectedFallingObject.positionProperty.get().y <= 0 ) {
+
+          // If our previous step set the position past zero, then make sure we manually set it back to zero
+          if ( this.selectedFallingObject.positionProperty.get().y < 0 ) {
+            this.selectedFallingObject.positionProperty.set(
+              new Vector2( this.selectedFallingObject.positionProperty.get().x, 0 )
+            );
+          }
+
+          // And disable the sim
+          this.simEnabledProperty.set( false );
+        }
+      }
 
       // And increment the timer
       this.totalFallTimeProperty.set( this.totalFallTimeProperty.get() + dt );
