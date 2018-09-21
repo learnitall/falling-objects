@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var AltitudePanelModel = require( 'FALLING_OBJECTS/terminal/model/AltitudePanelModel' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
@@ -36,6 +37,9 @@ define( function( require ) {
     // Call the super
     Node.call( this );
 
+    // Create our AltitudePanelModel
+    this.altitudePanelModel = new AltitudePanelModel( fallingObjectsModel );
+
     // Define below for convenience
     var controlPanelOptions = FallingObjectsConstants.CONTROL_PANEL_OPTIONS;
     var controlPanelsFontSize = FallingObjectsConstants.CONTROL_PANELS_FONT_SIZE;
@@ -53,7 +57,8 @@ define( function( require ) {
       // Double value of xMargins in order to leave room for labels (two x margins doubled = xMargin * 4)
       trackSize: new Dimension2( maxWidth - ( controlPanelOptions.xMargin * 4 ) - 22, 5 ),  // 5 is the default value here for trackSize height
       // Round all values to having no decimals
-      constrainValue: function( value ) { return fallingObjectsModel.roundValue( value, 0 ); }
+      constrainValue: function( value ) { return fallingObjectsModel.roundValue( value, 0 ); },
+      enabledProperty: this.altitudePanelModel.playDisabledProperty,
     }, FallingObjectsConstants.AP_SLIDER_OPTIONS );
 
     // Create a slider
