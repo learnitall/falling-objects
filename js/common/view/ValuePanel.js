@@ -107,20 +107,18 @@ define( function( require) {
     };
 
     // Construct our labels
-    var massLabel = createNewLabel( 'massProperty', pattern0Label1Value2UnitsString, massString, kgString );
-    var referenceAreaLabel = createNewLabel( 'referenceAreaProperty', pattern0Label1Value2UnitsString, referenceAreaString, m2String );
-    var dragCoefficientLabel = createNewLabel( 'dragCoefficientProperty', pattern0Label1ValueString, dragCoefficientString );
+    var labels = [
+      createNewLabel( 'massProperty', pattern0Label1Value2UnitsString, massString, kgString ),
+      createNewLabel( 'referenceAreaProperty', pattern0Label1Value2UnitsString, referenceAreaString, m2String ),
+      createNewLabel( 'dragCoefficientProperty', pattern0Label1ValueString, dragCoefficientString )
+    ];
 
     // Create a VBox to add all the elements
     var labelVBox = new VBox( {
       resize: true,
       alignment: FallingObjectsConstants.CONTROL_PANELS_ALIGNMENT,
       spacing: FallingObjectsConstants.CONTROL_PANELS_VERTICAL_SPACING,
-      children: [
-        massLabel,
-        referenceAreaLabel,
-        dragCoefficientLabel
-      ]
+      children: labels
     } );
 
     // Create a panel for the background color and placement of all the controls

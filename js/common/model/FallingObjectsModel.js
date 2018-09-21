@@ -94,7 +94,7 @@ define( function( require ) {
     ];
 
     // Construct an object to fall
-    this.selectedFallingObject = new FallingObject( this, this.selectedFallingObjectNameProperty.get(), new Vector2( 0, 0 ) );
+    this.selectedFallingObject = new FallingObject( this, this.selectedFallingObjectNameProperty.get(), 0 );
 
     // When the selected name is updated, then have the FallingObject instance update too and call a reset
     this.selectedFallingObjectNameProperty.lazyLink( function ( selectedFallingObjectName ) {
