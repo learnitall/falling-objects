@@ -24,8 +24,7 @@ define( function( require ) {
       this,
       fallingObjectsModel,
       {
-        addDragToggle: false,
-        addAltitudeValue: true
+        addDragToggle: false
       }
     );
 

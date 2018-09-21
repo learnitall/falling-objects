@@ -27,19 +27,16 @@ define( function( require) {
   var massString = require( 'string!FALLING_OBJECTS/mass' );
   var referenceAreaString = require( 'string!FALLING_OBJECTS/referenceArea' );
   var dragCoefficientString = require( 'string!FALLING_OBJECTS/dragCoefficient' );
-  var initialAltitudeString = require( 'string!FALLING_OBJECTS/initialAltitude' );
   var kgString = require( 'string!FALLING_OBJECTS/kg' );
   var m2String = require( 'string!FALLING_OBJECTS/m2' );
-  var mString = require( 'string!FALLING_OBJECTS/m' );
 
   /**
    * Construct the value panel
    *
    * @param {FallingObjectsModel} fallingObjectsModel - used to pull selectedFallingObjectNameProperty and FallingObject attribute values
    * @param {number} maxWidth - width of the value panel
-   * @param {boolean} createAltitudeLabel - whether or not to create a label for drop altitude
    */
-  function ValuePanel( fallingObjectsModel, maxWidth, createAltitudeLabel ) {
+  function ValuePanel( fallingObjectsModel, maxWidth ) {
 
     // Make a call to the super
     Node.call( this );
@@ -115,13 +112,6 @@ define( function( require) {
       createNewLabel( 'referenceAreaProperty', pattern0Label1Value2UnitsString, referenceAreaString, m2String ),
       createNewLabel( 'dragCoefficientProperty', pattern0Label1ValueString, dragCoefficientString )
     ];
-
-    // Create a label for initial altitude if requested
-    if ( createAltitudeLabel ) {
-      labels.push(
-        createNewLabel( 'initialAltitudeProperty', pattern0Label1Value2UnitsString, initialAltitudeString, mString )
-      );
-    }
 
     // Create a VBox to add all the elements
     var labelVBox = new VBox( {
