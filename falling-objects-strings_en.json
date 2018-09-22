@@ -44,6 +44,9 @@
   "initialAltitude": {
     "value": "Initial Altitude"
   },
+  "objectsFallTime": {
+    "value": "Object's Fall Time: "
+  },
   "weightForce": {
     "value": "Fg"
   },

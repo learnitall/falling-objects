@@ -11,6 +11,7 @@ define( function( require ) {
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var FallingObjectsScreenView = require( 'FALLING_OBJECTS/common/view/FallingObjectsScreenView' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var TimerPanel = require( 'FALLING_OBJECTS/terminal/view/TimerPanel' );
 
   /**
    * Construct the screenView
@@ -31,9 +32,13 @@ define( function( require ) {
     // Create the altitude panel
     this.altitudePanel = new AltitudePanel( fallingObjectsModel, this.controlPanelsMaxWidth );
 
+    // Create the timer panel
+    this.timerPanel = new TimerPanel( fallingObjectsModel, this.controlPanelsMaxWidth );
+
     // Add children
-    // Make sure the altitude panel is behind the selector, yet in front of the moving background
+    // Make sure the  panels are behind the selector, yet in front of the moving background
     this.insertChild( 1, this.altitudePanel );
+    this.insertChild( 1, this.timerPanel );
 
   }
 
@@ -57,8 +62,12 @@ define( function( require ) {
       this.altitudePanel.top = this.fallingObjectSelectorNode.bottom + this.controlPanelsVerticalSpacing;
       this.altitudePanel.left = this.fallingObjectSelectorNode.left;
 
-      // Position control buttons below the altitudePanel
-      this.controlButtons.top = this.altitudePanel.bottom + this.controlPanelsVerticalSpacing;
+      // Set the timer to be just below the altitude panel
+      this.timerPanel.top = this.altitudePanel.bottom + this.controlPanelsVerticalSpacing;
+      this.timerPanel.left = this.altitudePanel.left;
+
+      // Position control buttons below the timerPanel
+      this.controlButtons.top = this.timerPanel.bottom + this.controlPanelsVerticalSpacing;
     }
 
   } );
