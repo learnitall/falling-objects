@@ -114,7 +114,7 @@ define( function( require) {
     // Create a VBox to add all the elements
     var labelVBox = new VBox( {
       resize: true,
-      alignment: FallingObjectsConstants.CONTROL_PANELS_ALIGNMENT,
+      align: FallingObjectsConstants.CONTROL_PANELS_ALIGNMENT,
       spacing: FallingObjectsConstants.CONTROL_PANELS_VERTICAL_SPACING,
       children: [
         massLabel,
