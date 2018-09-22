@@ -40,7 +40,7 @@ define( function( require ) {
     options = _.extend( {
       constantAltitude: true,  // if false, then air density and accel. gravity will be calculated based on the FallingObject's altitude
       initialDragForceEnabledValue: false,  // Sets the initial value for dragForceEnabledProperty
-      disableOnGroundZero: true  // Disable the simulation (requiring a reset) when the object hits the ground
+      disableOnGroundZero: false  // Disable the simulation (requiring a reset) when the object hits the ground
     }, options );
 
     // @private (read-only)
@@ -207,6 +207,9 @@ define( function( require ) {
 
       // Check if we need to disable
       if ( this.disableOnGroundZero ) {  // Only disable if that feature has been enabled (depending on the screen)
+
+        console.log( "heyo" );
+        console.log( this.disableOnGroundZero );
 
         // Check if we are at the ground
         if ( this.selectedFallingObject.positionProperty.get().y <= 0 ) {

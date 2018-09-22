@@ -22,7 +22,8 @@ define( function( require ) {
       this,
       {
         constantAltitude: false,
-        initialDragForceEnabledValue: true
+        initialDragForceEnabledValue: true,
+        disableOnGroundZero: true
       }
     );
 
