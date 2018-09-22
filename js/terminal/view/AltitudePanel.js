@@ -63,7 +63,7 @@ define( function( require ) {
       trackSize: new Dimension2( maxWidth - ( controlPanelOptions.xMargin * 4 ) - 22, 5 ),  // 5 is the default value here for trackSize height
       // Round all values to having no decimals
       constrainValue: function( value ) { return fallingObjectsModel.roundValue( value, 0 ); },
-      enabledProperty: this.altitudePanelModel.playDisabledProperty,
+      enabledProperty: this.altitudePanelModel.playDisabledProperty
     }, FallingObjectsConstants.AP_SLIDER_OPTIONS );
 
     // Create a slider
@@ -132,7 +132,7 @@ define( function( require ) {
     for ( var i = 1; i <= altitudeSliderNumMinorTicks; i++ ) {
       var tickLoc = interval * i;
       // Don't have a minor tick right in the center of the track as that is already taken care of by the major ticks
-      if ( tickLoc != sliderRangeHalf ) {
+      if ( tickLoc !== sliderRangeHalf ) {
         altitudeSlider.addMinorTick( tickLoc );
       }
     }
