@@ -29,6 +29,7 @@ define( function( require ) {
   var pattern0Label1Value2UnitsString = require( 'string!FALLING_OBJECTS/pattern.0Label.1Value.2Units' );
   var initialAltitudeString = require( 'string!FALLING_OBJECTS/initialAltitude' );
   var kmString = require( 'string!FALLING_OBJECTS/km' );
+  var mString = require( 'string!FALLING_OBJECTS/m' );
 
   /**
    * Construct the altitude panel
@@ -100,6 +101,17 @@ define( function( require ) {
         tickLabelOptions
       )
     );
+    // This value will be used later on, so hold it
+    var sliderRangeHalf = fallingObjectsModel.roundValue( ( altitudeSliderRange.max - altitudeSliderRange.min ) / 2, 1 );
+    altitudeSlider.addMajorTick( sliderRangeHalf,
+      new Text(
+        StringUtils.fillIn( pattern0Value1UnitsString, {
+          value: sliderRangeHalf / 1000,
+          units: kmString
+        } ),
+        tickLabelOptions
+      )
+    );
     altitudeSlider.addMajorTick( altitudeSliderRange.max,
       new Text(
         StringUtils.fillIn( pattern0Value1UnitsString, {
@@ -118,7 +130,11 @@ define( function( require ) {
     // 0 2k 4k 6k 8k 10k
     var interval = ( altitudeSliderRange.max - altitudeSliderRange.min ) / ( altitudeSliderNumMinorTicks + 1 );
     for ( var i = 1; i <= altitudeSliderNumMinorTicks; i++ ) {
-      altitudeSlider.addMinorTick( interval * i );
+      var tickLoc = interval * i;
+      // Don't have a minor tick right in the center of the track as that is already taken care of by the major ticks
+      if ( tickLoc != sliderRangeHalf ) {
+        altitudeSlider.addMinorTick( tickLoc );
+      }
     }
 
     // Now create a new label to display the drop altitude
@@ -138,7 +154,7 @@ define( function( require ) {
           StringUtils.fillIn( pattern0Label1Value2UnitsString, {
             label: initialAltitudeString,
             value: initialAltitude,  // Slider will have already rounded this value
-            units: kmString
+            units: mString
           } )
         );
       }
