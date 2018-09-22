@@ -144,8 +144,8 @@ define( function( require ) {
     };
     var labelTextNode = new Text( '', labelTextNodeOptions );
 
-    // Link the text node with the initial altitude property so that it can update on changes
-    fallingObjectsModel.selectedFallingObject.initialAltitudeProperty.link( function( initialAltitude ) {
+    // Create a function to update the label's text, as this functionality is required in a couple of places
+    var updateLabelTextNode = function( initialAltitude ) {
 
       // Should we display values?
       if ( fallingObjectsModel.showValuesProperty.get() ) {
@@ -158,18 +158,21 @@ define( function( require ) {
           } )
         );
       }
-    } );
+
+    };
+
+    // Link the text node with the initial altitude property so that it can update on changes
+    fallingObjectsModel.selectedFallingObject.initialAltitudeProperty.link( updateLabelTextNode );
 
     // Link the text with the show values property so that the label will change appropriately when it is toggled
     fallingObjectsModel.showValuesProperty.link( function( showValues ) {
 
       if ( !showValues ) {
+        // Just set the label to display the initial altitude string
         labelTextNode.setText( initialAltitudeString );
       } else {
-        // Cause the above initialAltitudeProperty link to trigger, updating the label to show values
-        fallingObjectsModel.selectedFallingObject.initialAltitudeProperty.setValueAndNotifyListeners(
-          fallingObjectsModel.selectedFallingObject.initialAltitudeProperty.get()
-        );
+        // Update the text on the label
+        updateLabelTextNode( fallingObjectsModel.selectedFallingObject.initialAltitudeProperty.get() );
       }
 
     } );
