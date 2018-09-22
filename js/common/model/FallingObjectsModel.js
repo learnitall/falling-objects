@@ -208,9 +208,6 @@ define( function( require ) {
       // Check if we need to disable
       if ( this.disableOnGroundZero ) {  // Only disable if that feature has been enabled (depending on the screen)
 
-        console.log( "heyo" );
-        console.log( this.disableOnGroundZero );
-
         // Check if we are at the ground
         if ( this.selectedFallingObject.positionProperty.get().y <= 0 ) {
 
