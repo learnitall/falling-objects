@@ -192,8 +192,8 @@ define( function( require ) {
       align: FallingObjectsConstants.CONTROL_PANELS_ALIGNMENT,
       spacing: FallingObjectsConstants.CONTROL_PANELS_VERTICAL_SPACING,
       children: [
-        altitudeSlider,
-        labelNode
+        labelNode,
+        altitudeSlider
       ]
     } );
 
