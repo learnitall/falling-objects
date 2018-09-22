@@ -16,6 +16,10 @@ define( function( require ) {
   // strings
   var baseballString = require( 'string!FALLING_OBJECTS/baseball' );
 
+  // This variable is used more than once in the dictionary below, define it outside therefore
+  // The highest this value should be set to is the Karman line (i.e. 100 km)
+  var _max_altitude = 1000;
+
   var FallingObjectsConstants = {
 
     // TODO: Fix this line length
@@ -32,6 +36,8 @@ define( function( require ) {
     },
 
     DEFAULT_FALLING_OBJECT_NAME: baseballString,  // Default FallingObject name that will be selected upon entering the sim
+
+    MAX_ALTITUDE: _max_altitude,  // Max altitude is set to the Karman line (i.e. 100 km)
 
     FO_NUM_DIGITS: 5,  // Number of digits that all values in the FallingObject will be rounded to
 
@@ -111,6 +117,15 @@ define( function( require ) {
     VG_POSITION_COLOR: 'blue',  // Color of the position graph
     VG_VERTICAL_SPACING: 15,  // Vertical spacing between each graph
     VG_NUM_LABEL_DIGITS: 2,  // Number of digits to round displayed values to on the graphs
+
+    AP_SLIDER_RANGE: new Range( 0, _max_altitude ),
+    AP_SLIDER_OPTIONS: {
+      majorTickLength: 12,  // Height of major ticks on the slider
+      minorTickLength: 5  // Height of minor ticks on the slider
+    },
+    AP_NUM_MINOR_TICKS: 7,  // Number of minor ticks to add onto the altitude slider
+
+    TP_MAX_TIME: 99.99,  // Maximum value that can be shown by the TimerPanel (used to help set width)
 
     MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates
 

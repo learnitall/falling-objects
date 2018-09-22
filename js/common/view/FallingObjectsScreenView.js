@@ -33,9 +33,15 @@ define( function( require ) {
 
   /**
    * @param {FallingObjectsModel} fallingObjectsModel
+   * @param {Object} options - Options that other screenViews will use to customize the screen
    * @constructor
    */
-  function FallingObjectsScreenView( fallingObjectsModel ) {
+  function FallingObjectsScreenView( fallingObjectsModel, options ) {
+
+    // Add in default values for the options Object, just in case all is not given
+    options = _.extend( {
+      addDragToggle: true  // Will add an Enable Drag toggle into the TogglePanel
+    }, options );
 
     // Hold onto a reference of the model
     this.fallingObjectsModel = fallingObjectsModel;
@@ -52,11 +58,11 @@ define( function( require ) {
     var scale = FallingObjectsConstants.MODEL_VIEW_TRANSFORM_SCALE;
     this.screenMarginX = FallingObjectsConstants.SCREEN_MARGIN_X;
     this.screenMarginY = FallingObjectsConstants.SCREEN_MARGIN_Y;
-    var controlPanelsMaxWidth = screenWidth / 4;
+    this.controlPanelsMaxWidth = screenWidth / 4;
     this.controlPanelsVerticalSpacing = FallingObjectsConstants.CONTROL_PANELS_VERTICAL_SPACING;
     this.controlPanelsHorizontalSpacing = FallingObjectsConstants.CONTROL_PANELS_HORIZONTAL_SPACING;
     var freeBodyDiagramHeight = screenHeight - ( 2 * this.screenMarginY );
-    var freeBodyDiagramWidth = controlPanelsMaxWidth / 1.5;
+    var freeBodyDiagramWidth = this.controlPanelsMaxWidth / 1.5;
     this.graphsHorizontalSpacing = FallingObjectsConstants.GRAPHS_HORIZONTAL_SPACING;
     var pvaGraphsHeight = freeBodyDiagramHeight;
     var pvaGraphsWidth = center.x - freeBodyDiagramWidth - this.graphsHorizontalSpacing - FallingObjectsConstants.VG_CENTER_PADDING;
@@ -78,7 +84,7 @@ define( function( require ) {
     );
 
     // Control Buttons (Play/Pause, Reset, Step)
-    this.controlButtons = new ControlButtons( fallingObjectsModel, this, controlPanelsMaxWidth );
+    this.controlButtons = new ControlButtons( fallingObjectsModel, this, this.controlPanelsMaxWidth );
 
     // When the sim is disabled, also disable the play/step buttons
     this.fallingObjectsModel.simEnabledProperty.link( function( simEnabledValue ) {
@@ -92,24 +98,25 @@ define( function( require ) {
     this.fallingObjectSelectorNode = new FallingObjectSelectorNode(
       this.fallingObjectsModel,
       this.fallingObjectsModel.fallingObjectNames,
-      controlPanelsMaxWidth,
+      this.controlPanelsMaxWidth,
       this.fallingObjectSelectorParent
     );
 
     // Toggle Panel
-    this.togglePanel = new TogglePanel(
-      [
-        { label: showValuesString, property: this.fallingObjectsModel.showValuesProperty },
-        { label: showFreeBodyDiagramString, property: this.fallingObjectsModel.showFreeBodyDiagramProperty },
-        { label: showPVAGraphsString, property: this.fallingObjectsModel.showPVAGraphsProperty },
-        FallingObjectsConstants.TP_LINE_SEP,
-        { label: enableDragString, property: this.fallingObjectsModel.dragForceEnabledProperty }
-      ],
-      controlPanelsMaxWidth
-    );
+    var toggleList = [
+      { label: showValuesString, property: this.fallingObjectsModel.showValuesProperty },
+      { label: showFreeBodyDiagramString, property: this.fallingObjectsModel.showFreeBodyDiagramProperty },
+      { label: showPVAGraphsString, property: this.fallingObjectsModel.showPVAGraphsProperty }
+    ];
+
+    if ( options.addDragToggle ) {
+      toggleList.push( FallingObjectsConstants.TP_LINE_SEP );
+      toggleList.push( { label: enableDragString, property: this.fallingObjectsModel.dragForceEnabledProperty } );
+    }
+    this.togglePanel = new TogglePanel( toggleList, this.controlPanelsMaxWidth );
 
     // Value panel
-    this.valuePanel = new ValuePanel( fallingObjectsModel, controlPanelsMaxWidth );
+    this.valuePanel = new ValuePanel( fallingObjectsModel, this.controlPanelsMaxWidth );
 
     // Create the Free Body Diagram
     this.freeBodyDiagram = new FreeBodyDiagram( this.fallingObjectsModel, freeBodyDiagramWidth, freeBodyDiagramHeight );

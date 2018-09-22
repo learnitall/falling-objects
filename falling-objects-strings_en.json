@@ -17,6 +17,9 @@
   "pattern.0Label": {
     "value": "{{label}}"
   },
+  "pattern.0Value.1Units": {
+    "value": "{{value}}{{units}}"
+  },
   "showValues": {
     "value": "Show Values"
   },
@@ -38,6 +41,12 @@
   "dragCoefficient": {
     "value": "Drag Coefficient"
   },
+  "initialAltitude": {
+    "value": "Initial Altitude"
+  },
+  "objectsFallTime": {
+    "value": "Object's Fall Time: "
+  },
   "weightForce": {
     "value": "Fg"
   },
@@ -52,6 +61,9 @@
   },
   "m": {
     "value": "m"
+  },
+  "km": {
+    "value": "km"
   },
   "m2": {
     "value": "m²"

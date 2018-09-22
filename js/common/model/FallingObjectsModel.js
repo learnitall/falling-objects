@@ -31,13 +31,21 @@ define( function( require ) {
   /**
    * Construct the FallingObjectsModel
    *
-   * @param {boolean} constantAltitude - if false, air density and accel. gravity will be calculated based on the FallingObject's altitude
+   * @param {Object} options
    * @constructor
    */
-  function FallingObjectsModel( constantAltitude ) {
+  function FallingObjectsModel( options ) {
+
+    // Add in defaults for options in case all is not given
+    options = _.extend( {
+      constantAltitude: true,  // if false, then air density and accel. gravity will be calculated based on the FallingObject's altitude
+      initialDragForceEnabledValue: false,  // Sets the initial value for dragForceEnabledProperty
+      disableOnGroundZero: false  // Disable the simulation (requiring a reset) when the object hits the ground
+    }, options );
 
     // @private (read-only)
-    this.constantAltitude = constantAltitude;
+    this.constantAltitude = options.constantAltitude;
+    this.disableOnGroundZero = options.disableOnGroundZero;
 
     // Variables defined here for convenience
     var self = this;
@@ -67,7 +75,7 @@ define( function( require ) {
     this.airDensityProperty = new NumberProperty( this.getAirDensity( 0 ) );
 
     // @public {Property.<boolean>} whether or not drag force will affect the FallingObject's fall
-    this.dragForceEnabledProperty = new BooleanProperty( false );
+    this.dragForceEnabledProperty = new BooleanProperty( options.initialDragForceEnabledValue );
 
     // @public {Property.<number>} holds total amount of time in seconds that an object has been in free fall
     this.totalFallTimeProperty = new NumberProperty( 0 );
@@ -88,7 +96,7 @@ define( function( require ) {
     ];
 
     // Construct an object to fall
-    this.selectedFallingObject = new FallingObject( this, this.selectedFallingObjectNameProperty.get(), new Vector2( 0, 0 ) );
+    this.selectedFallingObject = new FallingObject( this, this.selectedFallingObjectNameProperty.get(), 0 );
 
     // When the selected name is updated, then have the FallingObject instance update too and call a reset
     this.selectedFallingObjectNameProperty.lazyLink( function ( selectedFallingObjectName ) {
@@ -196,6 +204,24 @@ define( function( require ) {
 
       // Now just step the selectedFallingObject
       this.selectedFallingObject.step( dt );
+
+      // Check if we need to disable
+      if ( this.disableOnGroundZero ) {  // Only disable if that feature has been enabled (depending on the screen)
+
+        // Check if we are at the ground
+        if ( this.selectedFallingObject.positionProperty.get().y <= 0 ) {
+
+          // If our previous step set the position past zero, then make sure we manually set it back to zero
+          if ( this.selectedFallingObject.positionProperty.get().y < 0 ) {
+            this.selectedFallingObject.positionProperty.set(
+              new Vector2( this.selectedFallingObject.positionProperty.get().x, 0 )
+            );
+          }
+
+          // And disable the sim
+          this.simEnabledProperty.set( false );
+        }
+      }
 
       // And increment the timer
       this.totalFallTimeProperty.set( this.totalFallTimeProperty.get() + dt );

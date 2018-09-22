@@ -169,3 +169,6 @@ Sources for how different environmental factors are calculated/modeled
   * Upper Stratosphere (h > 25000)
     * T = -131.21 + 0.00299 * h
     * P = 2.488 * ((T + 273.1) / 216.6) ^ -11.388
+* Max altitude that the sim will support is 100 km, as the International Aeronautic Federation accepts this as
+  the official altitude where space begins (also known as the Karman line). This fact was pulled from
+  [sciencing.com](https://sciencing.com/high-atmosphere-extend-earth-12392.html)
