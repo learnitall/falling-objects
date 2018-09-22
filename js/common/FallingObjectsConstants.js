@@ -125,6 +125,8 @@ define( function( require ) {
     },
     AP_NUM_MINOR_TICKS: 7,  // Number of minor ticks to add onto the altitude slider
 
+    TP_MAX_TIME: 99.99,  // Maximum value that can be shown by the TimerPanel (used to help set width)
+
     MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates
 
     EARTH_MEAN_RADIUS: 6371009,  // mean radius of the Earth in m
