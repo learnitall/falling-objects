@@ -40,12 +40,14 @@ define( function( require ) {
     options = _.extend( {
       constantAltitude: true,  // if false, then air density and accel. gravity will be calculated based on the FallingObject's altitude
       initialDragForceEnabledValue: false,  // Sets the initial value for dragForceEnabledProperty
-      disableOnGroundZero: false  // Disable the simulation (requiring a reset) when the object hits the ground
+      disableOnGroundZero: false,  // Disable the simulation (requiring a reset) when the object hits the ground
+      enableParachute: false  // Enable the parachute functionality by created the parachuteDeployedProperty
     }, options );
 
     // @private (read-only)
     this.constantAltitude = options.constantAltitude;
     this.disableOnGroundZero = options.disableOnGroundZero;
+    this.enableParachute = options.enableParachute;
 
     // Variables defined here for convenience
     var self = this;
@@ -67,6 +69,11 @@ define( function( require ) {
 
     // @public {Property.<boolean>} whether or not to display the PVA graphs
     this.showPVAGraphsProperty = new BooleanProperty( false );
+
+    if ( options.enableParachute ) {
+      // @public {Property.<boolean>} whether or not the parachute is deployed (only shown on certain screens)
+      this.parachuteDeployedProperty = new BooleanProperty( false );
+    }
 
     // @public {Property.<number>} simulation's acceleration due to gravity (initially set to density at sea level)
     this.accelerationGravityProperty = new NumberProperty( this.getAccelerationGravity( 0 ) );
@@ -184,6 +191,7 @@ define( function( require ) {
       this.totalFallTimeProperty.reset();
       this.playEnabledProperty.reset();
       this.simEnabledProperty.reset();
+      this.parachuteDeployedProperty.reset();
 
       // Reset FallingObject
       this.selectedFallingObject.reset();

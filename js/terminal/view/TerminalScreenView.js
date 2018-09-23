@@ -8,9 +8,11 @@ define( function( require ) {
 
   // modules
   var AltitudePanel = require( 'FALLING_OBJECTS/terminal/view/AltitudePanel' );
+  var DeployParachuteButton = require( 'FALLING_OBJECTS/terminal/view/DeployParachuteButton' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var FallingObjectsScreenView = require( 'FALLING_OBJECTS/common/view/FallingObjectsScreenView' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var ParachuteNode = require( 'FALLING_OBJECTS/terminal/view/ParachuteNode' );
   var TimerPanel = require( 'FALLING_OBJECTS/terminal/view/TimerPanel' );
 
   /**
@@ -35,10 +37,20 @@ define( function( require ) {
     // Create the timer panel
     this.timerPanel = new TimerPanel( fallingObjectsModel, this.controlPanelsMaxWidth );
 
+    // Create the deploy parachute button
+    // Set the width of the button to be 1/8 of the controlPanels' width
+    this.deployParachuteButton = new DeployParachuteButton( fallingObjectsModel, this.controlPanelsMaxWidth * ( 1 / 8 ) );
+
+    // Create the parachute node
+    this.parachuteNode = new ParachuteNode( fallingObjectsModel, this.fallingObjectNode );
+
     // Add children
+    // Make sure the parachuteNode is behind the fallingObjectNode
+    this.insertChild( 1, this.parachuteNode );
     // Make sure the  panels are behind the selector, yet in front of the moving background
     this.insertChild( 1, this.altitudePanel );
     this.insertChild( 1, this.timerPanel );
+    this.insertChild( 1, this.deployParachuteButton );
 
   }
 
@@ -68,6 +80,10 @@ define( function( require ) {
 
       // Position control buttons below the timerPanel
       this.controlButtons.top = this.timerPanel.bottom + this.controlPanelsVerticalSpacing;
+
+      // Set the deploy parachute button to be below the control buttons
+      this.deployParachuteButton.setCenterX( this.altitudePanel.getCenterX() );
+      this.deployParachuteButton.top = this.controlButtons.bottom + this.controlPanelsVerticalSpacing;
     }
 
   } );

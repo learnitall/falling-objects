@@ -127,6 +127,8 @@ define( function( require ) {
 
     TP_MAX_TIME: 99.99,  // Maximum value that can be shown by the TimerPanel (used to help set width)
 
+    PARACHUTE_Y_PADDING: 30,  // Extra padding to add to the y position of the parachute when it is positioned above the FallingObjectNode
+
     MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates
 
     EARTH_MEAN_RADIUS: 6371009,  // mean radius of the Earth in m
