@@ -57,19 +57,6 @@ define( function( require ) {
   return inherit( Node, MovingBackground, {
 
     /**
-     * Calculates and sets the sky's fill to the appropriate gradient based on the selected falling
-     * object's altitude. The sky's dimensions should be set prior to calling this method.
-     * TODO: Will be linked to altitude at a later date, for now this is constant
-     */
-    updateSkyGradient: function() {
-
-      // Just set to a constant gradient for now
-      // Use the height of the sky node rectangle to determine the height of the linear gradient
-      this.sky.setFill( new LinearGradient( 0, 0, 0, this.sky.height ).addColorStop( 0, '#02ace4' ).addColorStop( 1, '#cfecfc' ) );
-
-    },
-
-    /**
      * Return a valid x-coordinate for a cloud node
      *
      * @param {number} centerX - center X coordinate of the screen
@@ -176,8 +163,8 @@ define( function( require ) {
       this.sky.setRect( -offsetX, -offsetY, width / scale, height / scale );
       this.sky.center = center;
       // And now set the sky's color
-      // TODO: Move this to a property link on altitude
-      this.updateSkyGradient();
+      // Use the height of the sky node rectangle to determine the height of the linear gradient
+      this.sky.setFill( new LinearGradient( 0, 0, 0, this.sky.height ).addColorStop( 0, '#02ace4' ).addColorStop( 1, '#cfecfc' ) );
 
       // Layout our cloud nodes
 
