@@ -10,9 +10,11 @@ define( function( require ) {
   var AltitudePanel = require( 'FALLING_OBJECTS/terminal/view/AltitudePanel' );
   var DeployParachuteButton = require( 'FALLING_OBJECTS/terminal/view/DeployParachuteButton' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
+  var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
   var FallingObjectsScreenView = require( 'FALLING_OBJECTS/common/view/FallingObjectsScreenView' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ParachuteNode = require( 'FALLING_OBJECTS/terminal/view/ParachuteNode' );
+  var PlatformNode = require( 'FALLING_OBJECTS/terminal/view/PlatformNode' );
   var TimerPanel = require( 'FALLING_OBJECTS/terminal/view/TimerPanel' );
 
   /**
@@ -44,8 +46,19 @@ define( function( require ) {
     // Create the parachute node
     this.parachuteNode = new ParachuteNode( fallingObjectsModel, this.fallingObjectNode );
 
+    // Create the platformNode
+    // Max width is the distance from the center to the control panels
+    var platformNodeWidth = this.fallingObjectNode.getCenterX() - ( this.controlPanelsMaxWidth + this.screenMarginX );
+    this.platformNode = new PlatformNode(
+      fallingObjectsModel,
+      this,
+      platformNodeWidth,
+      platformNodeWidth * FallingObjectsConstants.PN_WIDTH_TO_HEIGHT_SCALE
+    );
+
     // Add children
-    // Make sure the parachuteNode is behind the fallingObjectNode
+    // Make sure the platformNode and parachuteNode are behind the fallingObjectNode
+    this.insertChild( 1, this.platformNode );
     this.insertChild( 1, this.parachuteNode );
     // Make sure the  panels are behind the selector, yet in front of the moving background
     this.insertChild( 1, this.altitudePanel );
@@ -69,6 +82,9 @@ define( function( require ) {
     layout: function( width, height ) {
       // Call the super layout function
       FallingObjectsScreenView.prototype.layout.call( this, width, height );
+
+      // Call the layout for the platform
+      this.platformNode.layout();
 
       // Set the altitude panel to be just below the falling objects selector
       this.altitudePanel.top = this.fallingObjectSelectorNode.bottom + this.controlPanelsVerticalSpacing;
