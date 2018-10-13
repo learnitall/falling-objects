@@ -20,9 +20,6 @@ define( function( require) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Vector2 = require( 'DOT/Vector2' );
 
-  // images
-  var rocketImage = require( 'image!FALLING_OBJECTS/rocket.png' );
-
   /**
    * Construct the Ruler and Ground which will overlay onto the MovingBackground.
    *
