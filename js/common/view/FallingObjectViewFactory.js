@@ -22,7 +22,7 @@ define( function ( require ) {
   var combustedImage = require( 'image!FALLING_OBJECTS/combusted.png' );
   var footballImage = require( 'image!FALLING_OBJECTS/football.png' );
   var modelRocketImage = require( 'image!FALLING_OBJECTS/model_rocket.svg' );
-  var sportsCarImage = require( 'image!FALLING_OBJECTS/sports_car.svg' );
+  var scaleSportsCarImage = require( 'image!FALLING_OBJECTS/scale_sports_car.svg' );
 
   /**
    * Defines helper functions that create and/or hold preset images
@@ -94,16 +94,6 @@ define( function ( require ) {
       return new Circle( diameter / 2, options );
     };
 
-    this.createSportsCar = function( diameter, options ) {
-      // The car is so large in comparison to the other objects (which are mainly just balls),
-      // we need to shrink it down in size
-      options = _.extend( {
-        scale: 1 / 5  // determined empirically
-      }, options );
-
-      return new Image( sportsCarImage, options );
-    };
-
     /**
      * Backend dictionary that translates falling object names to their associated view (i.e. image or node construction function)
      * @private
@@ -112,14 +102,14 @@ define( function ( require ) {
       // images
       'BADMINTON_SHUTTLECOCK': badmintonShuttlecockImage,
       'BASEBALL': baseballImage,
+      'SCALE_SPORTS_CAR': scaleSportsCarImage,
       // constructed nodes
       'BOWLING_BALL': this.createBowlingBall,
       'COMBUSTED': this.createCombusted,
       'FOOTBALL': this.createFootball,
       'GOLF_BALL': this.createGolfBall,
       'MODEL_ROCKET': this.createModelRocket,
-      'PING_PONG_BALL': this.createPingPongBall,
-      'SPORTS_CAR': this.createSportsCar
+      'PING_PONG_BALL': this.createPingPongBall
     };
   }
 

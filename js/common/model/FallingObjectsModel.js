@@ -26,7 +26,7 @@ define( function( require ) {
   var golfBallString = require( 'string!FALLING_OBJECTS/golfBall' );
   var modelRocketString = require( 'string!FALLING_OBJECTS/modelRocket' );
   var pingPongBallString = require( 'string!FALLING_OBJECTS/pingPongBall' );
-  var sportsCarString = require( 'string!FALLING_OBJECTS/sportsCar' );
+  var scaleSportsCarString = require( 'string!FALLING_OBJECTS/scaleSportsCar' );
 
   /**
    * Construct the FallingObjectsModel
@@ -99,7 +99,7 @@ define( function( require ) {
       golfBallString,
       modelRocketString,
       pingPongBallString,
-      sportsCarString
+      scaleSportsCarString
     ];
 
     // Construct an object to fall

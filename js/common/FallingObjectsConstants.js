@@ -135,7 +135,7 @@ define( function( require ) {
     MBR_TARGET_WIDTH_SCALAR: 0.1,  // Scalar multiplied by the screen width to determine the width of the target
     MBR_TARGET_LINE_WIDTH: 0.01,  // Line width of the circle that make up the target node
 
-    MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates
+    MODEL_VIEW_TRANSFORM_SCALE: 500,  // scalar between model coordinates and view coordinates
 
     EARTH_MEAN_RADIUS: 6371009,  // mean radius of the Earth in m
     ACCELERATION_GRAVITY_SEA_LEVEL: -9.80665,  // acceleration due to gravity at sea level in m/s^2
@@ -190,11 +190,12 @@ define( function( require ) {
       'diameter': [ 0.113, 0.345 ]  // width with fins on in m, height with fins on in m
     },
 
-    SPORTS_CAR: {
-      'mass': 283.63,  // in kg
-      'referenceArea': 2.04,  // in m^2
+    SCALE_SPORTS_CAR: {
+      // Sports car is scaled to be 1/5th the size
+      'mass': 283.63 / 5,  // in kg
+      'referenceArea': 2.04 / Math.pow( 5, 2 ),  // in m^2
       'dragCoefficient': 0.32,
-      'diameter': [ 1.82, 4.37 ]  // width of car in m, length of car in m (view height)
+      'diameter': [ 1.82 / 5, 4.37 / 5 ]  // width of car in m, length of car in m (view height)
     },
 
     COMBUSTED: {

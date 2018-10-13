@@ -98,8 +98,8 @@
   "modelRocket": {
     "value": "Model Rocket"
   },
-  "sportsCar": {
-    "value": "Sports Car"
+  "scaleSportsCar": {
+    "value": "Scale Sports Car"
   },
   "combusted": {
     "value": "Combusted"
