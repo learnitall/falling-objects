@@ -62,21 +62,41 @@ define( function( require) {
 
     /**
      * Layout the nodes that make up the MovingBackgroundRuler
-     * @param {number} screenWidth - updated width of the visible screen calculated based off of scales and offsets
-     * @param {number} screenHeight - updated height of the visible screen calculated based off of scales and offsets
+     *
+     * @param {number} offsetX - calculated x offset between actual user's screen and the default screen layout
+     * @param {number} offsetY - calculated y offset between actual user's screen and the default screen layout
+     * @param {number} width - width of the screen
+     * @param {number} height - height of the screen
+     * @param {scale} scale - scale between the actual user's screen and the default screen layout
      */
-    layout: function( screenWidth, screenHeight ) {
+    layout: function( offsetX, offsetY, width, height, scale ) {
+
+      // Determine center of screen, screenWidth and screenHeight for convenience
+      var center = new Vector2( ( -offsetX + ( width / scale - offsetX ) ) / 2, ( offsetY + ( height / scale - offsetY ) ) / 2 );
+      var screenWidth = -offsetX + width / scale;
+      var screenHeight = -offsetY + height / scale;
 
       // Set the dimensions of the ground
-      this.groundNode.setRectBounds( new Bounds2( 0, 0, screenWidth, screenHeight * FallingObjectsConstants.MBR_GROUND_HEIGHT_SCALAR ) );
+      this.groundNode.setRect(
+        -offsetX, 0, width / scale, screenHeight * FallingObjectsConstants.MBR_GROUND_HEIGHT_SCALAR
+      );
 
+      // Be sure to reset transform in case multiple layouts are called
+      this.targetNode.resetTransform();
       // Set the position of the target right in the center of the ground
       this.targetNode.setCenter( this.groundNode.getCenter() );
       // Set scale of the targetNode
       var targetNodeWidth = screenWidth * FallingObjectsConstants.MBR_TARGET_WIDTH_SCALAR;
       var targetNodeHeight = this.groundNode.getHeight() * FallingObjectsConstants.MBR_TARGET_HEIGHT_SCALAR;
-      this.targetNode.setScaleMagnitude( targetNodeWidth / this.targetNode.getWidth(), targetNodeHeight / this.targetNode.getHeight() );
+      this.targetNode.setScaleMagnitude(
+        targetNodeWidth / this.targetNode.getWidth(),
+        targetNodeHeight / this.targetNode.getHeight()
+      );
 
+      // Position the ground on the screen
+      // This must be done after the sizing of the child nodes is completed
+      this.setCenterX( center.x );
+      this.setBottom( screenHeight );
     }
 
   } );
