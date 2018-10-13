@@ -47,9 +47,6 @@ define( function( require ) {
     // using the link method will call the listener function right away, meaning this.image will be defined
     this.addChild( this.image );
 
-    // Set drop position based on fallingObject's position
-    this.translation = modelViewTransform.modelToViewPosition( this.fallingObjectsModel.selectedFallingObject.positionProperty.get() );
-
     // If the object has combusted due to drag forces, then replace the image with a fireball
     this.fallingObjectsModel.selectedFallingObject.combustedProperty.link( function( combustedValue ) {
       // If the object is combusted
@@ -90,6 +87,10 @@ define( function( require ) {
       this.image = this.fallingObjectViewFactory.constructView( selectedFallingObjectName, this.modelViewTransform );
       // Reset our children so the Node updates
       this.setChildren( [ this.image ] );
+
+      // Position the image on the screen
+      // When this function is called, it is assumed that the model position of the falling object has been reset to zero (sim resets when object changes)
+      this.setCenterBottom( this.modelViewTransform.modelToViewPosition( this.fallingObjectsModel.selectedFallingObject.positionProperty.get() ) );
     }
 
   } );
