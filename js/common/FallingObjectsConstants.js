@@ -191,11 +191,11 @@ define( function( require ) {
     },
 
     SCALE_SPORTS_CAR: {
-      // Sports car is scaled to be 1/5th the size
-      'mass': 283.63 / 5,  // in kg
-      'referenceArea': 2.04 / Math.pow( 5, 2 ),  // in m^2
+      // Sports car is scaled to be 1/8th the size
+      'mass': 283.63 / 8,  // in kg
+      'referenceArea': 2.04 / Math.pow( 8, 2 ),  // in m^2
       'dragCoefficient': 0.32,
-      'diameter': [ 1.82 / 5, 4.37 / 5 ]  // width of car in m, length of car in m (view height)
+      'diameter': [ 1.82 / 8, 4.37 / 8 ]  // width of car in m, length of car in m (view height)
     },
 
     COMBUSTED: {
