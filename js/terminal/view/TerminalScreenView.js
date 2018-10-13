@@ -76,6 +76,9 @@ define( function( require ) {
       // Call the super layout function
       FallingObjectsScreenView.prototype.layout.call( this, width, height );
 
+      // Layout the MovingBackgroundRuler
+      this.movingBackgroundRuler.layout( this.visibleBoundsProperty.get().maxX, this.visibleBoundsProperty.get().maxY )
+
       // Set the altitude panel to be just below the falling objects selector
       this.altitudePanel.top = this.fallingObjectSelectorNode.bottom + this.controlPanelsVerticalSpacing;
       this.altitudePanel.left = this.fallingObjectSelectorNode.left;

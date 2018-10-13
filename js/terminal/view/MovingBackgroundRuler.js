@@ -36,9 +36,23 @@ define( function( require) {
 
     // Create the ground
     // Don't know dimensions yet, will be set in layout
-    var ground = new Rectangle( 0, 0, 0, 0, { fill: FallingObjectsConstants.MBR_GROUND_COLOR } );
+    this.groundNode = new Rectangle( 0, 0, 0, 0, { fill: FallingObjectsConstants.MBR_GROUND_COLOR } );
 
-    this.addChild( ground );
+    // Create a target
+    var targetNodeCircleOptions = { stroke: 'black', lineWidth: FallingObjectsConstants.MBR_TARGET_LINE_WIDTH };
+    this.targetNode = new Node( {
+      children: [
+        // Outer circle
+        new Circle( 1, _.extend( { fill: 'red' }, targetNodeCircleOptions ) ),
+        // Middle circle
+        new Circle( 2 / 3, _.extend( { fill: 'white' }, targetNodeCircleOptions ) ),
+        // Inner circle
+        new Circle( 1 / 3, _.extend( { fill: 'red' }, targetNodeCircleOptions ) )
+      ]
+    } );
+
+    this.addChild( this.groundNode );
+    this.addChild( this.targetNode );
 
   }
 
@@ -49,20 +63,25 @@ define( function( require) {
 
     /**
      * Layout the nodes that make up the MovingBackgroundRuler
-     * @param {number} offsetX - calculated x offset between actual user's screen and the default screen layout
-     * @param {number} offsetY - calculated y offset between actual user's screen and the default screen layout
-     * @param {number} width - width of the screen
-     * @param {number} height - height of the screen
-     * @param {scale} scale - scale between the actual user's screen and the default screen layout
+     * @param {number} screenWidth - updated width of the visible screen calculated based off of scales and offsets
+     * @param {number} screenHeight - updated height of the visible screen calculated based off of scales and offsets
      */
-    layout: function( offsetX, offsetY, width, height, scale ) {
+    layout: function( screenWidth, screenHeight ) {
 
-      // Define these for convenience
-      var screenWidth = -offsetX + ( width / scale - offsetX );
-      var screenHeight = -offsetY + ( height / scale - offsetY );
+      console.log( screenWidth, 'sw' );
+      console.log( screenHeight, 'sh' );
 
       // Set the dimensions of the ground
-      ground.setRectBounds( new Bounds2( 0, 0, screenWidth, screenHeight * 0.1 ) );
+      this.groundNode.setRectBounds( new Bounds2( 0, 0, screenWidth, screenHeight * FallingObjectsConstants.MBR_GROUND_HEIGHT_SCALAR ) );
+
+      console.log( this.groundNode.getRectBounds );
+
+      // Set the position of the target right in the center of the ground
+      this.targetNode.setCenter( this.groundNode.getCenter() );
+      // Set scale of the targetNode
+      var targetNodeWidth = screenWidth * FallingObjectsConstants.MBR_TARGET_WIDTH_SCALAR;
+      var targetNodeHeight = this.groundNode.getHeight() * FallingObjectsConstants.MBR_TARGET_HEIGHT_SCALAR;
+      this.targetNode.setScaleMagnitude( targetNodeWidth / this.targetNode.getWidth(), targetNodeHeight / this.targetNode.getHeight() );
 
     }
 
