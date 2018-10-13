@@ -143,9 +143,9 @@ define( function( require ) {
     // Define FallingObject parameters
     BOWLING_BALL: {
       'mass': 7.25,  // in kg, equal to 16 lbs
-      'referenceArea':  1.47,  // in m^2, equal to a bowling ball with 8.595" diameter
+      'referenceArea':  0.03742,  // in m^2, equal to a bowling ball with 8.595" diameter
       'dragCoefficient': 0.5,
-      'diameter': 0.1092 // in m
+      'diameter': 0.2183 // in m
     },
 
     BADMINTON_SHUTTLECOCK: {
@@ -159,7 +159,7 @@ define( function( require ) {
       'mass': 0.045,  // in kg
       'referenceArea': 0.00143,  // in m^2
       'dragCoefficient': 0.3,
-      'diameter': 0.043  // in m
+      'diameter': 0.042  // in m
     },
 
     PING_PONG_BALL: {
@@ -171,16 +171,16 @@ define( function( require ) {
 
     BASEBALL: {
       'mass': 0.14,  // in kg
-      'referenceArea': 0.042,  // in m^2
+      'referenceArea': 0.043,  // in m^2
       'dragCoefficient': 0.3,
-      'diameter': 0.0369  // in m
+      'diameter': 0.0736  // in m
     },
 
     FOOTBALL: {
       'mass': 0.411,  // in kg
-      'referenceArea': 0.023,  // in m^2
-      'dragCoefficient': 0.055,
-      'diameter': [ 0.171, 0.228 ]  // short diameter in m (width), long diameter in m (view height)
+      'referenceArea': 0.0213,  // in m^2
+      'dragCoefficient': 0.0495,
+      'diameter': [ 0.165, 0.275 ]  // short diameter in m (width), long diameter in m (view height)
     },
 
     MODEL_ROCKET: {

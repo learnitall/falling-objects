@@ -21,7 +21,7 @@ Sources for data used to create real-world objects in the sim
 * Mass and Reference Area:
   * The United States Bowling Congress 2016 [Equipment Specifications and Certifications Manual](http://usbcongress.http.internapcdn.net/usbcongress/bowl/equipandspecs/pdfs/ESManual.pdf)
     (used max allowed values).
-  * 8.595" diameter used, which is a radius of 4.298" = 0.1092 meters and a reference area of 1.47 m^2
+  * 8.595" diameter used = 0.2183 meters, which is a reference area of (((0.2183 m / 2) ^ 2) * pi) = 0.03742 m^2
   * Used 16 lb or 7.25 kg ball
 * Drag coefficient:
   * [Drag of a Sphere (NASA)](https://www.grc.nasa.gov/www/k-12/airplane/dragsphere.html)
@@ -79,9 +79,9 @@ Sources for data used to create real-world objects in the sim
 * Mass and Reference Area
   * [2018 Official Baseball Rules (MLB)](http://mlb.mlb.com/documents/0/8/0/268272080/2018_Official_Baseball_Rules.pdf)
   * States that a ball must weigh between 5 and 5.25 ounces (0.147 and 0.148 kg) and that a ball
-    must be 9 to 9.25 inches in circumference (which is 9 in / (2 * pi) to 9.25 in / (2 * pi) =  1.432 to
-    1.472 in = 0.0364 m to 0.0374 m. We will use the average of the two, which is 0.0369 m
-  * Use 0.14 kg for mass and ((0.23 m / 2) ^ 2) * pi = 0.0415 m^2 ~ 0.0042 m^2 for reference area
+    must be 9 to 9.25 inches in circumference (which is 9 in / pi to 9.25 in / pi = 2.86 to
+    2.94 in in diameter = 0.0726 m to 0.0746 m in width. We will use the average of the two, which is 0.0736 m
+  * Use 0.14 kg for mass and ((0.0746 m / 2) ^ 2) * pi = 0.00437 m^2 ~ 0.0043 m^2 for reference area
 
 ### Football
 
@@ -90,22 +90,22 @@ Sources for data used to create real-world objects in the sim
     * Showed that for speeds between 10 and 30 m/s (when the football is not spinning), the
       drag coefficient is in the range of 0.05-0.06. They stated that the drag coefficient is smaller
       by about 10% if the ball is spinning at 600rpm
-    * We are going to assume the ball is not spinning when being dropped, and will therefore use
-      (0.05 + 0.06) / 2 = 0.055 as the drag coefficient.
+    * We are going to assume the ball is spinning when being dropped, and will therefore use
+      ((0.05 + 0.06) / 2) * 0.9 = 0.0495 as the drag coefficient.
 * Mass and Reference Area
   * [Official Playing Rules of the National Football League (2017)](https://operations.nfl.com/media/2725/2017-playing-rules.pdf)
     * States that the ball will weigh between 14 to 15 ounces (0.397 kg to 0.425 kg). We're going to cut it
       even and say 14.5 ounces or 0.411 kg
-    * States that the ball will be a prolate spheroid with a long circumference of 28 to 28.5 inches and
-      a short circumference of 21 to 21.25 inches. Using 28.25 inches for the long circumference and
-      21.125 inches for the short circumference, the diameter of the ball along the long circumference
-      (i.e. the overall height) would be (28.25 inches / pi) = (0.71755 m / pi) = 0.2284 m, and the diamter
-      of the ball along the short circumference (i.e. the overall width) would be (21.125 inches / pi) =
-      (0.537m / pi) = 0.171 m.
+    * States that the ball will be a prolate spheroid with a long axis length of 11 to 11.25 inches and
+      a short circumference of 21 to 21.25 inches. Since the short circumference is the circumference of that of a
+      circle, the width of the ball is (21 inches / pi) to (21.25 inches / pi) = 6.6 inches to 6.7 inches, which is
+      0.16 meters to 0.17 meters. The height of the ball along the long axis in meters ranges from 11 inches = 0.27 meters
+      to 11.25 inches = 0.28 meters. We are going to cut these values in half and use 0.165 m for the width and
+      0.275 m for the height.
     * The reference area of the ball would be the center cross-sectional circle that is orthogonal to
       the laces (i.e. what you see when the ball is held in front of one's face by the laces). This
-      circle would have the specified short diamter of 0.171m and therefore a total area of
-      ((0.171m / 2) ^ 2) * pi = 0.0230 m^2
+      circle would have the specified short diameter of 0.165m and therefore a total area of
+      ((0.165m / 2) ^ 2) * pi = 0.0213 m^2
 
 ### Model Rocket
 
