@@ -70,8 +70,6 @@ define( function( require) {
       // Set the dimensions of the ground
       this.groundNode.setRectBounds( new Bounds2( 0, 0, screenWidth, screenHeight * FallingObjectsConstants.MBR_GROUND_HEIGHT_SCALAR ) );
 
-      console.log( this.groundNode.getRectBounds );
-
       // Set the position of the target right in the center of the ground
       this.targetNode.setCenter( this.groundNode.getCenter() );
       // Set scale of the targetNode

@@ -50,8 +50,8 @@ define( function( require ) {
     this.movingBackgroundGround = new MovingBackgroundGround( fallingObjectsModel );
 
     // Add children
-    // Make sure the movingBackgroundRuler and parachuteNode are behind the fallingObjectNode
-    this.insertChild( 1, this.movingBackgroundRuler );
+    // Make sure the movingBackgroundGround and parachuteNode are behind the fallingObjectNode
+    this.insertChild( 1, this.movingBackgroundGround );
     this.insertChild( 1, this.parachuteNode );
     // Make sure the  panels are behind the selector, yet in front of the moving background
     this.insertChild( 1, this.altitudePanel );
