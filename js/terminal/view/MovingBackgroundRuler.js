@@ -1,8 +1,7 @@
 // Copyright 2018, University of Colorado Boulder
 
 /**
- * Addition to the MovingBackground that adds a Ruler and a Ground that the FallingObjectNode can
- * fall onto.
+ * Addition to the MovingBackground that adds a Ground that the FallingObjectNode can fall onto.
  *
  * @author Ryan Drew
  */
@@ -29,7 +28,7 @@ define( function( require) {
    *
    * @param {FallingObjectsModel} fallingObjectsModel - will be used to pull selected falling object
    */
-  function MovingBackgroundRuler( fallingObjectsModel ) {
+  function MovingBackgroundGround( fallingObjectsModel ) {
 
     // Call the super
     Node.call( this );
@@ -56,9 +55,9 @@ define( function( require) {
 
   }
 
-  fallingObjects.register( 'MovingBackgroundRuler', MovingBackgroundRuler );
+  fallingObjects.register( 'MovingBackgroundGround', MovingBackgroundGround );
 
-  return inherit( Node, MovingBackgroundRuler, {
+  return inherit( Node, MovingBackgroundGround, {
 
 
     /**
@@ -67,9 +66,6 @@ define( function( require) {
      * @param {number} screenHeight - updated height of the visible screen calculated based off of scales and offsets
      */
     layout: function( screenWidth, screenHeight ) {
-
-      console.log( screenWidth, 'sw' );
-      console.log( screenHeight, 'sh' );
 
       // Set the dimensions of the ground
       this.groundNode.setRectBounds( new Bounds2( 0, 0, screenWidth, screenHeight * FallingObjectsConstants.MBR_GROUND_HEIGHT_SCALAR ) );

@@ -14,7 +14,7 @@ define( function( require ) {
   var FallingObjectsScreenView = require( 'FALLING_OBJECTS/common/view/FallingObjectsScreenView' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ParachuteNode = require( 'FALLING_OBJECTS/terminal/view/ParachuteNode' );
-  var MovingBackgroundRuler = require( 'FALLING_OBJECTS/terminal/view/MovingBackgroundRuler' );
+  var MovingBackgroundGround = require( 'FALLING_OBJECTS/terminal/view/MovingBackgroundGround' );
   var TimerPanel = require( 'FALLING_OBJECTS/terminal/view/TimerPanel' );
 
   /**
@@ -46,8 +46,8 @@ define( function( require ) {
     // Create the parachute node
     this.parachuteNode = new ParachuteNode( fallingObjectsModel, this.fallingObjectNode );
 
-    // Create the MovingBackgroundRuler, which sits right on top of the moving background
-    this.movingBackgroundRuler = new MovingBackgroundRuler( fallingObjectsModel );
+    // Create the MovingBackgroundGround, which sits right on top of the moving background
+    this.movingBackgroundGround = new MovingBackgroundGround( fallingObjectsModel );
 
     // Add children
     // Make sure the movingBackgroundRuler and parachuteNode are behind the fallingObjectNode
@@ -76,8 +76,8 @@ define( function( require ) {
       // Call the super layout function
       FallingObjectsScreenView.prototype.layout.call( this, width, height );
 
-      // Layout the MovingBackgroundRuler
-      this.movingBackgroundRuler.layout( this.visibleBoundsProperty.get().maxX, this.visibleBoundsProperty.get().maxY )
+      // Layout the MovingBackgroundGround
+      this.movingBackgroundGround.layout( this.visibleBoundsProperty.get().maxX, this.visibleBoundsProperty.get().maxY )
 
       // Set the altitude panel to be just below the falling objects selector
       this.altitudePanel.top = this.fallingObjectSelectorNode.bottom + this.controlPanelsVerticalSpacing;
