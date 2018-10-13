@@ -129,7 +129,7 @@ define( function( require ) {
 
     PARACHUTE_Y_PADDING: 30,  // Extra padding to add to the y position of the parachute when it is positioned above the FallingObjectNode
 
-    PN_WIDTH_TO_HEIGHT_SCALE: 0.5,  // Scale between the width and height of the platform node
+    MBR_GROUND_COLOR: 'green',  // Color of the ground set in the Terminal Screen
 
     MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates
 

@@ -10,6 +10,7 @@ define( function( require) {
   'use strict';
 
   // modules
+  var Bounds2 = require( 'DOT/Bounds2' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
@@ -33,10 +34,38 @@ define( function( require) {
     // Call the super
     Node.call( this );
 
+    // Create the ground
+    // Don't know dimensions yet, will be set in layout
+    var ground = new Rectangle( 0, 0, 0, 0, { fill: FallingObjectsConstants.MBR_GROUND_COLOR } );
+
+    this.addChild( ground );
+
   }
 
   fallingObjects.register( 'MovingBackgroundRuler', MovingBackgroundRuler );
 
-  return inherit( Node, PlatformNode );
+  return inherit( Node, MovingBackgroundRuler, {
+
+
+    /**
+     * Layout the nodes that make up the MovingBackgroundRuler
+     * @param {number} offsetX - calculated x offset between actual user's screen and the default screen layout
+     * @param {number} offsetY - calculated y offset between actual user's screen and the default screen layout
+     * @param {number} width - width of the screen
+     * @param {number} height - height of the screen
+     * @param {scale} scale - scale between the actual user's screen and the default screen layout
+     */
+    layout: function( offsetX, offsetY, width, height, scale ) {
+
+      // Define these for convenience
+      var screenWidth = -offsetX + ( width / scale - offsetX );
+      var screenHeight = -offsetY + ( height / scale - offsetY );
+
+      // Set the dimensions of the ground
+      ground.setRectBounds( new Bounds2( 0, 0, screenWidth, screenHeight * 0.1 ) );
+
+    }
+
+  } );
 
 } );
