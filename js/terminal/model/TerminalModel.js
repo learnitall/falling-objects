@@ -24,7 +24,8 @@ define( function( require ) {
         constantAltitude: false,
         initialDragForceEnabledValue: true,
         disableOnGroundZero: true,
-        enableParachute: true
+        enableParachute: true,
+        initialAltitude: 10  // m
       }
     );
 

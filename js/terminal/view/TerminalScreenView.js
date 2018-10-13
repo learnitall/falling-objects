@@ -16,6 +16,7 @@ define( function( require ) {
   var ParachuteNode = require( 'FALLING_OBJECTS/terminal/view/ParachuteNode' );
   var MovingBackgroundGround = require( 'FALLING_OBJECTS/terminal/view/MovingBackgroundGround' );
   var TimerPanel = require( 'FALLING_OBJECTS/terminal/view/TimerPanel' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   /**
    * Construct the screenView
@@ -23,6 +24,12 @@ define( function( require ) {
    * @param {FallingObjectsModel} fallingObjectsModel
    */
   function TerminalScreenView( fallingObjectsModel ) {
+
+    // Grab a copy to the fallingObjectsModel
+    this.fallingObjectsModel = fallingObjectsModel;
+
+    // Grab a copy to self
+    var self = this;
 
     // Call the screenView, passing in our given model
     FallingObjectsScreenView.call(
@@ -50,13 +57,13 @@ define( function( require ) {
     this.movingBackgroundGround = new MovingBackgroundGround( fallingObjectsModel );
 
     // Add children
-    // Make sure the movingBackgroundGround and parachuteNode are behind the fallingObjectNode
-    this.insertChild( 1, this.movingBackgroundGround );
-    this.insertChild( 1, this.parachuteNode );
     // Make sure the  panels are behind the selector, yet in front of the moving background
     this.insertChild( 1, this.altitudePanel );
     this.insertChild( 1, this.timerPanel );
     this.insertChild( 1, this.deployParachuteButton );
+    // Make sure the movingBackgroundGround and parachuteNode are behind the fallingObjectNode and all panels
+    this.insertChild( 1, this.parachuteNode );
+    this.insertChild( 1, this.movingBackgroundGround );
 
   }
 
@@ -78,6 +85,12 @@ define( function( require ) {
 
       // Layout the MovingBackgroundGround
       this.movingBackgroundGround.layout( this.offsetX, this.offsetY, width, height, this.layoutScale );
+
+      // Update view distance from the ground
+      this.fallingObjectsModel.viewDistanceToGroundProperty.set(
+        this.movingBackgroundGround.getCenterY() -  // target node is lined up with movingBackgroundGround's center
+        this.modelViewTransform.modelToViewPosition( new Vector2( 0, 0 ) ).y
+      );
 
       // Set the altitude panel to be just below the falling objects selector
       this.altitudePanel.top = this.fallingObjectSelectorNode.bottom + this.controlPanelsVerticalSpacing;

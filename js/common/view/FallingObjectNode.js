@@ -13,6 +13,7 @@ define( function( require ) {
   var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // strings
   var combustedString = require( 'string!FALLING_OBJECTS/combusted' );
@@ -32,8 +33,11 @@ define( function( require ) {
     this.fallingObjectViewFactory = fallingObjectViewFactory;
     this.modelViewTransform = modelViewTransform;
 
-    // Defined for construction
+    // Defined for constructor
     var self = this;
+
+    // Define for convenience
+    this.originPos = this.modelViewTransform.modelToViewPosition( new Vector2( 0, 0 ) );
 
     // Call super constructor
     Node.call( this );
@@ -43,6 +47,36 @@ define( function( require ) {
       // This function is defined below in the inherit call
       self.setFallingObjectNodeImage( selectedFallingObjectName );
     } );
+
+    // Set the positioning of the node on the screen dynamically if needed
+    if ( !this.fallingObjectsModel.constantAltitude ) {
+
+      this.fallingObjectsModel.selectedFallingObject.positionProperty.link( function( position ) {
+
+        // self.originPos.y + viewDistanceToGround represents the point on the ground to which the object falls to
+        // Then we subtract the altitude of the object in view coordinates (subtract since axis is inverted on screen)
+        var newViewPosition = self.originPos.y + self.fallingObjectsModel.viewDistanceToGroundProperty.get() - self.modelViewTransform.modelToViewDeltaY( position.y );
+
+        // Check if the view position if below than the origin position on the screen
+        if ( newViewPosition > self.originPos.y ) {
+          self.setBottom( newViewPosition );
+
+          // Make sure that the dynamic falling property is set to other moving background elements know to stop moving
+          if ( self.fallingObjectsModel.fallingObjectNodeStaticPositionProperty.get() ) {
+            self.fallingObjectsModel.fallingObjectNodeStaticPositionProperty.set( false );  // will be reset when the sim resets
+          }
+        } else {
+          // If the newViewPosition is not below the origin position, but the fallingObject is, then set the falling object
+          // to the origin
+          if ( self.getBottom() > self.originPos.y ) {
+            self.setCenterBottom( self.originPos );
+          }
+        }
+
+      } );
+
+    }
+
 
     // using the link method will call the listener function right away, meaning this.image will be defined
     this.addChild( this.image );
@@ -88,9 +122,8 @@ define( function( require ) {
       // Reset our children so the Node updates
       this.setChildren( [ this.image ] );
 
-      // Position the image on the screen
-      // When this function is called, it is assumed that the model position of the falling object has been reset to zero (sim resets when object changes)
-      this.setCenterBottom( this.modelViewTransform.modelToViewPosition( this.fallingObjectsModel.selectedFallingObject.positionProperty.get() ) );
+      // Reset position of the image on the screen
+      this.setCenterBottom( this.originPos );
     }
 
   } );
