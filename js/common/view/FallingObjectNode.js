@@ -63,13 +63,18 @@ define( function( require ) {
 
           // Make sure that the dynamic falling property is set to other moving background elements know to stop moving
           if ( self.fallingObjectsModel.fallingObjectNodeStaticPositionProperty.get() ) {
-            self.fallingObjectsModel.fallingObjectNodeStaticPositionProperty.set( false );  // will be reset when the sim resets
+            self.fallingObjectsModel.fallingObjectNodeStaticPositionProperty.set( false );
           }
         } else {
           // If the newViewPosition is not below the origin position, but the fallingObject is, then set the falling object
           // to the origin
           if ( self.getBottom() > self.originPos.y ) {
             self.setCenterBottom( self.originPos );
+          }
+
+          // Reset the static position property to being true
+          if ( !self.fallingObjectsModel.fallingObjectNodeStaticPositionProperty.get() ) {
+            self.fallingObjectsModel.fallingObjectNodeStaticPositionProperty.set( true );
           }
         }
 
