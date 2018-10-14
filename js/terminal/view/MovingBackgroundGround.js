@@ -24,11 +24,16 @@ define( function( require) {
    * Construct the Ruler and Ground which will overlay onto the MovingBackground.
    *
    * @param {FallingObjectsModel} fallingObjectsModel - will be used to pull selected falling object
+   * @param {ModelViewTransform2} modelViewTransform - used to translate between model and view coordinates
    */
-  function MovingBackgroundGround( fallingObjectsModel ) {
+  function MovingBackgroundGround( fallingObjectsModel, modelViewTransform ) {
 
     // Call the super
     Node.call( this );
+
+    // Grab reference to self and fallingObjectsModel
+    var self = this;
+    this.fallingObjectsModel = fallingObjectsModel
 
     // Create the ground
     // Don't know dimensions yet, will be set in layout
@@ -49,6 +54,36 @@ define( function( require) {
 
     this.addChild( this.groundNode );
     this.addChild( this.targetNode );
+
+    // Create a link to update the position of the ground as the falling object's model position changes
+    // When the model distance from the ground becomes greater than the view distance from the ground, move the ground
+    // down off the screen to resemble the object moving upwards
+    this.screenHeight = 0;  // Need to know the screenHeight- will be given in layout method
+    this.updatePositionOnScreen = function( position ) {
+
+      // Position of the ground when falling object model position is zero
+      var defaultPosGround = self.screenHeight - ( self.groundNode.height / 2 );
+
+      // If the object is above its origin position
+      if ( modelViewTransform.modelToViewDeltaY( position.y ) > self.fallingObjectsModel.viewDistanceToGroundProperty.get() ) {
+
+        self.setCenterY(
+          defaultPosGround +
+          // Height above the falling object's origin position
+          modelViewTransform.modelToViewDeltaY( position.y ) - self.fallingObjectsModel.viewDistanceToGroundProperty.get()
+        );
+
+      } else {
+
+        // Update position of ground to be at its default location
+        if ( self.getCenterY() != defaultPosGround ) {
+          self.setCenterY( defaultPosGround );
+        }
+
+      }
+
+    };
+    this.fallingObjectsModel.selectedFallingObject.positionProperty.lazyLink( this.updatePositionOnScreen );
 
   }
 
@@ -71,11 +106,11 @@ define( function( require) {
       // Determine center of screen, screenWidth and screenHeight for convenience
       var center = new Vector2( ( -offsetX + ( width / scale - offsetX ) ) / 2, ( offsetY + ( height / scale - offsetY ) ) / 2 );
       var screenWidth = -offsetX + width / scale;
-      var screenHeight = -offsetY + height / scale;
+      this.screenHeight = -offsetY + height / scale;
 
       // Set the dimensions of the ground
       this.groundNode.setRect(
-        -offsetX, 0, width / scale, screenHeight * FallingObjectsConstants.MBR_GROUND_HEIGHT_SCALAR
+        -offsetX, 0, width / scale, this.screenHeight * FallingObjectsConstants.MBR_GROUND_HEIGHT_SCALAR
       );
 
       // Be sure to reset transform in case multiple layouts are called
@@ -90,10 +125,9 @@ define( function( require) {
         targetNodeHeight / this.targetNode.getHeight()
       );
 
-      // Position the ground on the screen
-      // This must be done after the sizing of the child nodes is completed
-      this.setCenterX( center.x );
-      this.setBottom( screenHeight );
+      // Make sure position on the screen is appropriate
+      this.updatePositionOnScreen( this.fallingObjectsModel.selectedFallingObject.positionProperty.get() );
+
     }
 
   } );

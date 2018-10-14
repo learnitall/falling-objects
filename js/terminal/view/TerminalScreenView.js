@@ -54,7 +54,7 @@ define( function( require ) {
     this.parachuteNode = new ParachuteNode( fallingObjectsModel, this.fallingObjectNode );
 
     // Create the MovingBackgroundGround, which sits right on top of the moving background
-    this.movingBackgroundGround = new MovingBackgroundGround( fallingObjectsModel );
+    this.movingBackgroundGround = new MovingBackgroundGround( fallingObjectsModel, this.modelViewTransform );
 
     // Add children
     // Make sure the  panels are behind the selector, yet in front of the moving background
