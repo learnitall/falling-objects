@@ -88,7 +88,8 @@ define( function( require ) {
 
       // Update view distance from the ground
       this.fallingObjectsModel.viewDistanceToGroundProperty.set(
-        this.movingBackgroundGround.getCenterY() -  // target node is lined up with movingBackgroundGround's center
+        ( height / this.layoutScale ) -
+        this.movingBackgroundGround.height / 2 -  // target node is lined up with movingBackgroundGround's center
         this.modelViewTransform.modelToViewPosition( new Vector2( 0, 0 ) ).y
       );
 
