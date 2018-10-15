@@ -163,34 +163,34 @@ define( function( require ) {
       // Determine the scale used for laying out components, and set our screen view's scale to match
       // If the difference between the screen view's width and the actual screen's width is smaller than the
       // respective difference in height, then that scale is used (and vice versa)
-      var scale = this.getLayoutScale( width, height );
-      this.setScaleMagnitude( scale );
+      this.layoutScale = this.getLayoutScale( width, height );
+      this.setScaleMagnitude( this.layoutScale );
 
       // After scaling, translate the screen view on the screen so that it is centered
-      var offsetX = 0;
-      var offsetY = 0;
+      this.offsetX = 0;
+      this.offsetY = 0;
 
       // If we are scaling the screen view based off of width, then center it on the screen vertically
-      if ( scale === width / this.layoutBounds.width ) {
-        offsetY = ( height / scale - this.layoutBounds.height ) / 2;
+      if ( this.layoutScale === width / this.layoutBounds.width ) {
+        this.offsetY = ( height / this.layoutScale - this.layoutBounds.height ) / 2;
       }
 
       // If we are scaling the screen view based off of height, then center it on the screen horizontally
-      else if ( scale === height / this.layoutBounds.height ) {
-        offsetX = ( width / scale - this.layoutBounds.width ) / 2;
+      else if ( this.layoutScale === height / this.layoutBounds.height ) {
+        this.offsetX = ( width / this.layoutScale - this.layoutBounds.width ) / 2;
       }
 
       // Move the screen view
-      this.translate( offsetX, offsetY );
+      this.translate( this.offsetX, this.offsetY );
 
       // Now position nodes into place
       // Note that the fallingObjectNode will place itself based on the modelViewTransform
 
       // Transform the background node to take up the screen
-      this.movingBackground.layout( offsetX, offsetY, width, height, scale );
+      this.movingBackground.layout( this.offsetX, this.offsetY, width, height, this.layoutScale );
 
       // Move the toggle panel to the top right (it's the control panel highest on screen)
-      this.togglePanel.setRightTop( new Vector2( width / scale - offsetX - this.screenMarginX, this.screenMarginY - offsetY ) );
+      this.togglePanel.setRightTop( new Vector2( width / this.layoutScale - this.offsetX - this.screenMarginX, this.screenMarginY - this.offsetY ) );
 
       // Place the value panel to the right of the toggle panel
       this.valuePanel.top = this.togglePanel.top;
@@ -207,15 +207,15 @@ define( function( require ) {
       this.controlButtons.centerX = this.fallingObjectSelectorNode.centerX;
 
       // Place free body diagram in center-left of the screen
-      this.freeBodyDiagram.left =  -offsetX + this.screenMarginX;
-      this.freeBodyDiagram.centerY = ( -offsetY + ( height / scale - offsetY ) ) / 2;
+      this.freeBodyDiagram.left =  -this.offsetX + this.screenMarginX;
+      this.freeBodyDiagram.centerY = ( -this.offsetY + ( height / this.layoutScale - this.offsetY ) ) / 2;
 
       // Place the PVAGraphs just to the right of the freeBodyDiagram
       this.pvaGraphs.centerY = this.freeBodyDiagram.centerY;
       this.pvaGraphs.left = this.freeBodyDiagram.right + this.graphsHorizontalSpacing;
 
       // Update the visible bounds of the screen view based on our previous calculations
-      this.visibleBoundsProperty.set( new Bounds2( -offsetX, -offsetY, width / scale - offsetX, height / scale - offsetY ) );
+      this.visibleBoundsProperty.set( new Bounds2( -this.offsetX, -this.offsetY, width / this.layoutScale - this.offsetX, height / this.layoutScale - this.offsetY ) );
     },
 
     /**

@@ -129,7 +129,13 @@ define( function( require ) {
 
     PARACHUTE_Y_PADDING: 30,  // Extra padding to add to the y position of the parachute when it is positioned above the FallingObjectNode
 
-    MODEL_VIEW_TRANSFORM_SCALE: 900,  // scalar between model coordinates and view coordinates
+    MBR_GROUND_COLOR: 'green',  // Color of the ground set in the Terminal Screen
+    MBR_GROUND_HEIGHT_SCALAR: 0.1,  // Scalar multiplied by the screen height to determine the height of the ground
+    MBR_TARGET_HEIGHT_SCALAR: 0.8,  // Scalar multiplied by the ground height to determine the height of the target
+    MBR_TARGET_WIDTH_SCALAR: 0.1,  // Scalar multiplied by the screen width to determine the width of the target
+    MBR_TARGET_LINE_WIDTH: 0.01,  // Line width of the circle that make up the target node
+
+    MODEL_VIEW_TRANSFORM_SCALE: 500,  // scalar between model coordinates and view coordinates
 
     EARTH_MEAN_RADIUS: 6371009,  // mean radius of the Earth in m
     ACCELERATION_GRAVITY_SEA_LEVEL: -9.80665,  // acceleration due to gravity at sea level in m/s^2
@@ -137,9 +143,9 @@ define( function( require ) {
     // Define FallingObject parameters
     BOWLING_BALL: {
       'mass': 7.25,  // in kg, equal to 16 lbs
-      'referenceArea':  1.47,  // in m^2, equal to a bowling ball with 8.595" diameter
+      'referenceArea':  0.03742,  // in m^2, equal to a bowling ball with 8.595" diameter
       'dragCoefficient': 0.5,
-      'diameter': 0.1092 // in m
+      'diameter': 0.2183 // in m
     },
 
     BADMINTON_SHUTTLECOCK: {
@@ -153,7 +159,7 @@ define( function( require ) {
       'mass': 0.045,  // in kg
       'referenceArea': 0.00143,  // in m^2
       'dragCoefficient': 0.3,
-      'diameter': 0.043  // in m
+      'diameter': 0.042  // in m
     },
 
     PING_PONG_BALL: {
@@ -165,16 +171,16 @@ define( function( require ) {
 
     BASEBALL: {
       'mass': 0.14,  // in kg
-      'referenceArea': 0.042,  // in m^2
+      'referenceArea': 0.0043,  // in m^2
       'dragCoefficient': 0.3,
-      'diameter': 0.0369  // in m
+      'diameter': 0.0736  // in m
     },
 
     FOOTBALL: {
       'mass': 0.411,  // in kg
-      'referenceArea': 0.023,  // in m^2
-      'dragCoefficient': 0.055,
-      'diameter': [ 0.171, 0.228 ]  // short diameter in m (width), long diameter in m (view height)
+      'referenceArea': 0.0213,  // in m^2
+      'dragCoefficient': 0.0495,
+      'diameter': [ 0.165, 0.275 ]  // short diameter in m (width), long diameter in m (view height)
     },
 
     MODEL_ROCKET: {
@@ -184,11 +190,12 @@ define( function( require ) {
       'diameter': [ 0.113, 0.345 ]  // width with fins on in m, height with fins on in m
     },
 
-    SPORTS_CAR: {
-      'mass': 283.63,  // in kg
-      'referenceArea': 2.04,  // in m^2
+    SCALE_SPORTS_CAR: {
+      // Sports car is scaled to be 1/8th the size
+      'mass': 283.63 / 8,  // in kg
+      'referenceArea': 2.04 / Math.pow( 8, 2 ),  // in m^2
       'dragCoefficient': 0.32,
-      'diameter': [ 1.82, 4.37 ]  // width of car in m, length of car in m (view height)
+      'diameter': [ 1.82 / 8, 4.37 / 8 ]  // width of car in m, length of car in m (view height)
     },
 
     COMBUSTED: {

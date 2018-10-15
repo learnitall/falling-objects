@@ -26,7 +26,7 @@ define( function( require ) {
   var golfBallString = require( 'string!FALLING_OBJECTS/golfBall' );
   var modelRocketString = require( 'string!FALLING_OBJECTS/modelRocket' );
   var pingPongBallString = require( 'string!FALLING_OBJECTS/pingPongBall' );
-  var sportsCarString = require( 'string!FALLING_OBJECTS/sportsCar' );
+  var scaleSportsCarString = require( 'string!FALLING_OBJECTS/scaleSportsCar' );
 
   /**
    * Construct the FallingObjectsModel
@@ -41,7 +41,8 @@ define( function( require ) {
       constantAltitude: true,  // if false, then air density and accel. gravity will be calculated based on the FallingObject's altitude
       initialDragForceEnabledValue: false,  // Sets the initial value for dragForceEnabledProperty
       disableOnGroundZero: false,  // Disable the simulation (requiring a reset) when the object hits the ground
-      enableParachute: false  // Enable the parachute functionality by created the parachuteDeployedProperty
+      enableParachute: false,  // Enable the parachute functionality by created the parachuteDeployedProperty
+      initialAltitude: 0  // Initial altitude of the falling object that it should be dropped from
     }, options );
 
     // @private (read-only)
@@ -75,6 +76,14 @@ define( function( require ) {
       this.parachuteDeployedProperty = new BooleanProperty( false );
     }
 
+    // @public {Property.<boolean>} whether or not the fallingObjectNode's position is being set statically or dynamically (whether it stays still or moves with changes in position)
+    this.fallingObjectNodeStaticPositionProperty = new BooleanProperty( true );
+
+    if ( !options.constantAltitude ) {  // if altitude is constant, don't need this property
+      // @public {Property.<number>} view distance between the fallingObjectNode and the center of the targetNode in MovingBackgroundGround
+      this.viewDistanceToGroundProperty = new NumberProperty( 0 );  // Will be set in TerminalScreenView
+    }
+
     // @public {Property.<number>} simulation's acceleration due to gravity (initially set to density at sea level)
     this.accelerationGravityProperty = new NumberProperty( this.getAccelerationGravity( 0 ) );
 
@@ -99,11 +108,11 @@ define( function( require ) {
       golfBallString,
       modelRocketString,
       pingPongBallString,
-      sportsCarString
+      scaleSportsCarString
     ];
 
     // Construct an object to fall
-    this.selectedFallingObject = new FallingObject( this, this.selectedFallingObjectNameProperty.get(), 0 );
+    this.selectedFallingObject = new FallingObject( this, this.selectedFallingObjectNameProperty.get(), options.initialAltitude );
 
     // When the selected name is updated, then have the FallingObject instance update too and call a reset
     this.selectedFallingObjectNameProperty.lazyLink( function ( selectedFallingObjectName ) {
@@ -191,10 +200,21 @@ define( function( require ) {
       this.totalFallTimeProperty.reset();
       this.playEnabledProperty.reset();
       this.simEnabledProperty.reset();
-      this.parachuteDeployedProperty.reset();
 
       // Reset FallingObject
+      // Must be reset before the parachute node so the parachute node knows where to move to
       this.selectedFallingObject.reset();
+
+      if ( this.enableParachute ) {
+        this.parachuteDeployedProperty.reset();
+      }
+
+      if ( !this.constantAltitude ) {
+        this.fallingObjectNodeStaticPositionProperty.reset();
+        // Don't actually want to reset this- will be handled by calls to layout in screen view
+        // this.viewDistanceToGroundProperty.reset();
+      }
+
     },
 
     /**
