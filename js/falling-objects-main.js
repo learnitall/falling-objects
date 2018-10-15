@@ -19,13 +19,12 @@ define( function( require ) {
 
   var simOptions = {
     credits: {
-      //TODO fill in proper credits, all of these fields are optional, see joist.AboutDialog
       leadDesign: '',
-      softwareDevelopment: '',
+      softwareDevelopment: 'Ryan Drew',
       team: '',
       qualityAssurance: '',
       graphicArts: '',
-      thanks: ''
+      thanks: 'The RV Physics Team (Mr.Pennell, Mr.Lowrey and Mr.Bradley) and friends and family for making this possible'
     }
   };
 
