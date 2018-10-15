@@ -171,7 +171,7 @@ define( function( require ) {
 
     BASEBALL: {
       'mass': 0.14,  // in kg
-      'referenceArea': 0.043,  // in m^2
+      'referenceArea': 0.0043,  // in m^2
       'dragCoefficient': 0.3,
       'diameter': 0.0736  // in m
     },
