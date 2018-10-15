@@ -1,7 +1,7 @@
 // Copyright 2018, University of Colorado Boulder
 
 /**
- * Model for Falling Objects. Holds environmental properties and constructs/manages other models.
+ * Model for Falling Objects. Holds environmental properties and constructs/manages other models
  *
  * @author Ryan Drew
  */
@@ -49,11 +49,11 @@ define( function( require ) {
     this.constantAltitude = options.constantAltitude;
     this.disableOnGroundZero = options.disableOnGroundZero;
     this.enableParachute = options.enableParachute;
-
-    // Variables defined here for convenience
-    var self = this;
     this.accelerationGravitySeaLevel = FallingObjectsConstants.ACCELERATION_GRAVITY_SEA_LEVEL;
     this.earthMeanRadius = FallingObjectsConstants.EARTH_MEAN_RADIUS;
+
+    // Variables defined here for construction
+    var self = this;
     var defaultFallingObjectName = FallingObjectsConstants.DEFAULT_FALLING_OBJECT_NAME;
 
     // @public {Property.<boolean>} whether or not the simulation is paused
@@ -131,7 +131,7 @@ define( function( require ) {
   return inherit( Object, FallingObjectsModel, {
 
     /**
-     * Rounds the given value to the given number of digits. Provided as a convenience.
+     * Rounds the given value to the given number of digits (provided as a convenience to other models)
      * @public
      *
      * @param {number} valueToRound
@@ -144,8 +144,8 @@ define( function( require ) {
     },
 
     /**
-     * Calculate the air density in kg/m^3 at the given altitude and return it.
-     * Uses a standard Earth Atmospheric Model from the '60s.
+     * Calculate the air density in kg/m^3 at the given altitude and return it (uses a standard Earth Atmospheric
+     * Model from the '60s)
      * @public
      *
      * @param {number} altitude - altitude to calculate air density at (i.e. selectedFallingObject's position property)
@@ -218,8 +218,8 @@ define( function( require ) {
     },
 
     /**
-     * Step the model to perform the simulation's animation and physics calculations.
-     * Called to perform a manual step or called within the overwritten step function found below.
+     * Step the model to perform the simulation's animation and physics calculations
+     * (called to perform a manual step or called within the overwritten step function found below)
      * @public
      */
     stepModel: function( dt ) {
@@ -256,7 +256,7 @@ define( function( require ) {
     },
 
     /**
-     * If the simulation is not paused, step the simulation.
+     * If the simulation is not paused, step the simulation
      * @public
      */
     step: function( dt ) {

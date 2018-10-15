@@ -2,7 +2,7 @@
 
 /**
  * Scenery node containing the Play, Pause and Step buttons that let users
- * control how the simulation runs.
+ * control how the simulation runs
  *
  * @author Ryan Drew
  */
@@ -51,6 +51,7 @@ define( function( require ) {
     } );
 
     // Play-Pause Button
+    // @public
     this.playPauseButton = new PlayPauseButton( fallingObjectsModel.playEnabledProperty, {
       radius: controlButtonRadius
     } );
@@ -61,6 +62,7 @@ define( function( require ) {
     } );
 
     // Manual Step Forward Button
+    // @public
     this.stepForwardButton = new StepForwardButton( {
       radius: controlButtonRadius,
       playingProperty: fallingObjectsModel.playEnabledProperty,

@@ -30,7 +30,7 @@ define( function( require ) {
 
 
   /**
-   * Construct the ValueGraphNode.
+   * Construct the ValueGraphNode
    *
    * @param {FallingObjectsModel} fallingObjectsModel - will be used to pull total fall time property
    * @param {string} name - name of the graph
@@ -48,19 +48,24 @@ define( function( require ) {
     var self = this;
 
     // Get the name of the graph/what we are plotting and the units
+    // @private
     this.name = name;
     this.unitString = unitString;
 
     // Grab reference to the model
+    // @private
     this.fallingObjectsModel = fallingObjectsModel;
 
     // Store the property that we are graphing
+    // @private
     this.targetPropertyName = targetPropertyName;
 
     // Get the number of digits labels will be rounded to when displayed
+    // @private
     this.numLabelDigits = FallingObjectsConstants.VG_NUM_LABEL_DIGITS;
 
     // Define where the top left bound of the graph lies (VG_TOP_LEFT_BOUND is relative to the top left corner of the background rectangle)
+    // @private
     this.graphTopLeftBound = FallingObjectsConstants.VG_TOP_LEFT_BOUND;
 
     // Construct the background, using the same options as the free body diagram
@@ -71,9 +76,11 @@ define( function( require ) {
     var maxPlotWidth = backgroundRectangle.getWidth() - FallingObjectsConstants.VG_PLOT_EDGE_PADDING.x - this.graphTopLeftBound.x;
 
     // Create a ValueGraphModel that will be used to hold our data
+    // @private
     this.valueGraphModel = new ValueGraphModel( maxPlotWidth, maxPlotHeight, this );
 
     // Construct the model-view transform which will translate between the valueProperty and time to the graph on screen
+    // @private
     this.modelViewTransform = ModelViewTransform2.createOffsetXYScaleMapping(
       new Vector2(
         self.graphTopLeftBound.x,
@@ -246,20 +253,22 @@ define( function( require ) {
     // Now create our axis labels and position
     var axisLabelCount = FallingObjectsConstants.VG_AXIS_LABEL_COUNT;
     // Get the value axis
+    // @private
     var valueAxisStuff = genAxisStuff( axisLabelCount, true );
     this.valueAxisLabelNode = valueAxisStuff[ 0 ];
     this.valueGraphLinesNode = valueAxisStuff[ 1 ];
     // Get the time axis
+    // @private
     var timeAxisStuff = genAxisStuff( axisLabelCount, false );
     this.timeAxisLabelNode = timeAxisStuff[ 0 ];
     this.timeGraphLinesNode = timeAxisStuff[ 1 ];
 
     // Create a label for the graph that shows the last plotted value
+    // @private
     this.valueLabelNode = new Text( '', { font: axisLabelFont, fill: lineColor } );
 
     /**
      * Small auxiliary function to update the valueLabelNode with graph's target property current value
-     * @private
      *
      * @param {number} propertyValue - value of the target property to display in the label
      */
@@ -300,12 +309,14 @@ define( function( require ) {
     // Data plot is drawn using a Shape object, so we need to construct a Path object that will
     // do the work of displaying it on the screen
     // Pull default options from constants
+    // @private
     this.dataPlotNodeOptions = _.extend(
       FallingObjectsConstants.VG_DATA_PLOT_NODE_OPTIONS, {
         stroke: lineColor
       }
     );
     // Create a Path node that will draw the Shape- Path.setShape will be called in resetPlot
+    // @private
     this.dataPlotNode = new Path( null, this.dataPlotNodeOptions );
 
     // Initialize out Plot
@@ -434,6 +445,7 @@ define( function( require ) {
 
     /**
      * Reset the ValueGraph entirely, both the Node and the Model
+     * @public
      */
     reset: function() {
       this.valueGraphModel.reset();
@@ -442,6 +454,7 @@ define( function( require ) {
 
     /**
      * Reset plotDataShape to reset our plot, as the shape holds the data points, and reset our scales
+     * @public
      */
     resetPlot: function() {
 
@@ -465,6 +478,8 @@ define( function( require ) {
 
     /**
      * Plots a point on the graph
+     * @private
+     *
      * @param {Vector2} newPoint - new point to plot on the graph
      */
     plotPoint: function( newPoint ) {
@@ -474,6 +489,7 @@ define( function( require ) {
 
     /**
      * Layout the axes (includes the labels and graph lines) on the graph
+     * @public
      */
     layoutAxes: function() {
 

@@ -22,7 +22,6 @@ define( function( require ) {
 
   var FallingObjectsConstants = {
 
-    // TODO: Fix this line length
     /**
      * Convert the name of a falling object (retrieved with the string! plugin) to the falling object's keyname in this constants dictionary
      * @public

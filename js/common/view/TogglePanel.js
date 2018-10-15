@@ -1,9 +1,8 @@
 // Copyright 2018, University of Colorado Boulder
 
 /**
- * Control panel that lets users toggle various elements on the screen,
- * such as the position, velocity and acceleration graphs, the free body
- * diagram and air resistance.
+ * Control panel that lets users toggle various elements on the screen, such as the position, velocity and
+ * acceleration graphs, the free body diagram and air resistance
  *
  * @author Ryan Drew
  */

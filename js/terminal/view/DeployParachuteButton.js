@@ -1,7 +1,7 @@
 // Copyright 2018, University of Colorado Boulder
 
 /**
- * Deploy Parachute button for toggling the ParachuteNode. Built on RoundStickyToggleButton
+ * Deploy Parachute button for toggling the ParachuteNode (built on RoundStickyToggleButton)
  *
  * @author Ryan Drew
  */
@@ -22,6 +22,7 @@ define( function ( require ) {
    *
    * @param {FallingObjectsModel} fallingObjectsModel - Will be used to access the parachuteDeployedProperty
    * @param {number} radius - radius of the button
+   * @constructor
    */
   function DeployParachuteButton( fallingObjectsModel, radius ) {
 

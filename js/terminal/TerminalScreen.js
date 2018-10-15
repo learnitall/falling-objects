@@ -1,8 +1,8 @@
 // Copyright 2018, University of Colorado Boulder
 
 /**
- * The 'Terminal' screen, that allows users to explore the concept of Terminal Velocity by
- * seeing how and why a falling object interacts with the air around it.
+ * The 'Terminal' screen, that allows users to explore the concept of Terminal Velocity by seeing how drag force
+ * and time are interrelated
  *
  * @author Ryan Drew
  */

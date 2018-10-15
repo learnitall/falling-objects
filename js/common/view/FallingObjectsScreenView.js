@@ -44,6 +44,7 @@ define( function( require ) {
     }, options );
 
     // Hold onto a reference of the model
+    // @private (read-only)
     this.fallingObjectsModel = fallingObjectsModel;
 
     // Call super constructor
@@ -220,6 +221,8 @@ define( function( require ) {
 
     /**
      * Reset the elements contained in the screen view
+     * @public
+     * @override
      */
     reset: function() {
       // Most of the items on the screen view will be reset when the model properties are reset, since they are linked

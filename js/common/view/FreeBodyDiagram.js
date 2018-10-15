@@ -3,7 +3,7 @@
 /**
  * Free Body Diagram to display the forces acting on the falling object. It consists
  * of two plots: one showing the drag and gravitational forces acting on the falling object
- * and another showing the net force acting on the falling object.
+ * and another showing the net force acting on the falling object
  *
  * @author Ryan Drew
  */
@@ -44,9 +44,8 @@ define( function( require ) {
     // Call super constructor
     Node.call( this );
 
-    // Define values here for convenience
+    // Define values here for construction
     var self = this;
-    this.fallingObjectsModel = fallingObjectsModel;
     var centerCircleRadius = FallingObjectsConstants.FBD_CENTER_CIRCLE_RADIUS;
     var arrowCenterSpacing = FallingObjectsConstants.FBD_ARROW_CENTER_SPACING;
     var horizontalMargin = FallingObjectsConstants.FBD_HORIZONTAL_MARGIN;
@@ -56,6 +55,9 @@ define( function( require ) {
     var centerNetForcePos = new Vector2( ( maxWidth - horizontalMargin * 2 ) * ( 3 / 4 ) + horizontalMargin, maxHeight / 2 );
     // Font of force arrow labels
     var forceLabelFont = new PhetFont( { size: FallingObjectsConstants.FBD_FORCE_LABEL_FONT_SIZE } );
+
+    // @private
+    this.fallingObjectsModel = fallingObjectsModel;
     // Calculate the max arrow length
     this.maxArrowLength = ( maxHeight / 2 ) -
                           FallingObjectsConstants.FBD_VERTICAL_MARGIN -
@@ -83,6 +85,7 @@ define( function( require ) {
 
     /**
      * To scale the arrows on the screen, the area in which we can plot arrows is split in half
+     * @private
      *
      * For the half closest to the center of the diagram, each power of 10 (from 10 ^ -2 to 10 ^ 2 ) gets
      * its own dedicated segment where arrow lengths lie. Arrows will be scaled based on the upper and lower

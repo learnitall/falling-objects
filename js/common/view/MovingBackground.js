@@ -3,8 +3,7 @@
 /**
  * Moving background that acts as the sky for the falling object. Contains animated
  * clouds and a ruler that will 'fall' upwards as the falling object is dropped, giving
- * users the appearance of an object falling in the sky.
- * Based on the MovingBackgroundNode from Forces and Motion Basics
+ * users the appearance of an object falling in the sky
  *
  * @author Ryan Drew
  */
@@ -24,7 +23,7 @@ define( function( require ) {
 
   /**
    * Construct the background. Most of the work done here is to create a skeleton that will
-   * be filled in and sized in the 'layout' function.
+   * be filled in and sized in the 'layout' function
    *
    * @param {FallingObjectsModel} fallingObjectsModel - will be used to pull selected falling object
    * @constructor
@@ -59,6 +58,7 @@ define( function( require ) {
 
     /**
      * Return a valid x-coordinate for a cloud node
+     * @private
      *
      * @param {number} centerX - center X coordinate of the screen
      * @param {boolean} placeOnLeft - if true then the cloud will be placed to the left of the center, and if false then to the right
@@ -85,6 +85,7 @@ define( function( require ) {
 
     /**
      * Return a valid scale for a cloud node
+     * @private
      */
     genCloudNodeScale: function() {
 
@@ -98,7 +99,8 @@ define( function( require ) {
 
     /**
      * Create a new CloudNode to add into the background. Will have a random initial scale and x
-     * coordinate- both of which will be reset when the cloud reaches the top of the screen.
+     * coordinate- both of which will be reset when the cloud reaches the top of the screen
+     * @private
      *
      * @param {number} initialCenterX - initial coordinate of the X center of the cloud node
      * @param {number} initialTopY - initial coordinate of the top of the cloud node
@@ -151,6 +153,7 @@ define( function( require ) {
 
     /**
      * Layout nodes on the moving background
+     * @public
      *
      * @param {number} offsetX - calculated x offset between actual user's screen and the default screen layout
      * @param {number} offsetY - calculated y offset between actual user's screen and the default screen layout
@@ -237,6 +240,7 @@ define( function( require ) {
 
     /**
      * Reset the moving background (places clouds at initial position)
+     * @public
      */
     reset: function() {
 

@@ -1,6 +1,7 @@
 // Copyright 2018, University of Colorado Boulder
 
 /**
+ * Collection of ValueGraphNodes that display Position, Velocity and Acceleration with time
  *
  * @author Ryan Drew
  */
@@ -36,11 +37,13 @@ define( function( require ) {
     Node.call( this );
 
     // Calculate dimensions of each graph- each gets little less than a third of maxHeight
+    // @private
     this.verticalSpacing = FallingObjectsConstants.VG_VERTICAL_SPACING;
     var graphHeight = ( maxHeight - ( 2 * this.verticalSpacing ) ) / 3;
     var graphWidth = maxWidth;
 
     // Create the acceleration, velocity and position graphs
+    // @private
     this.accelerationGraph = new ValueGraphNode(
       fallingObjectsModel,
       accelerationString,
@@ -89,6 +92,7 @@ define( function( require ) {
 
     /**
      * Reset the PVAGraphs
+     * @public
      */
     reset: function() {
       this.accelerationGraph.reset();

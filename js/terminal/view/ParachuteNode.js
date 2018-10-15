@@ -1,7 +1,7 @@
 // Copyright 2018, University of Colorado Boulder
 
 /**
- * Parachute image that is displayed above the falling object when triggered.
+ * Parachute image that is displayed above the falling object when triggered
  *
  * @author Ryan drew
  */
@@ -32,6 +32,7 @@ define( function( require ) {
     var self = this;
 
     // Create a the parachute image node
+    // @private
     this.parachuteImage = new Image( parachuteImage );
 
     // Get the aspect ratio of the parachute image so we can properly scale the height as the width changes

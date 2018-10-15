@@ -1,8 +1,7 @@
 // Copyright 2018, University of Colorado Boulder
 
 /**
- * Timer panel that displays the total fall time
- * Essentially just a wrapper around the Scenery-PhET TimerReadoutNode
+ * Timer panel that displays the total fall time- essentially just a wrapper around the Scenery-PhET TimerReadoutNode
  *
  * @author Ryan Drew
  */

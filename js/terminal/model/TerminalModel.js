@@ -2,6 +2,8 @@
 
 /**
  * Model for the 'Terminal' screen
+ *
+ * @author Ryan Drew
  */
 define( function( require ) {
   'use strict';
@@ -13,6 +15,7 @@ define( function( require ) {
 
   /**
    * Construct the TerminalModel
+   * @constructor
    */
   function TerminalModel() {
 

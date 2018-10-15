@@ -3,7 +3,7 @@
 /**
  * Model to hold certain Properties needed for the AltitudePanel
  *
- * @author ryan Drew
+ * @author Ryan Drew
  */
 define( function( require ) {
   'use strict';
@@ -17,6 +17,7 @@ define( function( require ) {
    * Constructor for AltitudePanelModel
    *
    * @param {FallingObjectsModel} fallingObjectsModel - used to pull playEnabledProperty
+   * @constructor
    */
   function AltitudePanelModel( fallingObjectsModel ) {
 

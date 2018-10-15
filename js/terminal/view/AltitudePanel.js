@@ -1,8 +1,7 @@
 // Copyright 2018, University of Colorado Boulder
 
 /**
- * Control panel that lets users set the initial altitude that
- * the FallingObject drops at
+ * Control panel that lets users set the initial altitude that the FallingObject drops at
  *
  * @author Ryan Drew
  */
@@ -36,6 +35,7 @@ define( function( require ) {
    *
    * @param {FallingObjectsModel} fallingObjectsModel - will be used to communicate initial altitude to selected falling object
    * @param {number} maxWidth - max width of the altitude panel
+   * @constructor
    */
   function AltitudePanel( fallingObjectsModel, maxWidth ) {
 
@@ -43,6 +43,7 @@ define( function( require ) {
     Node.call( this );
 
     // Create our AltitudePanelModel
+    // @private
     this.altitudePanelModel = new AltitudePanelModel( fallingObjectsModel );
 
     // Define below for convenience

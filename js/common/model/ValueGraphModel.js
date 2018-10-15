@@ -1,7 +1,7 @@
 // Copyright 2018, University of Colorado Boulder
 
 /**
- * Model for a ValueGraph that plots an Axon property over time
+ * Model for a ValueGraph that plots an Axon Property over time
  *
  * @author Ryan Drew
  */
@@ -29,7 +29,7 @@ define( function( require) {
     // Grab a reference to self
     var self = this;
 
-    // @public
+    // @private (read-only)
     // Define these for convenience
     this.timeInterval = FallingObjectsConstants.VG_TIME_INTERVAL;
     this.valueInterval = FallingObjectsConstants.VG_VALUE_INTERVAL;
@@ -112,7 +112,7 @@ define( function( require) {
     },
 
     /**
-     * Exponentially increment the maxValue that can be plotted on the graph.
+     * Exponentially increment the maxValue that can be plotted on the graph
      * Calculated using the formula: valueInterval * ( 2 ** _valueScalePower)
      */
     incrementMaxValue: function() {
@@ -129,7 +129,7 @@ define( function( require) {
     },
 
     /**
-     * Exponentially increment the minValue that can be plotted on the graph.
+     * Exponentially increment the minValue that can be plotted on the graph
      * Calculated using the same formula as above
      */
     incrementMinValue: function( ) {
@@ -146,7 +146,7 @@ define( function( require) {
     },
 
     /**
-     * Linearly increment the maxTime that can be plotted on the graph.
+     * Linearly increment the maxTime that can be plotted on the graph
      * Calculated using the formula: maxTime + timeInterval
      */
     incrementMaxTime: function() {
@@ -171,7 +171,7 @@ define( function( require) {
      * Scale is calculated by taking the length of plotting (length of the time axis in view coordinates) and
      * dividing by the length of the time that needs to fit that plot length. For instance, if our
      * maxPlotWidth is 100 in view coordinates and we want to plot 30 seconds on the graph at a time, then
-     * our scale would be 100 / 30 = 3.33 (one second is equal to 3.33 in view coordinates).
+     * our scale would be 100 / 30 = 3.33 (one second is equal to 3.33 in view coordinates)
      */
     getTimeScale: function() {
       return this.maxPlotWidth / Math.abs( this.timeLengthProperty.get().getLength() );

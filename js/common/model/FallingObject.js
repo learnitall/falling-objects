@@ -1,9 +1,8 @@
 // Copyright 2018, University of Colorado Boulder
 
 /**
- * Model for a falling object. Includes properties and methods for tracking the
- * item's fall (velocity, acceleration, drag) and characteristics (mass,
- * reference area).
+ * Model for a falling object. Includes properties and methods for tracking the item's fall (velocity, acceleration,
+ * drag) and characteristics (mass, reference area)
  *
  * @author Ryan Drew
  */
@@ -35,7 +34,7 @@ define( function( require ) {
     // Grab a reference to self
     var self = this;
 
-    // @public
+    // @private (read-only)
     this.fallingObjectsModel = FallingObjectsModel;
     this.name = fallingObjectName;
     this.numDigits = FallingObjectsConstants.FO_NUM_DIGITS;
@@ -124,7 +123,7 @@ define( function( require ) {
     // view modules (i.e. in the FBD and ValueGraphs)
 
     /**
-     * Calculate weight of the object in Newtons and set the weightForceProperty to the calculated value.
+     * Calculate weight of the object in Newtons and set the weightForceProperty to the calculated value
      * @public
      */
     updateWeightForce: function() {
@@ -137,7 +136,7 @@ define( function( require ) {
     },
 
     /**
-     * Calculate drag force acting on the object in Newtons and set the dragForceProperty to the calculated value.
+     * Calculate drag force acting on the object in Newtons and set the dragForceProperty to the calculated value
      * @public
      */
     updateDragForce: function() {
@@ -150,8 +149,8 @@ define( function( require ) {
     },
 
     /**
-     * Calculate net force acting on the object in Newtons and set the netForceProperty to the calculated value.
-     * weightForceProperty and dragForceProperty (if drag has been toggled) will be updated prior to calculation.
+     * Calculate net force acting on the object in Newtons and set the netForceProperty to the calculated value
+     * weightForceProperty and dragForceProperty (if drag has been toggled) will be updated prior to calculation
      * @public
      */
     updateNetForce: function() {
@@ -177,8 +176,8 @@ define( function( require ) {
     },
 
     /**
-     * Calculate acceleration acting on the object in m/s^2 and set the accelerationProperty to the calculated value.
-     * This method will call updateNetForce() prior to calculating anything, therefore updating all force properties.
+     * Calculate acceleration acting on the object in m/s^2 and set the accelerationProperty to the calculated value
+     * This method will call updateNetForce() prior to calculating anything, therefore updating all force properties
      * @public
      */
     updateAcceleration: function() {
@@ -193,9 +192,9 @@ define( function( require ) {
     },
 
     /**
-     * Calculate velocity in m/s when given a change in time and set the velocityProperty to the calculated value.
+     * Calculate velocity in m/s when given a change in time and set the velocityProperty to the calculated value
      * This method will call updateAcceleration() prior to calculation, therefore updating all force and
-     * acceleration properties.
+     * acceleration properties
      * @public
      *
      * @param {number} dt - delta time
@@ -213,9 +212,9 @@ define( function( require ) {
     },
 
     /**
-     * Calculate position in m when given a change in time and set the positionProperty to the calculated value.
+     * Calculate position in m when given a change in time and set the positionProperty to the calculated value
      * This method will call updateVelocity prior to calculation, therefore updating the velocity, acceleration and
-     * force properties.
+     * force properties
      * @public
      *
      * @param {number} dt - delta time
@@ -255,7 +254,7 @@ define( function( require ) {
     },
 
     /**
-    * Step the object in time by re-calculating properties given a change in time.
+    * Step the object in time by re-calculating properties given a change in time
     * @public
     *
     * @param {number} dt - delta time

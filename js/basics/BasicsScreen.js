@@ -1,8 +1,7 @@
 // Copyright 2018, University of Colorado Boulder
 
 /**
- * The 'Basics' screen, that allows basic simulation of various FallingObject types
- * without being able to control specific variables involved in drag calculation.
+ * The 'Basics' screen, that allows basic simulation of various FallingObject types with an infinite fall time
  *
  * @author Ryan Drew
  */

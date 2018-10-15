@@ -29,15 +29,14 @@ define( function( require ) {
   function FallingObjectNode( fallingObjectsModel, fallingObjectViewFactory, modelViewTransform ) {
 
     // Set attributes
+    // @private (read-only)
     this.fallingObjectsModel = fallingObjectsModel;
     this.fallingObjectViewFactory = fallingObjectViewFactory;
     this.modelViewTransform = modelViewTransform;
+    this.originPos = this.modelViewTransform.modelToViewPosition( new Vector2( 0, 0 ) );
 
     // Defined for constructor
     var self = this;
-
-    // Define for convenience
-    this.originPos = this.modelViewTransform.modelToViewPosition( new Vector2( 0, 0 ) );
 
     // Call super constructor
     Node.call( this );
@@ -82,7 +81,6 @@ define( function( require ) {
 
     }
 
-
     // using the link method will call the listener function right away, meaning this.image will be defined
     this.addChild( this.image );
 
@@ -113,7 +111,7 @@ define( function( require ) {
     /**
      * Auxiliary function for changing the image of the falling object node based on the name of the
      * selected falling object
-     * @private
+     * @public
      *
      * @param {string} selectedFallingObjectName - name of the falling object whose image to use for the FallingObjectNode
      */

@@ -100,6 +100,7 @@ define( function( require ) {
     var selectorPanel = new Panel( selectorControlVBox, panelOptions );
 
     // Add these to the object attributes so they can be used later on during layout
+    // @public
     this.comboBoxParentNode = comboBoxParentNode;
     this.panelOptions = panelOptions;
     this.selectorPanel = selectorPanel;

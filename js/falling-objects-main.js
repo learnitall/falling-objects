@@ -24,7 +24,7 @@ define( function( require ) {
       team: '',
       qualityAssurance: '',
       graphicArts: '',
-      thanks: 'The RV Physics Team (Mr.Pennell, Mr.Lowrey and Mr.Bradley) and friends and family for making this possible'
+      thanks: 'The RV Physics Team (Mr.Pennell, Mr.Lowrey and Mr.Bradley), friends and family, and the PhET team for making this possible.'
     }
   };
 
