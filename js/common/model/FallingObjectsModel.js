@@ -76,9 +76,10 @@ define( function( require ) {
       this.parachuteDeployedProperty = new BooleanProperty( false );
     }
 
+    // @public {Property.<boolean>} whether or not the fallingObjectNode's position is being set statically or dynamically (whether it stays still or moves with changes in position)
+    this.fallingObjectNodeStaticPositionProperty = new BooleanProperty( true );
+
     if ( !options.constantAltitude ) {  // if altitude is constant, don't need this property
-      // @public {Property.<boolean>} whether or not the fallingObjectNode's position is being set statically or dynamically (whether it stays still or moves with changes in position)
-      this.fallingObjectNodeStaticPositionProperty = new BooleanProperty( true );
       // @public {Property.<number>} view distance between the fallingObjectNode and the center of the targetNode in MovingBackgroundGround
       this.viewDistanceToGroundProperty = new NumberProperty( 0 );  // Will be set in TerminalScreenView
     }
