@@ -61,7 +61,7 @@ define( function( require ) {
         if ( newViewPosition > self.originPos.y ) {
           self.setBottom( newViewPosition );
 
-          // Make sure that the dynamic falling property is set to other moving background elements know to stop moving
+          // Make sure that the dynamic falling property is set so other moving background elements know to stop moving
           if ( self.fallingObjectsModel.fallingObjectNodeStaticPositionProperty.get() ) {
             self.fallingObjectsModel.fallingObjectNodeStaticPositionProperty.set( false );
           }
