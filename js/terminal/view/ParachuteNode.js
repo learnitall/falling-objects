@@ -44,7 +44,7 @@ define( function( require ) {
       // Put the bottom of the parachute just below the top of the FO node, looks a bit nicer
       // Add a Math.min call to deal with cases when PARACHUTE_Y_PADDING is actually greater than the height of the object
       self.parachuteImage.setBottom( fallingObjectNode.getTop() + Math.min( FallingObjectsConstants.PARACHUTE_Y_PADDING, fallingObjectNode.height * 0.1 ) );
-    }
+    };
 
     // Link to adjust the size of the parachute when the selected falling object changes
     // Parachute will be set to twice the width of the falling object
@@ -87,10 +87,10 @@ define( function( require ) {
           FallingObjectsConstants.stringToConstantsName( fallingObjectsModel.selectedFallingObjectNameProperty.get() )
         ];
         var width;
-        if ( objectAttributes[ 'diameter' ].constructor === Array ) {
-          width = objectAttributes[ 'diameter' ][ 0 ];
+        if ( objectAttributes.diameter.constructor === Array ) {
+          width = objectAttributes.diameter[ 0 ];
         } else {
-          width = objectAttributes[ 'diameter' ];
+          width = objectAttributes.diameter;
         }
 
         fallingObjectsModel.selectedFallingObject.referenceAreaProperty.set( Math.pow( width, 2 ) * Math.PI );

@@ -10,7 +10,6 @@ define( function( require ) {
   var AltitudePanel = require( 'FALLING_OBJECTS/terminal/view/AltitudePanel' );
   var DeployParachuteButton = require( 'FALLING_OBJECTS/terminal/view/DeployParachuteButton' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
-  var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
   var FallingObjectsScreenView = require( 'FALLING_OBJECTS/common/view/FallingObjectsScreenView' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ParachuteNode = require( 'FALLING_OBJECTS/terminal/view/ParachuteNode' );
@@ -27,9 +26,6 @@ define( function( require ) {
 
     // Grab a copy to the fallingObjectsModel
     this.fallingObjectsModel = fallingObjectsModel;
-
-    // Grab a copy to self
-    var self = this;
 
     // Call the screenView, passing in our given model
     FallingObjectsScreenView.call(

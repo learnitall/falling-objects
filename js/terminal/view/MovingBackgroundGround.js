@@ -9,16 +9,12 @@ define( function( require) {
   'use strict';
 
   // modules
-  var Bounds2 = require( 'DOT/Bounds2' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
   var FallingObjectsConstants = require( 'FALLING_OBJECTS/common/FallingObjectsConstants' );
-  var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Vector2 = require( 'DOT/Vector2' );
 
   /**
    * Construct the Ruler and Ground which will overlay onto the MovingBackground.
@@ -33,7 +29,7 @@ define( function( require) {
 
     // Grab reference to self and fallingObjectsModel
     var self = this;
-    this.fallingObjectsModel = fallingObjectsModel
+    this.fallingObjectsModel = fallingObjectsModel;
 
     // Create the ground
     // Don't know dimensions yet, will be set in layout
@@ -76,7 +72,7 @@ define( function( require) {
       } else {
 
         // Update position of ground to be at its default location
-        if ( self.getCenterY() != defaultPosGround ) {
+        if ( self.getCenterY() !== defaultPosGround ) {
           self.setCenterY( defaultPosGround );
         }
 
@@ -104,7 +100,6 @@ define( function( require) {
     layout: function( offsetX, offsetY, width, height, scale ) {
 
       // Determine center of screen, screenWidth and screenHeight for convenience
-      var center = new Vector2( ( -offsetX + ( width / scale - offsetX ) ) / 2, ( offsetY + ( height / scale - offsetY ) ) / 2 );
       var screenWidth = -offsetX + width / scale;
       this.screenHeight = -offsetY + height / scale;
 
