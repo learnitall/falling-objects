@@ -86,7 +86,7 @@ define( function( require ) {
           width = objectAttributes[ 'diameter' ];
         }
 
-        fallingObjectsModel.selectedFallingObject.referenceAreaProperty.set( Math.pow( width, 2 ) * Math.pi );
+        fallingObjectsModel.selectedFallingObject.referenceAreaProperty.set( Math.pow( width, 2 ) * Math.PI );
       } else {
         // Reset the reference area
         fallingObjectsModel.selectedFallingObject.referenceAreaProperty.reset();
