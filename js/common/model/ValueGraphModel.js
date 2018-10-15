@@ -22,6 +22,7 @@ define( function( require) {
    *
    * @param {number} maxPlotWidth - Max width of the graph (needed to determine our initial scales)
    * @param {number} maxPlotHeight - Max height of the graph (needed to determine our initial scales)
+   * @constructor
    */
   function ValueGraphModel( maxPlotWidth, maxPlotHeight ) {
 

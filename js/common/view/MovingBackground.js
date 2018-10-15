@@ -27,6 +27,7 @@ define( function( require ) {
    * be filled in and sized in the 'layout' function.
    *
    * @param {FallingObjectsModel} fallingObjectsModel - will be used to pull selected falling object
+   * @constructor
    */
   function MovingBackground( fallingObjectsModel ) {
 

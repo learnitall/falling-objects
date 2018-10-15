@@ -28,6 +28,7 @@ define( function( require ) {
    * @param {FallingObjectsModel} fallingObjectsModel
    * @param {number} maxWidth - Max width of the PVAGraph node
    * @param {number} maxHeight - Max height of the PVAGraph node
+   * @constructor
    */
   function PVAGraphs( fallingObjectsModel, maxWidth, maxHeight ) {
 

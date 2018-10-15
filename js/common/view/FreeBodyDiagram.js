@@ -37,6 +37,7 @@ define( function( require ) {
    * @param {FallingObjectsModel} fallingObjectsModel - will be used to determine FBD should be displayed or not
    * @param {number} maxWidth - max width of the free body diagram panel
    * @param {height} maxHeight - max height of the free body diagram panel
+   * @constructor
    */
   function FreeBodyDiagram( fallingObjectsModel, maxWidth, maxHeight ) {
 

@@ -39,6 +39,7 @@ define( function( require ) {
    * @param {string} lineColor - color of the line to plot on the graph (rbg formatted, name of a color, etc.)
    * @param {number} maxWidth - max width of the free body diagram panel
    * @param {number} maxHeight - max height of the free body diagram panel
+   * @constructor
    */
   function ValueGraphNode( fallingObjectsModel, name, targetPropertyName, unitString, lineColor, maxWidth, maxHeight ) {
 

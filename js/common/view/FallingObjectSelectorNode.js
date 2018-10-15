@@ -29,6 +29,7 @@ define( function( require ) {
    * @param {array} fallingObjectNames - array of FallingObject string! names that users will be able to choose from (populates combo box)
    * @param {number} maxWidth - max width of the selector
    * @param {Node} comboBoxParentNode - parent node for the combo box
+   * @constructor
    */
   function FallingObjectSelectorNode( fallingObjectModel, fallingObjectNames, maxWidth, comboBoxParentNode ) {
     // Method of construction based off of projectile-motion's combo box on the Intro screen)

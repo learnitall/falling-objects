@@ -35,6 +35,7 @@ define( function( require) {
    *
    * @param {FallingObjectsModel} fallingObjectsModel - used to pull selectedFallingObjectNameProperty and FallingObject attribute values
    * @param {number} maxWidth - width of the value panel
+   * @constructor
    */
   function ValuePanel( fallingObjectsModel, maxWidth ) {
 

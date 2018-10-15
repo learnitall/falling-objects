@@ -28,6 +28,7 @@ define( function ( require ) {
    *
    * @param {array} toggleList - List of stings/labels and their associated properties to toggle: [ { label: {string}, property: {BooleanProperty} }, ... ]
    * @param {number} maxWidth - max width of the toggle panel
+   * @constructor
    */
   function TogglePanel( toggleList, maxWidth ) {
 

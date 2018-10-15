@@ -25,6 +25,7 @@ define( function( require ) {
    * @param {FallingObjectsModel} FallingObjectsModel - used to pull environmental values
    * @param {string} fallingObjectName - the name of the FallingObject to create (should be from string! plugin, see FallingObjectsConstants)
    * @param {number} initialAltitude - initial altitude of the object
+   * @constructor
    */
   function FallingObject( FallingObjectsModel, fallingObjectName, initialAltitude ) {
 
