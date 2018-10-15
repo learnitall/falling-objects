@@ -11,8 +11,8 @@ functions is encouraged to read.
 ## General Overview
 
 The goal of this simulation is to allow users to understand the behavior of falling objects
-by giving them the ability to adjust the factors that influence and object's fall. These f
-actors can be segmented into two parts: environmental and object properties.
+by giving them the ability to adjust the factors that influence and object's fall. These
+factors can be segmented into two parts: environmental and object properties.
 
 Environmental factors are considered to be the following:
 

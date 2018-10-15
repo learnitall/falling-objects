@@ -1,5 +1,116 @@
 {
   "falling-objects.title": {
     "value": "Falling Objects"
+  },
+  "screen.basics": {
+    "value": "Basics"
+  },
+  "screen.terminal": {
+    "value": "Terminal"
+  },
+  "pattern.0Label.1Value.2Units": {
+    "value": "{{label}}: {{value}} {{units}}"
+  },
+  "pattern.0Label.1Value": {
+    "value": "{{label}}: {{value}}"
+  },
+  "pattern.0Label": {
+    "value": "{{label}}"
+  },
+  "pattern.0Value.1Units": {
+    "value": "{{value}}{{units}}"
+  },
+  "showValues": {
+    "value": "Show Values"
+  },
+  "showFreeBodyDiagram": {
+    "value": "Show Free Body Diagram"
+  },
+  "showPVAGraphs": {
+    "value": "Show Graphs"
+  },
+  "enableDrag": {
+    "value": "Enable Drag"
+  },
+  "mass": {
+    "value": "Mass"
+  },
+  "referenceArea": {
+    "value": "Reference Area"
+  },
+  "dragCoefficient": {
+    "value": "Drag Coefficient"
+  },
+  "initialAltitude": {
+    "value": "Initial Altitude"
+  },
+  "objectsFallTime": {
+    "value": "Object's Fall Time: "
+  },
+  "weightForce": {
+    "value": "Fg"
+  },
+  "dragForce": {
+    "value": "Fd"
+  },
+  "netForce": {
+    "value": "Fn"
+  },
+  "kg": {
+    "value": "kg"
+  },
+  "m": {
+    "value": "m"
+  },
+  "km": {
+    "value": "km"
+  },
+  "m2": {
+    "value": "m²"
+  },
+  "ms": {
+    "value": "m/s"
+  },
+  "ms2": {
+    "value": "m/s²"
+  },
+  "n": {
+    "value": "n"
+  },
+  "bowlingBall": {
+    "value": "Bowling Ball"
+  },
+  "badmintonShuttlecock": {
+    "value": "Badminton Shuttlecock"
+  },
+  "golfBall": {
+    "value": "Golf Ball"
+  },
+  "pingPongBall": {
+    "value": "Ping Pong Ball"
+  },
+  "baseball": {
+    "value": "Baseball"
+  },
+  "football": {
+    "value": "Football"
+  },
+  "modelRocket": {
+    "value": "Model Rocket"
+  },
+  "scaleSportsCar": {
+    "value": "Scale Sports Car"
+  },
+  "combusted": {
+    "value": "Combusted"
+  },
+  "acceleration": {
+    "value": "Acceleration"
+  },
+  "velocity": {
+    "value": "Velocity"
+  },
+  "position": {
+    "value": "Position"
   }
 }

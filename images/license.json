@@ -1,3 +1,66 @@
 {
-
+  "badminton_shuttlecock.svg": {
+    "text": [
+      "Icon made by Pixel perfect from Flaticon"
+    ],
+    "projectURL": "https://www.flaticon.com/free-icon/shuttlecock_776775",
+    "license": "Flaticon Basic License",
+    "notes": "Modified from the original"
+  },
+  "baseball.png": {
+    "text": [
+      "Copyright 2002-2016 University of Colorado Boulder"
+    ],
+    "projectURL": "http://phet.colorado.edu",
+    "license": "contact phethelp@colorado.edu",
+    "notes": "Taken from projectile motion"
+  },
+  "cloud.png": {
+    "text": [
+      "Public Domain"
+    ],
+    "projectURL": "http://openclipart.org/detail/99229/landscape-by-rg1024",
+    "license": "Public Domain",
+    "notes": "From forces and motion basics"
+  },
+  "fire.svg": {
+    "text": [
+      "Public Domain"
+    ],
+    "projectURL": "https://pixabay.com/en/fire-blast-meteor-fireball-comet-312260/",
+    "license": "CC0 Creative Commons",
+    "notes": "Created by Pixabay user Clker-Free-Vector-Images"
+  },
+  "football.png": {
+    "text": [
+      "Copyright 2002-2016 University of Colorado Boulder"
+    ],
+    "projectURL": "https://phet.colorado.edu",
+    "license": "contact phethelp@colorado.edu",
+    "notes": "Modified from projectile motion"
+  },
+  "model_rocket.svg": {
+    "text": [
+      "Public Domain"
+    ],
+    "projectURL": "https://pixabay.com/en/boosters-colour-nasa-rocket-2029393/",
+    "license": "CC0 Creative Commons",
+    "notes": "Created by Pixabay user OpenClipart-Vectors; Modified from the original"
+  },
+  "sports_car.svg": {
+    "text": [
+      "Public Domain"
+    ],
+    "projectURL": "https://pixabay.com/en/blank-car-game-game-sprite-racing-1299404/",
+    "license": "CC0 Creative Commons",
+    "notes": "Created by Pixabay user OpenClipart-Vectors; Modified from the original"
+  },
+  "parachute.png": {
+    "text": [
+      "Public Domain"
+    ],
+    "projectURL": "http://www.clker.com/clipart-parachute-1.html",
+    "license": "CC0 Creative Commons",
+    "notes": "Uploaded to clker.com by user Ashley; Modified from the original"
+  }
 }

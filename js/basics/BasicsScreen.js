@@ -1,6 +1,8 @@
 // Copyright 2018, University of Colorado Boulder
 
 /**
+ * The 'Basics' screen, that allows basic simulation of various FallingObject types with an infinite fall time
+ *
  * @author Ryan Drew
  */
 define( function( require ) {
@@ -11,8 +13,11 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Screen = require( 'JOIST/Screen' );
   var fallingObjects = require( 'FALLING_OBJECTS/fallingObjects' );
-  var FallingObjectsModel = require( 'FALLING_OBJECTS/falling-objects/model/FallingObjectsModel' );
-  var FallingObjectsScreenView = require( 'FALLING_OBJECTS/falling-objects/view/FallingObjectsScreenView' );
+  var FallingObjectsModel = require( 'FALLING_OBJECTS/common/model/FallingObjectsModel' );
+  var FallingObjectsScreenView = require( 'FALLING_OBJECTS/common/view/FallingObjectsScreenView' );
+
+  // strings
+  var screenBasicsString = require( 'string!FALLING_OBJECTS/screen.basics' );
 
   /**
    * @constructor
@@ -20,11 +25,13 @@ define( function( require ) {
   function FallingObjectsScreen() {
 
     var options = {
+      name: screenBasicsString,
       backgroundColorProperty: new Property( 'white' )
+      // TODO: Add a homeScreenIcon
     };
 
     Screen.call( this,
-      function() { return new FallingObjectsModel(); },
+      function() { return new FallingObjectsModel( true ); },
       function( model ) { return new FallingObjectsScreenView( model ); },
       options
     );

@@ -18,7 +18,7 @@ require.config( {
     text: '../../sherpa/lib/text-2.0.12',
 
     // PhET plugins
-    audio: '../../chipper/js/requirejs-plugins/audio',
+    sound: '../../chipper/js/requirejs-plugins/sound',
     image: '../../chipper/js/requirejs-plugins/image',
     mipmap: '../../chipper/js/requirejs-plugins/mipmap',
     string: '../../chipper/js/requirejs-plugins/string',
@@ -39,6 +39,7 @@ require.config( {
     SCENERY_PHET: '../../scenery-phet/js',
     FALLING_OBJECTS: '.',
     SUN: '../../sun/js',
+    TAMBO: '../../tambo/js',
     TANDEM: '../../tandem/js'
   },
 
