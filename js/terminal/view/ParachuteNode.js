@@ -37,6 +37,15 @@ define( function( require ) {
     // Get the aspect ratio of the parachute image so we can properly scale the height as the width changes
     var parachuteImageAspectRatio = this.parachuteImage.width / this.parachuteImage.height;
 
+    /**
+     * Auxiliary function to position the parachute on the falling object node
+     */
+    var positionParachuteOnNode = function() {
+      // Put the bottom of the parachute just below the top of the FO node, looks a bit nicer
+      // Add a Math.min call to deal with cases when PARACHUTE_Y_PADDING is actually greater than the height of the object
+      self.parachuteImage.setBottom( fallingObjectNode.getTop() + Math.min( FallingObjectsConstants.PARACHUTE_Y_PADDING, fallingObjectNode.height * 0.1 ) );
+    }
+
     // Link to adjust the size of the parachute when the selected falling object changes
     // Parachute will be set to twice the width of the falling object
     fallingObjectsModel.selectedFallingObjectNameProperty.link( function( selectedFallingObjectName ) {
@@ -60,9 +69,7 @@ define( function( require ) {
 
       // Position the parachuteImage to be right above the FallingObjectNode
       self.parachuteImage.setCenterX( fallingObjectNode.getCenterX() );
-      // Put the bottom of the parachute just below the top of the FO node, looks a bit nicer
-      // Add a Math.min call to deal with cases when PARACHUTE_Y_PADDING is actually greater than the height of the object
-      self.parachuteImage.setBottom( fallingObjectNode.getTop() + Math.min( FallingObjectsConstants.PARACHUTE_Y_PADDING, fallingObjectNode.height * 0.1 ) );
+      positionParachuteOnNode();
 
     } );
 
@@ -92,6 +99,20 @@ define( function( require ) {
         fallingObjectsModel.selectedFallingObject.referenceAreaProperty.reset();
       }
 
+    } );
+
+    // Create a link that will update the position of the parachute, so it follows the falling object as it falls
+    fallingObjectsModel.selectedFallingObject.positionProperty.lazyLink( function( position ) {
+      if ( !fallingObjectsModel.fallingObjectNodeStaticPositionProperty.get() ) {  // only need to update if fo is moving dynamically
+        positionParachuteOnNode();
+      }
+    } );
+
+    // Create a link to re-position the parachute if we go from dynamic to static
+    fallingObjectsModel.fallingObjectNodeStaticPositionProperty.lazyLink( function( fallingObjectNodeStaticPosition ) {
+      if ( fallingObjectNodeStaticPosition ) {
+        positionParachuteOnNode();
+      }
     } );
 
     this.addChild( this.parachuteImage );

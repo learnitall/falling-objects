@@ -201,6 +201,10 @@ define( function( require ) {
       this.playEnabledProperty.reset();
       this.simEnabledProperty.reset();
 
+      // Reset FallingObject
+      // Must be reset before the parachute node so the parachute node knows where to move to
+      this.selectedFallingObject.reset();
+
       if ( this.enableParachute ) {
         this.parachuteDeployedProperty.reset();
       }
@@ -211,8 +215,6 @@ define( function( require ) {
         // this.viewDistanceToGroundProperty.reset();
       }
 
-      // Reset FallingObject
-      this.selectedFallingObject.reset();
     },
 
     /**
